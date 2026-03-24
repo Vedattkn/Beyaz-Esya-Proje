@@ -1,17 +1,23 @@
-using System.Web.Mvc;
-using TekinTeknikServis.Web.Services;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using TekinTeknikServis.Core.Services;
 
-namespace TekinTeknikServis.Web.Controllers
+namespace TekinTeknikServis.Core.Controllers
 {
     public class ProductsController : Controller
     {
-        // GET /urun/{id}
-        [Route("urun/{id}")]
-        public ActionResult Detail(string id)
+        private readonly SupabaseService _supabase;
+        
+        public ProductsController(SupabaseService supabase)
         {
-            if (string.IsNullOrWhiteSpace(id)) return HttpNotFound();
-            ProductCatalog.Products.TryGetValue(id, out var product);
-            if (product == null) return HttpNotFound();
+            _supabase = supabase;
+        }
+
+        public async Task<IActionResult> Detail(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id)) return NotFound();
+            var product = await _supabase.GetProductByIdAsync(id);
+            if (product == null) return NotFound();
             return View(product);
         }
     }

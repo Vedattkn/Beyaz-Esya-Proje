@@ -1,20 +1,30 @@
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using TekinTeknikServis.Core.Services;
 
-namespace TekinTeknikServis.Web.Controllers
+namespace TekinTeknikServis.Core.Controllers
 {
     public class HomeController : Controller
     {
-        // GET /
-        public ActionResult Index() => View();
+        private readonly SupabaseService _supabase;
+        
+        public HomeController(SupabaseService supabase)
+        {
+            _supabase = supabase;
+        }
 
-        // GET /hizmetler
-        public ActionResult Hizmetler() => View();
+        public IActionResult Index() => View();
+        public IActionResult Hizmetler() => View();
+        
+        public async Task<IActionResult> Urunler()
+        {
+            var products = await _supabase.GetAllProductsAsync();
+            return View(products);
+        }
 
-        // GET /urunler
-        public ActionResult Urunler() => View();
+        public IActionResult Iletisim() => View();
 
-        // GET /iletisim
-        public ActionResult Iletisim() => View();
+        [Route("/Home/Error")]
+        public IActionResult Error() => View();
     }
 }
-

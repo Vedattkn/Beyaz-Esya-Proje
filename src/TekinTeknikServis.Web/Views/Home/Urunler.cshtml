@@ -1,30 +1,30 @@
-@using TekinTeknikServis.Web.Services
+@using TekinTeknikServis.Core.Services
+@model List<Product>
 @{
     ViewBag.Title = "Ürünler";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "_Layout";
 }
 
 <section class="products">
     <h2>Ürünlerimiz</h2>
 
     <div class="product-container">
-        @foreach (var kv in ProductCatalog.Products)
+        @foreach (var p in Model)
         {
-            var p = kv.Value;
             <div class="product-card">
                 <img src="@p.ImageUrl" alt="@p.Name" />
                 <h3>@p.Name</h3>
                 <p>@p.PriceText</p>
-                <div style="display:flex; gap:10px; margin-top:10px;">
-                    <a href="@Url.Action("Detail","Products", new { id = p.Id })" class="detay-btn" style="flex:1;">Detay</a>
-                    @using (Html.BeginForm("Add", "Cart", new { id = p.Id }, FormMethod.Post, new { style = "flex:1;" }))
-                    {
+                <div class="product-actions">
+                    <a href="@Url.RouteUrl("urun-detay", new { id = p.Id })" class="detay-btn">Detay</a>
+                    <form asp-controller="Cart" asp-action="Add" asp-route-id="@p.Id" method="post">
                         @Html.AntiForgeryToken()
-                        <button type="submit" class="cart-btn" style="width:100%;">
+                        <button type="submit" class="cart-btn">
                             <i class="fas fa-cart-plus"></i> Sepete Ekle
                         </button>
-                    }
+                    </form>
                 </div>
+
             </div>
         }
     </div>
