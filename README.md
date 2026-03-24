@@ -28,7 +28,10 @@ Bu proje, modern bir beyaz eşya teknik servisi yönetim platformudur. Müşteri
 
 ## 🏗️ Mimari ve Teknoloji Yığını
 
-- **Framework:** ASP.NET Core MVC
+- **Framework:** ASP.NET Core MVC (.NET 8.0)
+- **Architecture:** Katmanlı Mimari (Core + Web)
+  - **Core Layer:** Class Library (Models, Services, Filters, Business Logic)
+  - **Web Layer:** MVC Presentation (Controllers, Views, wwwroot)
 - **Data & Auth:** [Supabase](https://supabase.io) (PostgreSQL + Auth + Storage)
 - **Email:** Google SMTP Integration (Otomatik bilgilendirme sistemleri)
 - **Frontend:** HTML5, CSS3, Vanilla JavaScript, FontAwesome
@@ -40,32 +43,39 @@ Bu proje, modern bir beyaz eşya teknik servisi yönetim platformudur. Müşteri
 
 ### 1. Gereksinimler
 - [.NET SDK 8.0+](https://dotnet.microsoft.com/download)
-- Visual Studio 2022 veya VS Code
-- Supabase Hesabı
+- Visual Studio 2022 / VS Code
+- [Supabase Hesabı](https://supabase.io) (Ücretsiz)
+- Gmail Hesabı (Email bildirimler için)
 
 ### 2. Yapılandırma
-`src/TekinTeknikServis.Core/appsettings.json` dosyasını kendi anahtarlarınızla güncelleyin:
+`src/TekinTeknikServis.Web/appsettings.json` dosyasını kendi anahtarlarınızla güncelleyin:
 
 ```json
-"Supabase": {
-  "Url": "https://your-project.supabase.co",
-  "Key": "your-anon-key"
-},
-"Email": {
-  "SmtpUser": "your-email@gmail.com",
-  "SmtpPassword": "your-app-password"
+{
+  "Email": {
+    "To": "your-business-email@gmail.com",
+    "SmtpHost": "smtp.gmail.com",
+    "SmtpPort": 587,
+    "SmtpUser": "your-email@gmail.com",
+    "SmtpPassword": "your-app-password"
+  },
+  "Supabase": {
+    "Url": "https://your-project.supabase.co",
+    "Key": "your-publishable-key"
+  }
 }
 ```
 
 ### 3. Çalıştırma
 ```bash
 # Proje dizinine gidin
-cd src/TekinTeknikServis.Core
+cd src/TekinTeknikServis.Web
 
-# Bağımlılıkları geri yükleyin
+# Bağımlılıkları yükle ve derle
 dotnet restore
+dotnet build
 
-# Uygulamayı başlatın
+# Uygulamayı başlat (http://localhost:5000)
 dotnet run
 ```
 
@@ -74,13 +84,22 @@ dotnet run
 ## 📁 Proje Yapısı
 
 ```text
-TekinTeknikServis.Core/
-├── Controllers/       # İstek karşılayıcılar (Admin, Account, Product...)
-├── Models/            # Veri modelleri ve ViewModel'lar
-├── Views/             # Razor View arayüzleri
-├── Services/          # Supabase, Email ve İş mantığı servisleri
-├── Infrastructure/    # Custom filtreler ve middleware
-└── wwwroot/           # CSS, JS ve statik dosyalar
+src/
+├── TekinTeknikServis.Core/              # Class Library - Business Logic
+│   ├── Models/                          # Veri modelleri
+│   ├── Services/                        # EmailService, SupabaseService, ProductCatalog
+│   ├── Filters/                         # AdminCheckAttribute, AuthCheckAttribute
+│   ├── Infrastructure/                  # SessionJsonExtensions
+│   └── TekinTeknikServis.Core.csproj    # (.NET 8.0 Class Library)
+│
+└── TekinTeknikServis.Web/               # MVC - Presentation Layer
+    ├── Controllers/                     # Account, Admin, Cart, Checkout, Home, Products, ServiceRequest
+    ├── Views/                           # Razor View Templates
+    ├── Models/                          # ViewModels
+    ├── wwwroot/                         # CSS, JavaScript, Images, Static Files
+    ├── Program.cs                       # Dependency Injection & Configuration
+    ├── appsettings.json                 # Database & Email Config
+    └── TekinTeknikServis.Web.csproj     # (.NET 8.0 - References Core)
 ```
 
 ---

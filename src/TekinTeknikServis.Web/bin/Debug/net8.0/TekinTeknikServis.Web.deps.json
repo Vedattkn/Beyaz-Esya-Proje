@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "TekinTeknikServis.Web/1.0.0": {
+        "dependencies": {
+          "TekinTeknikServis.Core": "1.0.0"
+        },
+        "runtime": {
+          "TekinTeknikServis.Web.dll": {}
+        }
+      },
+      "TekinTeknikServis.Core/1.0.0": {
+        "runtime": {
+          "TekinTeknikServis.Core.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "TekinTeknikServis.Web/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "TekinTeknikServis.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

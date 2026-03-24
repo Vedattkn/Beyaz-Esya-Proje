@@ -1,27 +1,30 @@
+using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
-using TekinTeknikServis.Web.Models;
+using Microsoft.AspNetCore.Mvc;
+using TekinTeknikServis.Core.Infrastructure;
+using TekinTeknikServis.Core.Models;
 
-namespace TekinTeknikServis.Web.Controllers
+using TekinTeknikServis.Core.Filters;
+
+namespace TekinTeknikServis.Core.Controllers
 {
+    [AuthCheck]
     public class CheckoutController : Controller
     {
-        // GET /odeme
-        [Route("odeme")]
-        public ActionResult Index()
+        private const string CartSessionKey = "Cart";
+
+        public IActionResult Index()
         {
-            var cart = (Session["Cart"] as System.Collections.Generic.List<CartItem>) ?? new System.Collections.Generic.List<CartItem>();
-            if (!cart.Any()) return RedirectToAction("Index", "Cart");
+            var cart = HttpContext.Session.GetJson<List<CartItem>>(CartSessionKey) ?? new List<CartItem>();
+            if (!cart.Any()) return RedirectToRoute("sepet");
 
             ViewBag.TotalTry = cart.Sum(x => x.LineTotalTry);
             return View(cart);
         }
 
-        // POST /odeme/tamamla
         [HttpPost]
-        [Route("odeme/tamamla")]
         [ValidateAntiForgeryToken]
-        public ActionResult Complete(string adSoyad, string kartNo, string sonKullanma, string cvc, string email, string sartlar)
+        public IActionResult Complete(string adSoyad, string kartNo, string sonKullanma, string cvc, string email, string sartlar)
         {
             if (string.IsNullOrWhiteSpace(adSoyad) ||
                 string.IsNullOrWhiteSpace(kartNo) ||
@@ -30,14 +33,13 @@ namespace TekinTeknikServis.Web.Controllers
                 string.IsNullOrWhiteSpace(email) ||
                 string.IsNullOrWhiteSpace(sartlar))
             {
-                return new HttpStatusCodeResult(400, "Lütfen tüm alanları doldurun.");
+                return BadRequest("Lütfen tüm alanları doldurun.");
             }
 
-            // Demo: Node'da olduğu gibi ödeme entegrasyonu yok, başarılı varsayıyoruz.
-            var cart = (Session["Cart"] as System.Collections.Generic.List<CartItem>) ?? new System.Collections.Generic.List<CartItem>();
+            var cart = HttpContext.Session.GetJson<List<CartItem>>(CartSessionKey) ?? new List<CartItem>();
             var total = cart.Sum(x => x.LineTotalTry);
 
-            Session["Cart"] = new System.Collections.Generic.List<CartItem>(); // sepeti temizle
+            HttpContext.Session.SetJson(CartSessionKey, new List<CartItem>());
             ViewBag.Email = email;
             ViewBag.TotalTry = total;
             return View("Success");

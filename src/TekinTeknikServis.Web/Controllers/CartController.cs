@@ -1,40 +1,44 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
-using TekinTeknikServis.Web.Models;
-using TekinTeknikServis.Web.Services;
+using Microsoft.AspNetCore.Mvc;
+using TekinTeknikServis.Core.Infrastructure;
+using TekinTeknikServis.Core.Models;
+using TekinTeknikServis.Core.Services;
 
-namespace TekinTeknikServis.Web.Controllers
+using TekinTeknikServis.Core.Filters;
+
+namespace TekinTeknikServis.Core.Controllers
 {
+    [AuthCheck]
     public class CartController : Controller
     {
         private const string CartSessionKey = "Cart";
+        private readonly SupabaseService _supabase;
+        
+        public CartController(SupabaseService supabase)
+        {
+            _supabase = supabase;
+        }
 
-        // GET /sepet
-        [Route("sepet")]
-        public ActionResult Index()
+        public IActionResult Index()
         {
             var cart = GetCart();
             ViewBag.TotalTry = cart.Sum(x => x.LineTotalTry);
             return View(cart);
         }
 
-        // POST /sepet/ekle/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("sepet/ekle/{id}")]
-        public ActionResult Add(string id)
+        public async Task<IActionResult> Add(string id)
         {
-            if (string.IsNullOrWhiteSpace(id)) return HttpNotFound();
-            if (!ProductCatalog.Products.TryGetValue(id, out var product)) return HttpNotFound();
+            if (string.IsNullOrWhiteSpace(id)) return NotFound();
+            var product = await _supabase.GetProductByIdAsync(id);
+            if (product == null) return NotFound();
 
             var cart = GetCart();
             var existing = cart.FirstOrDefault(x => string.Equals(x.Id, id, StringComparison.OrdinalIgnoreCase));
-            if (existing != null)
-            {
-                existing.Quantity += 1;
-            }
+            if (existing != null) existing.Quantity += 1;
             else
             {
                 cart.Add(new CartItem
@@ -47,14 +51,12 @@ namespace TekinTeknikServis.Web.Controllers
             }
 
             SaveCart(cart);
-            return RedirectToAction("Index");
+            return RedirectToRoute("sepet");
         }
 
-        // POST /sepet/sil/{index}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("sepet/sil/{index:int}")]
-        public ActionResult RemoveAt(int index)
+        public IActionResult RemoveAt(int index)
         {
             var cart = GetCart();
             if (index >= 0 && index < cart.Count)
@@ -65,11 +67,9 @@ namespace TekinTeknikServis.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        // POST /sepet/guncelle/{index}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("sepet/guncelle/{index:int}")]
-        public ActionResult UpdateQuantity(int index, int quantity)
+        public IActionResult UpdateQuantity(int index, int quantity)
         {
             var cart = GetCart();
             if (index >= 0 && index < cart.Count)
@@ -78,23 +78,17 @@ namespace TekinTeknikServis.Web.Controllers
                 else cart.RemoveAt(index);
                 SaveCart(cart);
             }
-            return RedirectToAction("Index");
+            return RedirectToRoute("sepet");
         }
 
         private List<CartItem> GetCart()
         {
-            var cart = Session[CartSessionKey] as List<CartItem>;
-            if (cart == null)
-            {
-                cart = new List<CartItem>();
-                Session[CartSessionKey] = cart;
-            }
-            return cart;
+            return HttpContext.Session.GetJson<List<CartItem>>(CartSessionKey) ?? new List<CartItem>();
         }
 
         private void SaveCart(List<CartItem> cart)
         {
-            Session[CartSessionKey] = cart ?? new List<CartItem>();
+            HttpContext.Session.SetJson(CartSessionKey, cart ?? new List<CartItem>());
         }
     }
 }

@@ -1,7 +1,7 @@
-@model System.Collections.Generic.List<TekinTeknikServis.Web.Models.CartItem>
+@model System.Collections.Generic.List<TekinTeknikServis.Core.Models.CartItem>
 @{
     ViewBag.Title = "Ödeme";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "_Layout";
 }
 
 <div class="odeme-container" style="max-width: 600px; margin: 40px auto; padding: 20px;">
@@ -20,17 +20,16 @@
         </div>
     </div>
 
-    @using (Html.BeginForm("Complete", "Checkout", FormMethod.Post, new { @class = "odeme-form", style = "background:white; padding:30px; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.1);" }))
-    {
+    <form asp-controller="Checkout" asp-action="Complete" method="post" style="background:white; padding:30px; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.1);">
         @Html.AntiForgeryToken()
         <h3>Kart Bilgileri</h3>
 
-        <div class="form-grup" style="margin-bottom:20px;">
+        <div style="margin-bottom:20px;">
             <label>Ad Soyad *</label>
             <input type="text" name="adSoyad" required placeholder="Adınız Soyadınız" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:4px; box-sizing:border-box;" />
         </div>
 
-        <div class="form-grup" style="margin-bottom:20px;">
+        <div style="margin-bottom:20px;">
             <label>Kart Numarası *</label>
             <input type="text" id="kartNo" name="kartNo" maxlength="19" required placeholder="1234 5678 9012 3456" inputmode="numeric" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:4px; box-sizing:border-box;" />
         </div>
@@ -46,12 +45,12 @@
             </div>
         </div>
 
-        <div class="form-grup" style="margin-bottom:20px;">
+        <div style="margin-bottom:20px;">
             <label>E-Mail *</label>
             <input type="email" name="email" required placeholder="email@example.com" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:4px; box-sizing:border-box;" />
         </div>
 
-        <div class="checkbox-grup" style="display:flex; align-items:center; gap:10px; margin:20px 0; padding:15px; background:#f8f9fa; border-radius:4px;">
+        <div style="display:flex; align-items:center; gap:10px; margin:20px 0; padding:15px; background:#f8f9fa; border-radius:4px;">
             <input type="checkbox" id="sartlar" name="sartlar" value="on" required style="width:20px; height:20px; cursor:pointer; accent-color:#27ae60;" />
             <label for="sartlar" style="cursor:pointer; margin:0; font-size:14px; color:#333;">Ödeme şartlarını kabul ediyorum</label>
         </div>
@@ -60,7 +59,7 @@
             <button type="submit" class="btn" style="flex:1; background:#27ae60;">@ViewBag.TotalTry TL Öde</button>
             <a href="@Url.Action("Index","Cart")" class="btn" style="flex:1; background:#95a5a6; text-align:center;">İptal Et</a>
         </div>
-    }
+    </form>
 </div>
 
 <script>

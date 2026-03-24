@@ -1,7 +1,7 @@
-@model System.Collections.Generic.List<TekinTeknikServis.Web.Models.CartItem>
+@model System.Collections.Generic.List<TekinTeknikServis.Core.Models.CartItem>
 @{
     ViewBag.Title = "Alışveriş Sepeti";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "_Layout";
 }
 
 <div class="sepet-container" style="max-width: 900px; margin: 40px auto; padding: 20px;">
@@ -10,7 +10,7 @@
         <div class="bos-sepet" style="text-align:center; padding:50px; color:#7f8c8d;">
             <h2>Sepetiniz boş</h2>
             <p>Lütfen ürünler sayfasından ürün seçiniz.</p>
-            <a href="@Url.Action("Urunler","Home")" class="btn">Ürünleri Görüntüle</a>
+            <a href="@Url.RouteUrl("urunler")" class="btn">Ürünleri Görüntüle</a>
         </div>
     }
     else
@@ -33,21 +33,21 @@
                         <td style="padding:15px; border-bottom:1px solid #eee;">@item.Name</td>
                         <td style="padding:15px; border-bottom:1px solid #eee;">@item.PriceText</td>
                         <td style="padding:15px; border-bottom:1px solid #eee;">
-                            @using (Html.BeginForm("UpdateQuantity", "Cart", new { index = i }, FormMethod.Post, new { style = "display:inline;" }))
-                            {
+                            <form asp-controller="Cart" asp-action="UpdateQuantity" method="post" style="display:inline;">
                                 @Html.AntiForgeryToken()
+                                <input type="hidden" name="index" value="@i" />
                                 <input type="number" name="quantity" value="@item.Quantity" min="1" style="width:60px; padding:5px; border:1px solid #ddd; border-radius:4px;" onchange="this.form.submit()" />
-                            }
+                            </form>
                         </td>
                         <td style="padding:15px; border-bottom:1px solid #eee;">@item.LineTotalTry TL</td>
                         <td style="padding:15px; border-bottom:1px solid #eee;">
-                            @using (Html.BeginForm("RemoveAt", "Cart", new { index = i }, FormMethod.Post, new { style = "display:inline;" }))
-                            {
+                            <form asp-controller="Cart" asp-action="RemoveAt" method="post" style="display:inline;">
                                 @Html.AntiForgeryToken()
+                                <input type="hidden" name="index" value="@i" />
                                 <button type="submit" style="background:#e74c3c; color:white; padding:8px 12px; border:none; border-radius:4px; cursor:pointer; font-size:14px;">
                                     <i class="fas fa-trash"></i> Sil
                                 </button>
-                            }
+                            </form>
                         </td>
                     </tr>
                 }
@@ -58,8 +58,8 @@
             <div class="toplam-fiyat" style="font-size:24px; color:#27ae60; font-weight:bold; margin-bottom:15px;">
                 Toplam: @ViewBag.TotalTry TL
             </div>
-            <a href="@Url.Action("Index","Checkout")" class="btn" style="background:#27ae60;">Ödeme Yap</a>
-            <a href="@Url.Action("Urunler","Home")" class="btn" style="background:#95a5a6;">Alışverişe Devam Et</a>
+            <a href="@Url.RouteUrl("odeme")" class="btn" style="background:#27ae60;">Ödeme Yap</a>
+            <a href="@Url.RouteUrl("urunler")" class="btn" style="background:#95a5a6;">Alışverişe Devam Et</a>
         </div>
     }
 </div>
