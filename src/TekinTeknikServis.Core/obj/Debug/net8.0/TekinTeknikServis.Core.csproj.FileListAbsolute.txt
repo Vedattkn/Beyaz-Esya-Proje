@@ -1,0 +1,12 @@
+C:\Users\ilhan\OneDrive\Desktop\sistem analiz proje\dotnet-mvc5\src\TekinTeknikServis.Core\bin\Debug\net8.0\TekinTeknikServis.Core.deps.json
+C:\Users\ilhan\OneDrive\Desktop\sistem analiz proje\dotnet-mvc5\src\TekinTeknikServis.Core\bin\Debug\net8.0\TekinTeknikServis.Core.dll
+C:\Users\ilhan\OneDrive\Desktop\sistem analiz proje\dotnet-mvc5\src\TekinTeknikServis.Core\bin\Debug\net8.0\TekinTeknikServis.Core.pdb
+C:\Users\ilhan\OneDrive\Desktop\sistem analiz proje\dotnet-mvc5\src\TekinTeknikServis.Core\obj\Debug\net8.0\TekinTeknikServis.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ilhan\OneDrive\Desktop\sistem analiz proje\dotnet-mvc5\src\TekinTeknikServis.Core\obj\Debug\net8.0\TekinTeknikServis.Core.AssemblyInfoInputs.cache
+C:\Users\ilhan\OneDrive\Desktop\sistem analiz proje\dotnet-mvc5\src\TekinTeknikServis.Core\obj\Debug\net8.0\TekinTeknikServis.Core.AssemblyInfo.cs
+C:\Users\ilhan\OneDrive\Desktop\sistem analiz proje\dotnet-mvc5\src\TekinTeknikServis.Core\obj\Debug\net8.0\TekinTeknikServis.Core.csproj.CoreCompileInputs.cache
+C:\Users\ilhan\OneDrive\Desktop\sistem analiz proje\dotnet-mvc5\src\TekinTeknikServis.Core\obj\Debug\net8.0\TekinTeknikServis.Core.sourcelink.json
+C:\Users\ilhan\OneDrive\Desktop\sistem analiz proje\dotnet-mvc5\src\TekinTeknikServis.Core\obj\Debug\net8.0\TekinTeknikServis.Core.dll
+C:\Users\ilhan\OneDrive\Desktop\sistem analiz proje\dotnet-mvc5\src\TekinTeknikServis.Core\obj\Debug\net8.0\refint\TekinTeknikServis.Core.dll
+C:\Users\ilhan\OneDrive\Desktop\sistem analiz proje\dotnet-mvc5\src\TekinTeknikServis.Core\obj\Debug\net8.0\TekinTeknikServis.Core.pdb
+C:\Users\ilhan\OneDrive\Desktop\sistem analiz proje\dotnet-mvc5\src\TekinTeknikServis.Core\obj\Debug\net8.0\ref\TekinTeknikServis.Core.dll
