@@ -1,0 +1,1308 @@
+/* Node projesindeki public/css/style.css taşındı */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #f8fafc;
+    color: #1e293b;
+}
+
+textarea {
+    resize: none !important;
+}
+
+header {
+    background-color: #1e3a8a;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+nav {
+    background-color: #2563eb;
+    padding: 10px;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Flexbox Sticky Footer: Ana içerik alanı büyür, footer aşağı itilir */
+main {
+    flex: 1;
+}
+
+footer {
+    background-color: #1e3a8a;
+    color: white;
+    text-align: center;
+    padding: 25px;
+    width: 100%;
+}
+
+/* Global İçerik Kapsayıcı */
+.page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Ana Sayfa Stilleri (Geri Getirilen ve Modirnize Edilen) */
+.hero {
+    padding: 80px 20px;
+    text-align: center;
+    background: linear-gradient(to bottom, #ffffff, #f1f5f9);
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.hero h1 {
+    font-size: 48px;
+    color: #1e3a8a;
+    margin-bottom: 15px;
+    font-weight: 800;
+}
+
+.hero p {
+    font-size: 20px;
+    color: #64748b;
+    margin-bottom: 30px;
+}
+
+.services {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.services h2 {
+    color: #1e3a8a;
+    margin-bottom: 40px;
+    font-size: 32px;
+}
+
+.service-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.card {
+    background-color: white;
+    width: 320px;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid #f1f5f9;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+    color: #2563eb;
+    margin-bottom: 15px;
+    font-size: 22px;
+}
+
+.card p {
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 28px;
+    background-color: #2563eb;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+}
+
+.btn:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+}
+
+/* Modern Form & Input Stilleri (Tailwind-like) */
+.admin-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    padding: 2.5rem;
+    max-width: 1000px;
+    margin: 2rem auto;
+}
+
+.form-field {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 0.5rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: all 0.2s;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-btn-primary {
+    background-color: #2563eb;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.form-btn-primary:hover {
+    background-color: #1d4ed8;
+}
+
+.admin-sticky-bar a:hover {
+    color: white !important;
+}
+
+.products{
+padding:50px;
+text-align:center;
+}
+
+.product-container{
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.product-card h3 {
+    min-height: 2.8em; /* 2 satır için yer ayırır */
+    margin: 15px 0 10px;
+    font-size: 1.1rem;
+    color: #1e3a8a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-card p {
+    font-weight: bold;
+    color: #475569;
+    margin-bottom: 20px;
+}
+
+
+.product-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: contain;
+    background: #f8fafc;
+    border-radius: 8px;
+}
+
+
+.product-card .detay-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ff6600;
+    color: white;
+    padding: 12px 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+
+.product-card .detay-btn:hover {
+background:#e65c00;
+}
+
+.validation-errors {
+    color: #dc3545;
+    margin-bottom: 15px;
+}
+
+.validation-errors.validation-summary-valid {
+    display: none;
+}
+
+.validation-errors ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+
+
+
+.success-box {
+    background: #d4edda;
+    color: #155724;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 20px auto;
+    width: 400px;
+    max-width: 90%;
+    text-align: center;
+}
+
+.service-form{
+width:400px;
+margin:50px auto;
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.service-form input,
+.service-form textarea{
+padding:10px;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+.service-form button{
+background:#007bff;
+color:white;
+padding:10px;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+.service-form button:hover{
+background:#0056b3;
+}
+
+/* ürün detay sayfası */
+
+.product-detail{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:40px;
+padding:50px;
+}
+
+.product-img {
+width: 300px;
+max-width: 100%;
+border-radius: 10px;
+box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+overflow: hidden;
+}
+
+.product-img img {
+width: 100%;
+display: block;
+}
+
+.product-info{
+max-width:400px;
+}
+
+.product-price{
+color:#ff6600;
+font-size:22px;
+font-weight:bold;
+margin:10px 0;
+}
+
+.product-features li{
+margin:5px 0;
+}
+
+.cart-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 10px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+
+.cart-btn:hover{
+background:#1e7e34;
+}
+
+nav a:hover {
+    color: #93c5fd;
+    text-decoration: underline;
+}
+
+nav a.active {
+    color: #ffd700;
+    border-bottom: 2px solid #ffd700;
+}
+
+.sepet-link:hover {
+    color: white;
+}
+
+.product-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: auto; /* Şağı iterek butonları aynı hizaya getirir */
+}
+
+.product-actions > a,
+.product-actions > form {
+    flex: 1;
+}
+
+.product-actions button {
+    width: 100%;
+}
+
+
+@media (max-width: 768px) {
+    nav {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .hero {
+        padding: 30px 15px;
+    }
+
+    .hero h1 {
+        font-size: 28px;
+    }
+
+    .service-container, .product-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .product-detail {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .product-img {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .service-form {
+        width: 90%;
+    }
+}
+
+
+/* İletişim Sayfası Yeni Tasarım */
+.contact-section {
+    padding: 60px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.contact-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.contact-header h2 {
+    color: #1e3a8a;
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.contact-header p {
+    color: #64748b;
+    font-size: 18px;
+}
+
+.contact-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.contact-item-card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    border: 1px solid #e2e8f0;
+}
+
+.contact-item-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    border-color: #2563eb;
+}
+
+.contact-item-card i {
+    font-size: 40px;
+    color: #2563eb;
+    margin-bottom: 20px;
+}
+
+.contact-item-card h3 {
+    color: #1e3a8a;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.contact-item-card p, .contact-item-card span {
+    color: #64748b;
+    margin: 5px 0;
+    display: block;
+}
+
+.contact-item-card a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.contact-item-card a:hover {
+    text-decoration: underline;
+}
+
+.contact-action {
+    text-align: center;
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+    padding: 50px;
+    border-radius: 20px;
+    color: white;
+}
+
+.action-card h3 {
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+.action-card p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.btn-primary {
+    background-color: #ffffff;
+    color: #1e3a8a;
+    font-size: 18px;
+    padding: 15px 40px;
+}
+
+.btn-primary:hover {
+    background-color: #f1f5f9;
+    color: #1e3a8a;
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .contact-header h2 {
+        font-size: 28px;
+    }
+    .contact-action {
+        padding: 30px 20px;
+    }
+    .action-card h3 {
+        font-size: 22px;
+    }
+}
+
+/* Servis Talep Formu Yeni Tasarım */
+.service-request-section {
+    padding: 60px 20px;
+    background-color: #f8fafc;
+    min-height: calc(100vh - 200px);
+}
+
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form-header i {
+    font-size: 50px;
+    color: #2563eb;
+    margin-bottom: 15px;
+}
+
+.form-header h2 {
+    color: #1e3a8a;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.form-header p {
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.modern-service-form .form-group {
+    margin-bottom: 20px;
+}
+
+.modern-service-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #475569;
+    font-size: 15px;
+}
+
+.modern-service-form label i {
+    margin-right: 8px;
+    color: #2563eb;
+}
+
+.modern-service-form input, 
+.modern-service-form textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.modern-service-form input:focus, 
+.modern-service-form textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+.modern-service-form .error-text {
+    color: #dc2626;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    background: #1e40af;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+}
+
+.success-alert {
+    background-color: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #166534;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-align: left;
+}
+
+.success-alert i {
+    font-size: 24px;
+    color: #22c55e;
+}
+
+.success-alert p {
+    margin: 0;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .form-container {
+        padding: 25px;
+    }
+    .form-header h2 {
+        font-size: 24px;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Kullanıcı Kayıt / Giriş / Profil Stilleri
+   ═══════════════════════════════════════════════════════════════ */
+
+.auth-section {
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #f0f4ff 0%, #e8ecf8 50%, #f8fafc 100%);
+    min-height: calc(100vh - 200px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-container {
+    display: flex;
+    max-width: 900px;
+    width: 100%;
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(30, 58, 138, 0.15);
+    animation: authFadeIn 0.6s ease-out;
+}
+
+@keyframes authFadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Sol Dekoratif Panel */
+.auth-side-panel {
+    flex: 0 0 340px;
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #3b82f6 100%);
+    padding: 50px 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-side-panel::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.auth-side-panel::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -30%;
+    width: 80%;
+    height: 80%;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.auth-side-content {
+    text-align: center;
+    color: white;
+    position: relative;
+    z-index: 1;
+}
+
+.auth-side-icon {
+    font-size: 60px;
+    margin-bottom: 25px;
+    opacity: 0.9;
+    display: block;
+}
+
+.auth-side-content h2 {
+    font-size: 26px;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.auth-side-content p {
+    font-size: 15px;
+    opacity: 0.85;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.auth-features {
+    text-align: left;
+}
+
+.auth-feature-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.auth-feature-item i {
+    font-size: 16px;
+    color: #93c5fd;
+}
+
+/* Sağ Form Panel */
+.auth-form-panel {
+    flex: 1;
+    padding: 45px 40px;
+}
+
+.auth-form-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.auth-form-header i {
+    font-size: 40px;
+    color: #2563eb;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.auth-form-header h2 {
+    color: #1e3a8a;
+    font-size: 26px;
+    margin-bottom: 8px;
+}
+
+.auth-form-header p {
+    color: #64748b;
+    font-size: 15px;
+}
+
+/* Form Alanları */
+.auth-form-group {
+    margin-bottom: 20px;
+}
+
+.auth-form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #475569;
+    font-size: 14px;
+}
+
+.auth-form-group label i {
+    margin-right: 6px;
+    color: #2563eb;
+    font-size: 14px;
+}
+
+.auth-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    background: #f8fafc;
+}
+
+.auth-input:focus {
+    outline: none;
+    border-color: #2563eb;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+.auth-input::placeholder {
+    color: #94a3b8;
+}
+
+.auth-error-text {
+    color: #dc2626;
+    font-size: 13px;
+    margin-top: 5px;
+    display: block;
+}
+
+/* Şifre Göster/Gizle */
+.auth-password-wrapper {
+    position: relative;
+}
+
+.auth-password-wrapper .auth-input {
+    padding-right: 48px;
+}
+
+.auth-password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 16px;
+    transition: color 0.3s;
+}
+
+.auth-password-toggle:hover {
+    color: #2563eb;
+}
+
+/* Şifre Güçlülük Göstergesi */
+.password-strength {
+    height: 4px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    margin-top: 8px;
+    overflow: hidden;
+    display: none;
+}
+
+.strength-bar {
+    height: 100%;
+    width: 0;
+    border-radius: 4px;
+    transition: all 0.4s ease;
+}
+
+.strength-text {
+    font-size: 12px;
+    margin-top: 4px;
+    display: block;
+    font-weight: 600;
+}
+
+/* Beni Hatırla */
+.auth-remember-row {
+    margin-bottom: 20px;
+}
+
+.auth-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #475569;
+    user-select: none;
+}
+
+.auth-checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #2563eb;
+    cursor: pointer;
+}
+
+/* Gönder Butonu */
+.auth-submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.auth-submit-btn:hover {
+    background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+}
+
+.auth-submit-btn:active {
+    transform: translateY(0);
+}
+
+/* Footer Link */
+.auth-footer-link {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.auth-footer-link a {
+    color: #2563eb;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.auth-footer-link a:hover {
+    color: #1e40af;
+    text-decoration: underline;
+}
+
+/* Uyarı Kutuları */
+.auth-alert {
+    padding: 14px 18px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    animation: alertSlide 0.4s ease-out;
+}
+
+@keyframes alertSlide {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.auth-alert-success {
+    background: #f0fdf4;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.auth-alert-success i {
+    color: #22c55e;
+    font-size: 18px;
+}
+
+.auth-alert-error {
+    background: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+.auth-alert-error i {
+    color: #ef4444;
+    font-size: 18px;
+}
+
+.auth-alert.validation-summary-valid {
+    display: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Profil Sayfası
+   ═══════════════════════════════════════════════════════════════ */
+
+.profile-container {
+    max-width: 650px;
+    width: 100%;
+    animation: authFadeIn 0.6s ease-out;
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.profile-avatar {
+    margin-bottom: 15px;
+}
+
+.profile-avatar i {
+    font-size: 80px;
+    color: #2563eb;
+    filter: drop-shadow(0 4px 8px rgba(37, 99, 235, 0.3));
+}
+
+.profile-header h2 {
+    color: #1e3a8a;
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+.profile-email {
+    color: #64748b;
+    font-size: 16px;
+}
+
+.profile-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 30px;
+}
+
+.profile-info-card {
+    background: white;
+    padding: 22px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.profile-info-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border-color: #2563eb;
+}
+
+.profile-info-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.profile-info-icon i {
+    font-size: 20px;
+    color: #2563eb;
+}
+
+.profile-info-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-info-label {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.profile-info-value {
+    font-size: 15px;
+    color: #1e293b;
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+.profile-actions {
+    text-align: center;
+}
+
+.profile-logout-form {
+    display: inline-block;
+}
+
+.profile-logout-btn {
+    padding: 14px 40px;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.profile-logout-btn:hover {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.35);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Navbar Kullanıcı Bölümü
+   ═══════════════════════════════════════════════════════════════ */
+
+.auth-nav-section {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 20px;
+    padding-left: 20px;
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.auth-nav-link {
+    color: white !important;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.auth-nav-link:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #93c5fd !important;
+}
+
+.auth-nav-link.register-link {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.auth-nav-link.register-link:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.auth-nav-user {
+    color: #ffd700 !important;
+    font-weight: bold;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.auth-nav-user:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffd700 !important;
+}
+
+.auth-nav-logout {
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.auth-nav-logout:hover {
+    background: rgba(239, 68, 68, 0.3);
+    border-color: rgba(239, 68, 68, 0.5);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Responsive (Auth)
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+    .auth-container {
+        flex-direction: column;
+    }
+
+    .auth-side-panel {
+        flex: none;
+        padding: 35px 25px;
+    }
+
+    .auth-side-icon {
+        font-size: 40px;
+    }
+
+    .auth-side-content h2 {
+        font-size: 22px;
+    }
+
+    .auth-features {
+        display: none;
+    }
+
+    .auth-form-panel {
+        padding: 30px 25px;
+    }
+
+    .profile-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .auth-nav-section {
+        margin-left: 0;
+        padding-left: 0;
+        border-left: none;
+        margin-top: 10px;
+    }
+}

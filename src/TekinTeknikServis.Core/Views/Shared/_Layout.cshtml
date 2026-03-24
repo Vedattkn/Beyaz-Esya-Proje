@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    @{
+        var isSystemAdmin = Context.Session.GetString("CurrentUser")?.Contains("\"IsAdmin\":true") == true;
+    }
+    @if (isSystemAdmin)
+    {
+        <div class="admin-sticky-bar" style="position: sticky; top: 0; background: #1e293b; color: white; padding: 10px 20px; z-index: 1000; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-weight: bold; font-size: 14px; letter-spacing: 1px;"><i class="fas fa-user-shield"></i> YÖNETİCİ PANELİ</div>
+            <div style="display: flex; gap: 20px;">
+                <a href="@Url.Action("Products", "Admin")" style="color: #cbd5e1; text-decoration: none; font-size: 14px; transition: color 0.2s;"><i class="fas fa-box"></i> Ürün Listesi</a>
+                <a href="@Url.Action("ServiceRequests", "Admin")" style="color: #cbd5e1; text-decoration: none; font-size: 14px; transition: color 0.2s;"><i class="fas fa-list-alt"></i> Tüm Talepler</a>
+                <a href="@Url.Action("AddProduct", "Admin")" style="color: #cbd5e1; text-decoration: none; font-size: 14px; transition: color 0.2s;"><i class="fas fa-plus"></i> Ürün Ekle</a>
+            </div>
+        </div>
+    }
+
+    <a href="@Url.RouteUrl("sepet")" class="sepet-link" style="position: fixed; top: @(isSystemAdmin ? "60px" : "20px"); right: 20px; background: #27ae60; color: white; padding: 10px 20px; border-radius: 50px; text-decoration: none; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 100; font-weight: bold;">
+        <i class="fas fa-shopping-cart"></i> Sepetim
+    </a>
+
+    <header>
+        <h1>Tekin Teknik Servis</h1>
+    </header>
+
+    <nav>
+        @{
+            var ctrl = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+            var act = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+            bool IsActive(string controller, string action = "Index") =>
+                string.Equals(ctrl, controller, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(act, action, StringComparison.OrdinalIgnoreCase);
+
+            var currentUser = Context.Session.GetString("CurrentUser");
+            TekinTeknikServis.Core.Models.UserSession? userSession = null;
+            if (!string.IsNullOrEmpty(currentUser))
+            {
+                userSession = System.Text.Json.JsonSerializer.Deserialize<TekinTeknikServis.Core.Models.UserSession>(currentUser);
+            }
+        }
+        <a href="@Url.RouteUrl("home")" class="@(IsActive("Home", "Index") ? "active" : "")">Ana Sayfa</a>
+        <a href="@Url.RouteUrl("hizmetler")" class="@(IsActive("Home", "Hizmetler") ? "active" : "")">Hizmetler</a>
+        <a href="@Url.RouteUrl("urunler")" class="@(IsActive("Home", "Urunler") || IsActive("Products", "Detail") ? "active" : "")">Ürünler</a>
+        <a href="@Url.RouteUrl("iletisim")" class="@(IsActive("Home", "Iletisim") ? "active" : "")">İletişim</a>
+        <a href="@Url.RouteUrl("servis-talep")" class="@(IsActive("ServiceRequest") ? "active" : "")">Servis Talep</a>
+
+        <span class="auth-nav-section">
+            @if (userSession != null)
+            {
+                <a href="@Url.RouteUrl("profil")" class="auth-nav-user">
+                    <i class="fas fa-user-circle"></i> @userSession.AdSoyad
+                </a>
+                <a href="@Url.Action("MyRequests", "ServiceRequest")" class="auth-nav-link" style="margin-right:10px;">
+                    <i class="fas fa-headset"></i> Taleplerim
+                </a>
+                <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="auth-nav-logout">
+                        <i class="fas fa-sign-out-alt"></i> Çıkış
+                    </button>
+                </form>
+            }
+            else
+            {
+                <a href="@Url.RouteUrl("giris")" class="auth-nav-link @(IsActive("Account", "Login") ? "active" : "")">
+                    <i class="fas fa-sign-in-alt"></i> Giriş
+                </a>
+                <a href="@Url.RouteUrl("kayit")" class="auth-nav-link register-link @(IsActive("Account", "Register") ? "active" : "")">
+                    <i class="fas fa-user-plus"></i> Kayıt Ol
+                </a>
+            }
+        </span>
+    </nav>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer>
+        <p>© 2026 Tekin Teknik Servis | Tüm Hakları Saklıdır</p>
+    </footer>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

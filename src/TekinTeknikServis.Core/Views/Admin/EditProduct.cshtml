@@ -1,0 +1,56 @@
+@model TekinTeknikServis.Core.Services.Product
+@{
+    ViewBag.Title = "Ürünü Düzenle";
+    Layout = "_Layout";
+}
+
+<div class="admin-card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 1rem;">
+        <h2 style="margin: 0; color: #1e3a8a; font-size: 1.5rem;">Ürünü Düzenle</h2>
+        <a href="@Url.Action("Products", "Admin")" style="text-decoration: none; color: #64748b; font-weight: 500;">
+            <i class="fas fa-arrow-left"></i> Geri Dön
+        </a>
+    </div>
+
+    <form asp-controller="Admin" asp-action="EditProduct" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" style="color: #dc2626; margin-bottom: 1rem;"></div>
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-field">
+            <label class="form-label">Ürün Adı</label>
+            <input asp-for="Name" class="form-input" placeholder="Örn: Çamaşır Makinesi Motoru" required />
+        </div>
+
+        <div class="form-field">
+            <label class="form-label">Kısa Açıklama</label>
+            <input asp-for="Description" class="form-input" placeholder="Ürün hakkında kısa bilgi" required />
+        </div>
+
+        <div class="form-field">
+            <label class="form-label">Fiyat (Görünen Metin)</label>
+            <input asp-for="PriceText" class="form-input" placeholder="Örn: 1.500 TL" required />
+        </div>
+
+        <div class="form-field" style="background: #f8fafc; padding: 1.5rem; border-radius: 12px; border: 1px dashed #cbd5e1;">
+            <label class="form-label">Mevcut Ürün Görseli</label>
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <div style="margin-bottom: 1rem; background: white; padding: 10px; border-radius: 8px; display: inline-block; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <img src="@Model.ImageUrl" alt="Current Image" style="max-height: 120px; display: block;" />
+                </div>
+            }
+            
+            <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 0.75rem;">
+                <i class="fas fa-info-circle"></i> Yeni bir görsel seçerseniz eskisiyle değiştirilecektir.
+            </p>
+            <input type="file" name="ImageFile" accept="image/*" class="form-input" style="background: white;" />
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <button type="submit" class="form-btn-primary" style="width: 100%; font-size: 1.1rem; padding: 1rem;">
+                <i class="fas fa-save"></i> Değişiklikleri Kaydet
+            </button>
+        </div>
+    </form>
+</div>

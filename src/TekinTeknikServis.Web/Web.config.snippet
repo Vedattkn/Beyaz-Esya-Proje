@@ -1,0 +1,14 @@
+<!-- Bunu MVC5 projenizde Web.config içine ekleyin -->
+<configuration>
+  <appSettings>
+    <!-- Örnek: https://gmrdgufixxrtadfggpbz.supabase.co -->
+    <add key="Supabase:Url" value="PUT_SUPABASE_URL_HERE" />
+    <add key="Supabase:Key" value="PUT_SUPABASE_KEY_HERE" />
+  </appSettings>
+
+  <system.web>
+    <!-- Session Node'daki express-session karşılığı -->
+    <sessionState mode="InProc" timeout="20" />
+  </system.web>
+</configuration>
+

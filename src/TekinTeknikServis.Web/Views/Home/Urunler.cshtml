@@ -1,0 +1,32 @@
+@using TekinTeknikServis.Web.Services
+@{
+    ViewBag.Title = "Ürünler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="products">
+    <h2>Ürünlerimiz</h2>
+
+    <div class="product-container">
+        @foreach (var kv in ProductCatalog.Products)
+        {
+            var p = kv.Value;
+            <div class="product-card">
+                <img src="@p.ImageUrl" alt="@p.Name" />
+                <h3>@p.Name</h3>
+                <p>@p.PriceText</p>
+                <div style="display:flex; gap:10px; margin-top:10px;">
+                    <a href="@Url.Action("Detail","Products", new { id = p.Id })" class="detay-btn" style="flex:1;">Detay</a>
+                    @using (Html.BeginForm("Add", "Cart", new { id = p.Id }, FormMethod.Post, new { style = "flex:1;" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="cart-btn" style="width:100%;">
+                            <i class="fas fa-cart-plus"></i> Sepete Ekle
+                        </button>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</section>
+

@@ -1,0 +1,32 @@
+@{
+    ViewBag.Title = "Tekin Teknik Servis";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="hero">
+    <h1>Profesyonel Teknik Destek</h1>
+    <p>Buzdolabı, Çamaşır Makinesi ve Klima Servisi</p>
+    <a href="@Url.Action("Index","ServiceRequest")" class="btn">Hemen Servis Talebi Oluştur</a>
+</section>
+
+<section class="services">
+    <h2>Hizmetlerimiz</h2>
+
+    <div class="service-container">
+        <div class="card">
+            <h3>Buzdolabı Servisi</h3>
+            <p>Tüm marka buzdolapları için tamir ve bakım hizmeti.</p>
+        </div>
+
+        <div class="card">
+            <h3>Çamaşır Makinesi Servisi</h3>
+            <p>Arıza tespit ve parça değişim hizmeti.</p>
+        </div>
+
+        <div class="card">
+            <h3>Bulaşık Makinesi Servisi</h3>
+            <p>Arıza tespit ve parça değişim hizmeti.</p>
+        </div>
+    </div>
+</section>
+

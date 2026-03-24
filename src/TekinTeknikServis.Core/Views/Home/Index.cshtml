@@ -1,0 +1,38 @@
+@{
+    ViewBag.Title = "Tekin Teknik Servis";
+    Layout = "_Layout";
+}
+
+<section class="hero">
+    <div class="page-container">
+        <h1>Tekin Teknik Servis ile Güvenli Bakım</h1>
+        <p>Buzdolabı, çamaşır ve bulaşık makineniz için profesyonel çözümler</p>
+        <a href="@Url.Action("Index","ServiceRequest")" class="btn"><i class="fas fa-tools"></i> Hemen Servis Talebi Oluştur</a>
+    </div>
+</section>
+
+<section class="services">
+    <div class="page-container">
+        <h2>Hizmetlerimiz</h2>
+
+        <div class="service-container">
+            <div class="card">
+                <i class="fas fa-snowflake" style="font-size: 50px; color: #3b82f6; margin-bottom: 20px;"></i>
+                <h3>Buzdolabı Servisi</h3>
+                <p>Aniden bozulan buzdolaplarınız için aynı gün tamir ve bakım desteği veriyoruz.</p>
+            </div>
+
+            <div class="card">
+                <i class="fas fa-tshirt" style="font-size: 50px; color: #3b82f6; margin-bottom: 20px;"></i>
+                <h3>Çamaşır Makinesi</h3>
+                <p>Parça değişimi ve arıza tespitleri için profesyonel servis ekibimiz yanınızda.</p>
+            </div>
+
+            <div class="card">
+                <i class="fas fa-water" style="font-size: 50px; color: #3b82f6; margin-bottom: 20px;"></i>
+                <h3>Bulaşık Makinesi</h3>
+                <p>Su kaçağı, program hatası gibi tüm sorunlarda yerinde servis sağlıyoruz.</p>
+            </div>
+        </div>
+    </div>
+</section>

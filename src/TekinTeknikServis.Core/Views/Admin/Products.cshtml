@@ -1,0 +1,119 @@
+@model List<TekinTeknikServis.Core.Services.Product>
+@{
+    ViewBag.Title = "Ürün Yönetimi";
+    Layout = "_Layout";
+}
+
+<section class="admin-panel" style="padding: 40px 20px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div>
+            <h2 style="margin: 0;">Ürün Yönetimi</h2>
+            <p style="color: #64748b; margin: 5px 0 0 0;">Ürünlerinizi seçerek toplu silebilirsiniz.</p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <button id="multiDeleteBtn" class="btn" style="background-color: #ef4444; display: none; padding: 10px 20px;" onclick="submitBulkDelete()">
+                <i class="fas fa-trash"></i> Seçilenleri Sil (<span id="selectedCount">0</span>)
+            </button>
+            <a href="@Url.Action("AddProduct", "Admin")" class="btn" style="padding: 10px 20px;"><i class="fas fa-plus"></i> Yeni Ürün Ekle</a>
+        </div>
+    </div>
+
+    @if (TempData["AdminSuccess"] != null)
+    {
+        <div style="background-color: #dcfce7; color: #166534; padding: 12px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #22c55e;">
+            <i class="fas fa-check-circle"></i> @TempData["AdminSuccess"]
+        </div>
+    }
+
+    @if (Model == null || !Model.Any())
+    {
+        <div style="text-align: center; padding: 40px; background: white; border-radius: 12px; border: 1px dashed #e2e8f0;">
+             <p style="color: #64748b;">Sistemde kayıtlı ürün bulunmuyor.</p>
+        </div>
+    }
+    else
+    {
+        <form id="bulkDeleteForm" asp-action="DeleteSelected" asp-controller="Admin" method="post">
+            @Html.AntiForgeryToken()
+            <table style="width: 100%; border-collapse: collapse; text-align: left; background: white; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); border-radius: 8px; overflow: hidden;">
+                <thead>
+                    <tr style="background-color: #f8fafc; border-bottom: 1px solid #e2e8f0;">
+                        <th style="padding: 15px; width: 40px; text-align: center;">
+                            <input type="checkbox" id="selectAllItems" style="transform: scale(1.2); cursor: pointer;" />
+                        </th>
+                        <th style="padding: 15px;">Kapak</th>
+                        <th style="padding: 15px;">Ürün Adı</th>
+                        <th style="padding: 15px;">Fiyat</th>
+                        <th style="padding: 15px; text-align: center;">İşlem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model)
+                    {
+                        <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.2s;" onmouseover="this.style.backgroundColor='#f8fafc'" onmouseout="this.style.backgroundColor='transparent'">
+                            <td style="padding: 15px; text-align: center;">
+                                <input type="checkbox" name="selectedIds" value="@p.Id" class="item-checkbox" style="transform: scale(1.2); cursor: pointer;" />
+                            </td>
+                            <td style="padding: 15px;">
+                                <img src="@(string.IsNullOrEmpty(p.ImageUrl) ? "/images/no-image.png" : Url.Content(p.ImageUrl))" 
+                                     alt="@p.Name" 
+                                     style="width: 60px; height: 60px; object-fit: contain; border-radius: 4px; background: #f8fafc;"
+                                     onerror="this.src='/images/no-image.png'; this.onerror=null;" />
+                            </td>
+                            <td style="padding: 15px;">
+                                <div style="font-weight: bold; color: #1e293b;">@p.Name</div>
+                            </td>
+                            <td style="padding: 15px; color: #64748b; font-weight: 500;">@p.PriceText</td>
+                            <td style="padding: 15px; text-align: center;">
+                                <a href="@Url.Action("EditProduct", "Admin", new { id = p.Id })" class="btn" style="background-color: #3b82f6; padding: 6px 14px; font-size: 13px;">
+                                    <i class="fas fa-edit"></i> Düzenle
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </form>
+    }
+</section>
+
+<script>
+    const selectAllCheckbox = document.getElementById('selectAllItems');
+    const itemCheckboxes = document.querySelectorAll('.item-checkbox');
+    const multiDeleteBtn = document.getElementById('multiDeleteBtn');
+    const selectedCountSpan = document.getElementById('selectedCount');
+
+    function updateDeleteButtonUI() {
+        const checkedCount = document.querySelectorAll('.item-checkbox:checked').length;
+        if (checkedCount > 0) {
+            multiDeleteBtn.style.display = 'inline-flex';
+            selectedCountSpan.textContent = checkedCount;
+        } else {
+            multiDeleteBtn.style.display = 'none';
+        }
+        
+        if (selectAllCheckbox) {
+            selectAllCheckbox.checked = (checkedCount === itemCheckboxes.length && itemCheckboxes.length > 0);
+        }
+    }
+
+    if (selectAllCheckbox) {
+        selectAllCheckbox.addEventListener('change', function() {
+            itemCheckboxes.forEach(cb => {
+                cb.checked = selectAllCheckbox.checked;
+            });
+            updateDeleteButtonUI();
+        });
+    }
+
+    itemCheckboxes.forEach(cb => {
+        cb.addEventListener('change', updateDeleteButtonUI);
+    });
+
+    function submitBulkDelete() {
+        const checkedCount = document.querySelectorAll('.item-checkbox:checked').length;
+        if (confirm(`${checkedCount} ürünü silmek istediğinize emin misiniz?`)) {
+            document.getElementById('bulkDeleteForm').submit();
+        }
+    }
+</script>

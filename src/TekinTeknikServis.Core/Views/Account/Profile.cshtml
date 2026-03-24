@@ -1,0 +1,75 @@
+@model UserSession
+@{
+    ViewBag.Title = "Profilim - Tekin Teknik Servis";
+}
+
+<section class="auth-section">
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <h2>@Model.AdSoyad</h2>
+            <p class="profile-email">@Model.Email</p>
+        </div>
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="auth-alert auth-alert-success" style="max-width: 500px; margin: 0 auto 20px;">
+                <i class="fas fa-check-circle"></i>
+                <span>@TempData["SuccessMessage"]</span>
+            </div>
+        }
+
+        <div class="profile-info-grid">
+            <div class="profile-info-card">
+                <div class="profile-info-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="profile-info-content">
+                    <span class="profile-info-label">Ad Soyad</span>
+                    <span class="profile-info-value">@Model.AdSoyad</span>
+                </div>
+            </div>
+
+            <div class="profile-info-card">
+                <div class="profile-info-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="profile-info-content">
+                    <span class="profile-info-label">E-posta</span>
+                    <span class="profile-info-value">@Model.Email</span>
+                </div>
+            </div>
+
+            <div class="profile-info-card">
+                <div class="profile-info-icon">
+                    <i class="fas fa-phone"></i>
+                </div>
+                <div class="profile-info-content">
+                    <span class="profile-info-label">Telefon</span>
+                    <span class="profile-info-value">@Model.Telefon</span>
+                </div>
+            </div>
+
+            <div class="profile-info-card">
+                <div class="profile-info-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="profile-info-content">
+                    <span class="profile-info-label">Giriş Tarihi</span>
+                    <span class="profile-info-value">@Model.GirisTarihi.ToString("dd.MM.yyyy HH:mm")</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-actions">
+            <form asp-controller="Account" asp-action="Logout" method="post" class="profile-logout-form">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="profile-logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Çıkış Yap
+                </button>
+            </form>
+        </div>
+    </div>
+</section>

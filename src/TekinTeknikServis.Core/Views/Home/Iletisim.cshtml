@@ -1,0 +1,54 @@
+@{
+    ViewBag.Title = "İletişim";
+    Layout = "_Layout";
+}
+
+<section class="contact-section">
+    <div class="contact-header">
+        <h2>Bize Ulaşın</h2>
+        <p>Size daha iyi hizmet verebilmek için buradayız. Sorularınız veya servis talepleriniz için bize ulaşabilirsiniz.</p>
+    </div>
+
+    <div class="contact-container">
+        <!-- İletişim Bilgileri -->
+        <div class="contact-card-grid">
+            <div class="contact-item-card">
+                <i class="fas fa-phone-alt"></i>
+                <h3>Telefon</h3>
+                <p>Müşteri Hizmetleri:</p>
+                <a href="tel:05000000000">05xx xxx xx xx</a>
+            </div>
+
+            <div class="contact-item-card">
+                <i class="fas fa-envelope"></i>
+                <h3>E-Posta</h3>
+                <p>Genel Destek:</p>
+                <a href="mailto:info@tekinteknik.com">info@tekinteknik.com</a>
+            </div>
+
+            <div class="contact-item-card">
+                <i class="fas fa-map-marker-alt"></i>
+                <h3>Adres</h3>
+                <p>İstanbul Teknik Merkez</p>
+                <span>Ümraniye, İstanbul</span>
+            </div>
+
+            <div class="contact-item-card">
+                <i class="fas fa-clock"></i>
+                <h3>Çalışma Saatleri</h3>
+                <p>Pazartesi - Cuma: 09:00 - 19:00</p>
+                <p>Cumartesi: 10:00 - 16:00</p>
+            </div>
+        </div>
+
+        <div class="contact-action">
+            <div class="action-card">
+                <h3>Acil Teknik Destek Lazım mı?</h3>
+                <p>Hemen çevrimiçi servis talebi formunu doldurarak uzman ekiplerimizin size ulaşmasını sağlayın.</p>
+                <a href="@Url.Action("Index","ServiceRequest")" class="btn btn-primary">Hemen Servis Talebi Oluştur</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+

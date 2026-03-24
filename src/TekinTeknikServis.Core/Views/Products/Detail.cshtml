@@ -1,0 +1,32 @@
+@model TekinTeknikServis.Core.Services.Product
+@{
+    ViewBag.Title = Model?.Name ?? "Ürün";
+    Layout = "_Layout";
+}
+
+<section class="product-detail">
+    <div class="product-img">
+        <img src="@(Model?.ImageUrl)" alt="@(Model?.Name)" />
+    </div>
+    <div class="product-info">
+        <h1>@Model.Name</h1>
+        <p>@Model.Description</p>
+        <p class="product-price">@Model.PriceText</p>
+
+        <h3>Ürün Özellikleri</h3>
+        <ul class="product-features">
+            @foreach (var f in Model.Features)
+            {
+                <li>@f</li>
+            }
+        </ul>
+
+        <form asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id" method="post">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="cart-btn">
+                <i class="fas fa-shopping-cart"></i> Sepete Ekle
+            </button>
+        </form>
+    </div>
+</section>
+

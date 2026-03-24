@@ -1,0 +1,36 @@
+@model TekinTeknikServis.Web.Models.ServiceRequestForm
+@{
+    ViewBag.Title = "Servis Talep";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.Success == true)
+{
+    <div style="background:#d4edda; color:#155724; padding:15px; border-radius:5px; margin: 20px auto; width: 400px; text-align:center;">
+        Servis talebiniz başarıyla alınmıştır! En kısa sürede sizinle iletişime geçilecektir.
+    </div>
+}
+
+@using (Html.BeginForm("Index", "ServiceRequest", FormMethod.Post, new { @class = "service-form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <label>Ad Soyad</label>
+    @Html.TextBoxFor(x => x.AdSoyad, new { placeholder = "Adınızı giriniz", required = "required" })
+    @Html.ValidationMessageFor(x => x.AdSoyad)
+
+    <label>Telefon</label>
+    @Html.TextBoxFor(x => x.Telefon, new { placeholder = "05xxxxxxxxx", required = "required", pattern = "[0-9]{10,11}" })
+    @Html.ValidationMessageFor(x => x.Telefon)
+
+    <label>Cihaz Türü</label>
+    @Html.TextBoxFor(x => x.CihazTuru, new { placeholder = "Örn: Buzdolabı", required = "required" })
+    @Html.ValidationMessageFor(x => x.CihazTuru)
+
+    <label>Arıza Açıklaması</label>
+    @Html.TextAreaFor(x => x.ArizaAciklamasi, new { placeholder = "Arızayı yazınız", required = "required" })
+    @Html.ValidationMessageFor(x => x.ArizaAciklamasi)
+
+    <button type="submit">Talep Gönder</button>
+}
+
