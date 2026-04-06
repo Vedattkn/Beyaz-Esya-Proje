@@ -1,3 +1,5 @@
+# 📄 [6. Hafta Final Raporu (PDF)](6.%20Hafta%20Final%20Raporu%20-%20Detayli.pdf)
+
 # 🛠️ Tekin Teknik Servis - Beyaz Eşya Yönetim Sistemi
 
 Bu proje, modern bir beyaz eşya teknik servisi yönetim platformudur. Müşterilerin teknik servis taleplerini iletebildiği, ürünleri inceleyip satın alabildiği ve adminlerin tüm süreci yönetebildiği uçtan uca bir çözüm sunar.
@@ -94,10 +96,9 @@ Bu migration:
 
 ## 📊 Raporlar
 
-Sohbet boyunca hazırlanan güncel rapor ve sunum rehberleri:
+Sohbet boyunca hazırlanan güncel rapor:
 
-- [6. Hafta Final Raporu (Detaylı)](src/TekinTeknikServis.Web/wwwroot/reports/degisiklik-raporu-6hafta-final.html)
-- [Sunum Rehberi (6. Hafta)](src/TekinTeknikServis.Web/wwwroot/reports/sunum-rehberi-6hafta.html)
+- [6. Hafta Final Raporu (PDF)](6.%20Hafta%20Final%20Raporu%20-%20Detayli.pdf)
 
 ---
 
