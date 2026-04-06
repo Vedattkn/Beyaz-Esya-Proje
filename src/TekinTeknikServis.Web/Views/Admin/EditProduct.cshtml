@@ -32,6 +32,11 @@
             <input asp-for="PriceText" class="form-input" placeholder="Örn: 1.500 TL" required />
         </div>
 
+        <div class="form-field">
+            <label class="form-label">Kategori</label>
+            <input asp-for="Category" class="form-input" placeholder="Örn: Buzdolabı" required />
+        </div>
+
         <div class="form-field" style="background: #f8fafc; padding: 1.5rem; border-radius: 12px; border: 1px dashed #cbd5e1;">
             <label class="form-label">Mevcut Ürün Görseli</label>
             @if (!string.IsNullOrEmpty(Model.ImageUrl))

@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>6. Hafta Final Raporu - Detayli</title>
+  <style>
+    :root {
+      --bg: #f2f5fc;
+      --ink: #1b2844;
+      --muted: #5d6b8c;
+      --card: #ffffff;
+      --line: #d8e0ef;
+      --ok: #1e7a3a;
+      --warn: #b45309;
+      --err: #b42318;
+      --accent: #245ad6;
+      --chip: #edf2ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at 8% 0%, #f8faff 0, #f1f5fd 45%, #edf2fb 100%);
+      line-height: 1.45;
+    }
+    .wrap {
+      max-width: 1240px;
+      margin: 24px auto;
+      padding: 0 16px 26px;
+    }
+    .hero, .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 9px 24px rgba(31, 52, 104, .07);
+    }
+    .hero { padding: 20px; }
+    .card { padding: 16px; margin-top: 14px; }
+    h1 { margin: 0 0 8px; font-size: 30px; }
+    h2 { margin: 0 0 9px; font-size: 21px; }
+    h3 { margin: 0 0 8px; font-size: 16px; }
+    p { margin: 0; color: var(--muted); }
+    ul { margin: 8px 0 0 18px; padding: 0; }
+    li { margin: 6px 0; }
+    .muted { color: var(--muted); }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .02em;
+      border-radius: 999px;
+      padding: 4px 10px;
+      margin-bottom: 8px;
+    }
+    .ok { color: var(--ok); background: #e8f7ec; border: 1px solid #bde3c9; }
+    .warn { color: var(--warn); background: #fff5e6; border: 1px solid #f4d7af; }
+    .err { color: var(--err); background: #fff0f0; border: 1px solid #f2c3c3; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .chip {
+      background: var(--chip);
+      border: 1px solid #cfdbff;
+      color: #29437d;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+    }
+    .kpi {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 10px;
+    }
+    .kpi .box {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fbfdff;
+      padding: 10px;
+    }
+    .kpi .n {
+      display: block;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      padding: 8px;
+    }
+    th { background: #f6f9ff; }
+    .timeline {
+      margin-top: 6px;
+      display: grid;
+      gap: 8px;
+    }
+    .event {
+      border: 1px dashed #c9d7f5;
+      background: #fbfdff;
+      border-radius: 10px;
+      padding: 10px;
+    }
+    .event strong { color: #1f3f82; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <h1>6. Hafta Final Raporu (Detayli)</h1>
+      <p>Kapsam: Sohbetin basindan sonuna kadar tum teknik adimlar, yapilan degisiklikler, karsilasilan hatalar, cozumler, yeni is kurallari ve plan disi kazanımlar.</p>
+      <p style="margin-top:6px;">Tarih: 06.04.2026</p>
+
+      <div class="kpi">
+        <div class="box"><span class="n">100%</span> 6. hafta ana plan kalemleri tamamlandi</div>
+        <div class="box"><span class="n">20+</span> Teknik iyilestirme ve hata duzeltmesi</div>
+        <div class="box"><span class="n">DB-Only</span> REST bagimliligi kritik akislarda kaldirildi</div>
+        <div class="box"><span class="n">2</span> Buyuk yonetim akisi yeniden tasarlandi</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="badge ok">YONETICI OZETI</span>
+      <h2>Ust Seviye Sonuc</h2>
+      <ul>
+        <li>Baslangicta hedeflenen cart/checkout ve odeme akis duzeltmeleri tamamlandi.</li>
+        <li>Ardindan servis talep yonetimi, admin/musteri sohbet akislarinin tamamı yeniden ele alindi.</li>
+        <li>Urun/kategori yonetimi sadece goruntu degil, operasyonel olarak da surukle-birak ve toplu tasima aksiyonlariyla gelistirildi.</li>
+        <li>Supabase REST kaynakli auth/RLS sorunlari nedeniyle kritik akislar DB-only mimariye tasindi.</li>
+        <li>Genel kategori fallback mantigi kaldirildi, kategori davranislari net is kurallariyla sabitlendi.</li>
+      </ul>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <span class="badge ok">6. HAFTA PLANI</span>
+        <h2>Plana Gore Tamamlananlar</h2>
+        <ul>
+          <li>Kullanici auth guclendirmeleri (BCrypt, JWT/session iyilestirmeleri, rol okuma)</li>
+          <li>Checkout/cart UX ve dogrulama duzeltmeleri</li>
+          <li>Servis talep olusturma, listeleme, cevaplasma, durum akisi</li>
+          <li>Admin panelinde urun ve kategori yonetimi</li>
+          <li>EF migration altyapisi ve Supabase DB migration uygulamasi</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="badge warn">PLANDAN AYRI VEGER KATAN</span>
+        <h2>Ekstra Kazanimlar</h2>
+        <ul>
+          <li>Admin urun ekrani iki panelli, surukle-birak yonetime donustu.</li>
+          <li>AJAX modal ile kategori bazli toplu urun tasima eklendi.</li>
+          <li>Kategori etiketlerinden tek urun cikar (x) aksiyonu eklendi.</li>
+          <li>Kapanmis talep kilidi ve musteri cevap cooldown kurali eklendi.</li>
+          <li>Port cakismasi (5195) kalici olarak yeni launch portlariyla cozuldu.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="badge ok">KRONOLOJIK AKIS</span>
+      <h2>Sohbet Boyunca Yapilanlar - Adim Adim</h2>
+      <div class="timeline">
+        <div class="event"><strong>1)</strong> Sepet ve odeme ekranlari iyilestirme talebi ile baslandi; checkout model dogrulama ve gorunum duzeltmeleri uygulandi.</div>
+        <div class="event"><strong>2)</strong> Sepete urun eklendiginde adet gosteren badge eklendi; checkout ozetindeki quantity render hatasi giderildi.</div>
+        <div class="event"><strong>3)</strong> Admin servis talepleri ekrani sohbet odakli yapilandirildi; durum/yanit akisinda sadelestirme yapildi.</div>
+        <div class="event"><strong>4)</strong> Musteri tarafinda taleplerim ekraninda cevaplasma ve durum takibi guclendirildi.</div>
+        <div class="event"><strong>5)</strong> Admin sohbet silme talebi eklendi; sonra yetki/REST kaynakli sorunlar gozlemlendi.</div>
+        <div class="event"><strong>6)</strong> Servis talep formunda cihaz tipi yerine kategori + opsiyonel parca modeline gecildi.</div>
+        <div class="event"><strong>7)</strong> EF migration talebiyle context/migration altyapisi eklendi, Supabase DB'ye migration uygulandi.</div>
+        <div class="event"><strong>8)</strong> Kategori ekleme butonu ve backend eklendi; RLS engeli nedeniyle kategori yazma DB baglantisina alindi.</div>
+        <div class="event"><strong>9)</strong> Admin urun/kategori ekrani iki liste + surukle-birak kategori atama modeline gecirildi.</div>
+        <div class="event"><strong>10)</strong> Urun/kategori islemlerinde REST yerine SupabaseDb/Npgsql ekseni benimsendi.</div>
+        <div class="event"><strong>11)</strong> Schema farki (category/kategori) icin dinamik kolon cozumu ve self-heal eklendi.</div>
+        <div class="event"><strong>12)</strong> Servis talepleri DB-first, devaminda DB-only yapildi; kayit/listeme tutarsizliklari giderildi.</div>
+        <div class="event"><strong>13)</strong> Kapali talepte iki tarafli mesaj engeli ve admin tek tus durum ilerletme kurali eklendi.</div>
+        <div class="event"><strong>14)</strong> Musteri cevaplarina 1 saat cooldown eklendi.</div>
+        <div class="event"><strong>15)</strong> Kategori ad guncelleme/silme + kategori arasi urun tasima + kategori ici urun cikarma aksiyonlari tamamlandi.</div>
+        <div class="event"><strong>16)</strong> Genel kategori fallback tamamen devre disi birakildi; kategori yoksa kategorisiz davranisi benimsendi.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="badge ok">MODUL BAZLI DETAY</span>
+      <h2>Teknik Degisiklik Haritasi</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Modul</th>
+            <th>Yapilan Is</th>
+            <th>Kazanim</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Checkout / Cart</td>
+            <td>Model validasyonlari, sepet adedi badge, quantity gorunum duzeltmeleri, UI dokunuslari</td>
+            <td>Kullanici hatasi azaldi, ekran netligi artti</td>
+          </tr>
+          <tr>
+            <td>ServiceRequest (Musteri)</td>
+            <td>Form modelinin kategori/parca akisina gecisi, cevaplasma, kapatma, hata geri bildirimi</td>
+            <td>Daha dogru veri, daha acik kullanici deneyimi</td>
+          </tr>
+          <tr>
+            <td>ServiceRequest (Admin)</td>
+            <td>Sohbet paneli, tek tusla durum ilerletme, sohbet silme, kapali talep kilidi</td>
+            <td>Operasyonel hiz ve surec kontrolu</td>
+          </tr>
+          <tr>
+            <td>Urun / Kategori Yonetimi</td>
+            <td>Kategori ekle, isim guncelle, silme kurali, urun tasima, kategori ici urun cikar, drag-drop</td>
+            <td>Yonetsel esneklik ve daha az manuel is</td>
+          </tr>
+          <tr>
+            <td>Data Access</td>
+            <td>REST fallbacklerinin kaldirilmasi, Npgsql DB-only servis metotlari</td>
+            <td>Invalid API key / RLS kaynakli kirilmalar engellendi</td>
+          </tr>
+          <tr>
+            <td>Migration / Schema</td>
+            <td>EF migration altyapisi, kategoriler tablosu migration, schema uyum mekanizmasi</td>
+            <td>Ortamlar arasi uyumluluk ve daha guvenli release</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <span class="badge err">HATA ENVENTERI</span>
+      <h2>Karsilasilan Hatalar ve Cozumleri</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Hata Basligi</th>
+            <th>Kok Neden</th>
+            <th>Uygulanan Cozum</th>
+            <th>Son Durum</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>SecilenParcaId required</td>
+            <td>Opsiyonel alan nullable degildi</td>
+            <td>Modelde opsiyonel alanlar nullable yapildi</td>
+            <td>Cozuldu</td>
+          </tr>
+          <tr>
+            <td>Talep kayitlari gorunmuyor</td>
+            <td>REST/RLS ve sessiz hata yutma</td>
+            <td>DB-only insert/list + controller'da acik hata gosterimi</td>
+            <td>Cozuldu</td>
+          </tr>
+          <tr>
+            <td>Admin talep update yetki hatasi</td>
+            <td>REST tabanli get/update tutarsizligi</td>
+            <td>Get/UpdateConversation DB-only</td>
+            <td>Cozuldu</td>
+          </tr>
+          <tr>
+            <td>Invalid API key</td>
+            <td>REST anahtar/policy bagimliligi</td>
+            <td>Kritik akislarda REST terk edilip SupabaseDb kullanildi</td>
+            <td>Cozuldu</td>
+          </tr>
+          <tr>
+            <td>Port 5195 cakismasi</td>
+            <td>Ayni portta calisan process</td>
+            <td>launchSettings yeni portlar + process cleanup</td>
+            <td>Cozuldu</td>
+          </tr>
+          <tr>
+            <td>DLL lock (MSB3021 / MSB3027)</td>
+            <td>Calisan web process build ciktilarini kilitledi</td>
+            <td>Process sonlandirip build tekrari</td>
+            <td>Cozuldu</td>
+          </tr>
+          <tr>
+            <td>category kolonu yok</td>
+            <td>Schema farki (category/kategori)</td>
+            <td>Dinamik kolon cozumu + alter table self-heal</td>
+            <td>Cozuldu</td>
+          </tr>
+          <tr>
+            <td>Ismi guncelle yerine toplu silme tetiklenmesi</td>
+            <td>UI form cakismasi</td>
+            <td>Ayrik form/JS submit mimarisi</td>
+            <td>Cozuldu</td>
+          </tr>
+          <tr>
+            <td>Urunlu kategori silme davranisi</td>
+            <td>Eski fallback mantigi</td>
+            <td>Yeni kural: urun varsa kategori silinmez</td>
+            <td>Cozuldu</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <span class="badge ok">YENI IS KURALLARI</span>
+        <h2>Guncel Davranis Kurallari</h2>
+        <ul>
+          <li>Kapali talepte admin ve musteri yeni mesaj gonderemez.</li>
+          <li>Musteri ayni talepte cevaplar arasinda 1 saat bekler.</li>
+          <li>Durum ilerletme admin tarafinda tek butonlu akisla yonetilir.</li>
+          <li>Icinde urun olan kategori silinemez.</li>
+          <li>Genel kategori fallback devre disidir.</li>
+          <li>Kategoriden cikarilan urun kategorisiz (null) olur.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <span class="badge ok">MIMARI SONUC</span>
+        <h2>Teknik Degerlendirme</h2>
+        <ul>
+          <li>SupabaseService, kritik islevlerde DB-only calisacak sekilde sertlestirildi.</li>
+          <li>Controller seviyesinde hata yutma azaltildi, son kullaniciya anlamli geri bildirim veriliyor.</li>
+          <li>Admin urun/kategori ekrani sade, hizli ve operasyonel olarak daha olgun bir yapiya geldi.</li>
+          <li>Schema degisikliklerine dayanikli bir servis katmani olusturuldu.</li>
+        </ul>
+        <div class="chips">
+          <span class="chip">ASP.NET Core MVC</span>
+          <span class="chip">Razor</span>
+          <span class="chip">Npgsql</span>
+          <span class="chip">EF Migration</span>
+          <span class="chip">AJAX</span>
+          <span class="chip">Session/JWT</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="badge warn">DOGRULAMA / OPERASYON</span>
+      <h2>Build ve Calisma Notlari</h2>
+      <ul>
+        <li>Degisikliklerden sonra birden fazla kez build alinmis ve basarili gecmistir.</li>
+        <li>Bazi asamalarda acik process nedeniyle dosya kilidi olusmus, process kapatilip tekrar build alinmistir.</li>
+        <li>Runtime'da 5195 port cakismasi gozlenmis, launch profile portlari degistirilerek kalici cozum uygulanmistir.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <span class="badge ok">GENEL SONUC</span>
+      <h2>Kapanis Degerlendirmesi</h2>
+      <p>Bu sohbette 6. hafta plani tamamlanmakla kalmamis; sistemin en riskli alanlari olan servis talep yonetimi, kategori-urun operasyonlari ve veri erisim katmani ek guvenlik ve dayaniklilik kazanimlariyla olgunlastirilmistir.</p>
+      <p style="margin-top:8px;" class="muted">Rapor, sohbetin basindan itibaren tum uygulama adimlari dikkate alinarak detayli bicimde guncellenmistir.</p>
+    </div>
+  </div>
+</body>
+</html>

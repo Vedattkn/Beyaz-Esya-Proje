@@ -14,6 +14,7 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddHttpClient<SupabaseService>();
 
 var app = builder.Build();

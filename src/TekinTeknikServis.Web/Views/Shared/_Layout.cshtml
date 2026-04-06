@@ -10,6 +10,21 @@
 <body>
     @{
         var isSystemAdmin = Context.Session.GetString("CurrentUser")?.Contains("\"IsAdmin\":true") == true;
+        var cartCount = 0;
+        var cartJson = Context.Session.GetString("Cart");
+        if (!string.IsNullOrWhiteSpace(cartJson))
+        {
+            try
+            {
+                var cartItems = System.Text.Json.JsonSerializer.Deserialize<List<TekinTeknikServis.Core.Models.CartItem>>(cartJson)
+                    ?? new List<TekinTeknikServis.Core.Models.CartItem>();
+                cartCount = cartItems.Sum(x => x.Quantity);
+            }
+            catch
+            {
+                cartCount = 0;
+            }
+        }
     }
     @if (isSystemAdmin)
     {
@@ -24,7 +39,7 @@
     }
 
     <a href="@Url.RouteUrl("sepet")" class="sepet-link" style="position: fixed; top: @(isSystemAdmin ? "60px" : "20px"); right: 20px; background: #27ae60; color: white; padding: 10px 20px; border-radius: 50px; text-decoration: none; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 100; font-weight: bold;">
-        <i class="fas fa-shopping-cart"></i> Sepetim
+        <i class="fas fa-shopping-cart"></i> Sepetim (@cartCount)
     </a>
 
     <header>

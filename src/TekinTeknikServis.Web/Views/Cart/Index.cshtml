@@ -4,10 +4,25 @@
     Layout = "_Layout";
 }
 
-<div class="sepet-container" style="max-width: 900px; margin: 40px auto; padding: 20px;">
+<section class="cart-page">
+    <div class="cart-shell">
+        <div class="cart-header">
+            <h1>Sepetim</h1>
+            <p>Seçtiğiniz ürünleri kontrol edip ödeme adımına geçebilirsiniz.</p>
+        </div>
+
+        @if (TempData["CheckoutError"] is string checkoutError && !string.IsNullOrWhiteSpace(checkoutError))
+        {
+            <div class="checkout-warning">
+                <i class="fas fa-circle-exclamation" aria-hidden="true"></i>
+                <span>@checkoutError</span>
+            </div>
+        }
+
     @if (Model == null || Model.Count == 0)
     {
-        <div class="bos-sepet" style="text-align:center; padding:50px; color:#7f8c8d;">
+            <div class="empty-cart">
+                <i class="fas fa-cart-shopping" aria-hidden="true"></i>
             <h2>Sepetiniz boş</h2>
             <p>Lütfen ürünler sayfasından ürün seçiniz.</p>
             <a href="@Url.RouteUrl("urunler")" class="btn">Ürünleri Görüntüle</a>
@@ -15,14 +30,15 @@
     }
     else
     {
-        <table class="sepet-tablo" style="width:100%; border-collapse:collapse; margin-bottom:30px; background:white; border:1px solid #ddd;">
+            <div class="cart-table-wrap">
+                <table class="cart-table">
             <thead>
                 <tr>
-                    <th style="background:#333; color:white; padding:15px; text-align:left;">Ürün Adı</th>
-                    <th style="background:#333; color:white; padding:15px; text-align:left;">Fiyat</th>
-                    <th style="background:#333; color:white; padding:15px; text-align:left;">Miktar</th>
-                    <th style="background:#333; color:white; padding:15px; text-align:left;">Toplam</th>
-                    <th style="background:#333; color:white; padding:15px; text-align:left;">İşlem</th>
+                                <th>Ürün Adı</th>
+                                <th>Fiyat</th>
+                                <th>Miktar</th>
+                                <th>Toplam</th>
+                                <th>İşlem</th>
                 </tr>
             </thead>
             <tbody>
@@ -30,21 +46,21 @@
                 {
                     var item = Model[i];
                     <tr>
-                        <td style="padding:15px; border-bottom:1px solid #eee;">@item.Name</td>
-                        <td style="padding:15px; border-bottom:1px solid #eee;">@item.PriceText</td>
-                        <td style="padding:15px; border-bottom:1px solid #eee;">
-                            <form asp-controller="Cart" asp-action="UpdateQuantity" method="post" style="display:inline;">
+                                    <td data-label="Ürün Adı">@item.Name</td>
+                                    <td data-label="Fiyat">@item.PriceText</td>
+                                    <td data-label="Miktar">
+                            <form asp-controller="Cart" asp-action="UpdateQuantity" method="post" class="quantity-form">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="index" value="@i" />
-                                <input type="number" name="quantity" value="@item.Quantity" min="1" style="width:60px; padding:5px; border:1px solid #ddd; border-radius:4px;" onchange="this.form.submit()" />
+                                <input type="number" name="quantity" value="@item.Quantity" min="1" class="quantity-input" onchange="this.form.submit()" />
                             </form>
                         </td>
-                        <td style="padding:15px; border-bottom:1px solid #eee;">@item.LineTotalTry TL</td>
-                        <td style="padding:15px; border-bottom:1px solid #eee;">
-                            <form asp-controller="Cart" asp-action="RemoveAt" method="post" style="display:inline;">
+                                    <td data-label="Toplam">@item.LineTotalTry TL</td>
+                                    <td data-label="İşlem">
+                            <form asp-controller="Cart" asp-action="RemoveAt" method="post">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="index" value="@i" />
-                                <button type="submit" style="background:#e74c3c; color:white; padding:8px 12px; border:none; border-radius:4px; cursor:pointer; font-size:14px;">
+                                            <button type="submit" class="remove-item-btn">
                                     <i class="fas fa-trash"></i> Sil
                                 </button>
                             </form>
@@ -53,14 +69,18 @@
                 }
             </tbody>
         </table>
+            </div>
 
-        <div class="toplam-box" style="background:#f8f9fa; padding:20px; border-radius:8px; text-align:right; margin-bottom:20px;">
-            <div class="toplam-fiyat" style="font-size:24px; color:#27ae60; font-weight:bold; margin-bottom:15px;">
+            <div class="cart-total-box">
+                <div class="cart-total-price">
                 Toplam: @ViewBag.TotalTry TL
             </div>
-            <a href="@Url.RouteUrl("odeme")" class="btn" style="background:#27ae60;">Ödeme Yap</a>
-            <a href="@Url.RouteUrl("urunler")" class="btn" style="background:#95a5a6;">Alışverişe Devam Et</a>
+                <div class="cart-actions">
+                    <a href="@Url.RouteUrl("odeme")" class="btn cart-checkout-btn">Ödeme Yap</a>
+                    <a href="@Url.RouteUrl("urunler")" class="btn cart-continue-btn">Alışverişe Devam Et</a>
+                </div>
         </div>
     }
 </div>
+</section>
 

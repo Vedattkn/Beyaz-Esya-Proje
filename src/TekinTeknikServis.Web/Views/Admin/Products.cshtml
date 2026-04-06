@@ -2,6 +2,12 @@
 @{
     ViewBag.Title = "Ürün Yönetimi";
     Layout = "_Layout";
+    var existingCategories = ViewBag.Categories as List<string> ?? new List<string>();
+    var groupedProducts = Model?
+        .Where(p => !string.IsNullOrWhiteSpace(p.Category))
+        .GroupBy(p => p.Category!.Trim(), StringComparer.OrdinalIgnoreCase)
+        .ToDictionary(g => g.Key, g => g.ToList(), StringComparer.OrdinalIgnoreCase)
+        ?? new Dictionary<string, List<TekinTeknikServis.Core.Services.Product>>(StringComparer.OrdinalIgnoreCase);
 }
 
 <section class="admin-panel" style="padding: 40px 20px;">
@@ -15,8 +21,21 @@
                 <i class="fas fa-trash"></i> Seçilenleri Sil (<span id="selectedCount">0</span>)
             </button>
             <a href="@Url.Action("AddProduct", "Admin")" class="btn" style="padding: 10px 20px;"><i class="fas fa-plus"></i> Yeni Ürün Ekle</a>
+            <button type="button" id="toggleCategoryCreateBtn" class="btn" style="background-color:#0f766e; padding:10px 20px;">
+                <i class="fas fa-folder-plus"></i> Yeni Kategori Ekle
+            </button>
         </div>
     </div>
+
+    <form id="createCategoryForm" asp-action="CreateCategory" asp-controller="Admin" method="post" style="display:none; background:#ecfeff; border:1px solid #99f6e4; border-radius:12px; padding:12px 14px; margin-bottom:16px;">
+        @Html.AntiForgeryToken()
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+            <input type="text" name="newCategoryName" class="form-input" style="max-width:280px;" placeholder="Yeni kategori adı" required />
+            <button type="submit" class="btn" style="background:#0f766e;">
+                <i class="fas fa-check"></i> Kategoriyi Kaydet
+            </button>
+        </div>
+    </form>
 
     @if (TempData["AdminSuccess"] != null)
     {
@@ -24,6 +43,32 @@
             <i class="fas fa-check-circle"></i> @TempData["AdminSuccess"]
         </div>
     }
+
+    @if (TempData["AdminError"] != null)
+    {
+        <div style="background-color: #fef2f2; color: #991b1b; padding: 12px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #ef4444;">
+            <i class="fas fa-triangle-exclamation"></i> @TempData["AdminError"]
+        </div>
+    }
+
+    <form id="categoryAssignForm" asp-action="AssignCategoryToSelected" asp-controller="Admin" method="post" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:16px; margin-bottom:16px;">
+        @Html.AntiForgeryToken()
+        <div style="font-weight:700; margin-bottom:8px; color:#0f172a;">Kategori Yönetimi</div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+            <select name="existingCategory" class="form-input" style="max-width:240px;">
+                <option value="">Mevcut kategori seç</option>
+                @foreach (var cat in existingCategories)
+                {
+                    <option value="@cat">@cat</option>
+                }
+            </select>
+            <input type="text" name="newCategoryName" class="form-input" style="max-width:240px;" placeholder="veya yeni kategori yaz" />
+            <button type="button" id="assignCategoryBtn" class="btn" style="background:#0ea5e9; display:none;" onclick="submitCategoryAssign()">
+                <i class="fas fa-layer-group"></i> Seçilenlere Kategori Ata (<span id="selectedCategoryCount">0</span>)
+            </button>
+        </div>
+        <div style="margin-top:8px; color:#64748b; font-size:13px;">Önce ürünleri işaretleyin, sonra mevcut kategori seçin veya yeni kategori adı yazın.</div>
+    </form>
 
     @if (Model == null || !Model.Any())
     {
@@ -33,87 +78,436 @@
     }
     else
     {
-        <form id="bulkDeleteForm" asp-action="DeleteSelected" asp-controller="Admin" method="post">
-            @Html.AntiForgeryToken()
-            <table style="width: 100%; border-collapse: collapse; text-align: left; background: white; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); border-radius: 8px; overflow: hidden;">
-                <thead>
-                    <tr style="background-color: #f8fafc; border-bottom: 1px solid #e2e8f0;">
-                        <th style="padding: 15px; width: 40px; text-align: center;">
-                            <input type="checkbox" id="selectAllItems" style="transform: scale(1.2); cursor: pointer;" />
-                        </th>
-                        <th style="padding: 15px;">Kapak</th>
-                        <th style="padding: 15px;">Ürün Adı</th>
-                        <th style="padding: 15px;">Fiyat</th>
-                        <th style="padding: 15px; text-align: center;">İşlem</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var p in Model)
-                    {
-                        <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.2s;" onmouseover="this.style.backgroundColor='#f8fafc'" onmouseout="this.style.backgroundColor='transparent'">
-                            <td style="padding: 15px; text-align: center;">
-                                <input type="checkbox" name="selectedIds" value="@p.Id" class="item-checkbox" style="transform: scale(1.2); cursor: pointer;" />
-                            </td>
-                            <td style="padding: 15px;">
-                                <img src="@(string.IsNullOrEmpty(p.ImageUrl) ? "/images/no-image.png" : Url.Content(p.ImageUrl))" 
-                                     alt="@p.Name" 
-                                     style="width: 60px; height: 60px; object-fit: contain; border-radius: 4px; background: #f8fafc;"
+        <div style="display:grid; grid-template-columns: minmax(360px, 1fr) minmax(360px, 1fr); gap:16px; align-items:start;">
+                <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:14px;">
+                    <div style="font-weight:700; color:#0f172a; margin-bottom:10px;">Ürünler (Sürüklenebilir)</div>
+                    <div style="display:grid; gap:10px; max-height:70vh; overflow:auto;">
+                        @foreach (var p in Model)
+                        {
+                            <div class="draggable-product" draggable="true" data-product-id="@p.Id" data-product-name="@p.Name"
+                                 style="border:1px solid #e2e8f0; border-radius:10px; padding:10px; background:#f8fafc; display:grid; grid-template-columns: 22px 54px 1fr auto; gap:10px; align-items:center; cursor:grab;">
+                                <input type="checkbox" value="@p.Id" class="item-checkbox" style="transform: scale(1.1); cursor: pointer;" />
+                                <img src="@(string.IsNullOrEmpty(p.ImageUrl) ? "/images/no-image.png" : Url.Content(p.ImageUrl))"
+                                     alt="@p.Name"
+                                     style="width: 54px; height: 54px; object-fit: contain; border-radius: 6px; background: #fff;"
                                      onerror="this.src='/images/no-image.png'; this.onerror=null;" />
-                            </td>
-                            <td style="padding: 15px;">
-                                <div style="font-weight: bold; color: #1e293b;">@p.Name</div>
-                            </td>
-                            <td style="padding: 15px; color: #64748b; font-weight: 500;">@p.PriceText</td>
-                            <td style="padding: 15px; text-align: center;">
-                                <a href="@Url.Action("EditProduct", "Admin", new { id = p.Id })" class="btn" style="background-color: #3b82f6; padding: 6px 14px; font-size: 13px;">
-                                    <i class="fas fa-edit"></i> Düzenle
+                                <div>
+                                    <div style="font-weight:700; color:#0f172a;">@p.Name</div>
+                                    <div style="font-size:12px; color:#64748b;">Kategori: @(string.IsNullOrWhiteSpace(p.Category) ? "-" : p.Category)</div>
+                                    <div style="font-size:12px; color:#475569;">@p.PriceText</div>
+                                </div>
+                                <a href="@Url.Action("EditProduct", "Admin", new { id = p.Id })" class="btn" style="background-color: #3b82f6; padding: 6px 10px; font-size: 12px;">
+                                    <i class="fas fa-edit"></i>
                                 </a>
-                            </td>
-                        </tr>
+                            </div>
+                        }
+                    </div>
+                    <div style="margin-top:10px; color:#64748b; font-size:12px;">Bir ürünü tutup sağdaki kategori kutusuna bırak.</div>
+                </div>
+
+                <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:14px;">
+                    <div style="font-weight:700; color:#0f172a; margin-bottom:10px;">Kategoriler (Bırakma Alanı)</div>
+                    @if (!existingCategories.Any())
+                    {
+                        <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; color:#64748b;">Kategori bulunmuyor. Önce "Yeni Kategori Ekle" ile kategori oluşturun.</div>
                     }
-                </tbody>
-            </table>
+                    else
+                    {
+                        <div style="display:grid; gap:10px; max-height:70vh; overflow:auto;">
+                            @foreach (var cat in existingCategories)
+                            {
+                                var categoryProducts = groupedProducts.TryGetValue(cat, out var list) ? list : new List<TekinTeknikServis.Core.Services.Product>();
+                                <div class="drop-category" data-category-name="@cat"
+                                     style="border:1px dashed #94a3b8; border-radius:10px; padding:10px; background:#f8fafc;">
+                                    <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                                        <div style="font-weight:700; color:#0f172a;">@cat</div>
+                                        <span style="font-size:12px; color:#334155; background:#e2e8f0; border-radius:999px; padding:2px 8px;">@categoryProducts.Count ürün</span>
+                                    </div>
+                                    <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                                        <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
+                                            <input type="text" class="form-input rename-category-input" data-old-category="@cat" value="@cat" style="max-width:170px; height:34px;" />
+                                            <button type="button" class="btn rename-category-btn" data-old-category="@cat" style="padding:6px 10px; font-size:12px; background:#1d4ed8;">İsmi Güncelle</button>
+                                        </div>
+                                        <button type="button"
+                                                class="btn move-category-btn"
+                                                data-source-category="@cat"
+                                                style="padding:6px 10px; font-size:12px; background:#0f766e;">
+                                            Ürünleri Taşı
+                                        </button>
+                                        <button type="button" class="btn delete-category-btn" data-category-name="@cat" style="padding:6px 10px; font-size:12px; background:#dc2626;">Kategoriyi Sil</button>
+                                    </div>
+                                    @if (categoryProducts.Any())
+                                    {
+                                        <div style="margin-top:8px; display:flex; flex-wrap:wrap; gap:6px;">
+                                            @foreach (var cp in categoryProducts.Take(8))
+                                            {
+                                                <span style="font-size:11px; color:#0f172a; background:#dbeafe; border:1px solid #bfdbfe; border-radius:999px; padding:2px 6px; display:inline-flex; align-items:center; gap:6px;">
+                                                    <span>@cp.Name</span>
+                                                    @if (!string.IsNullOrWhiteSpace(cp.Id))
+                                                    {
+                                                        <button type="button"
+                                                                class="remove-product-from-category-btn"
+                                                                data-product-id="@cp.Id"
+                                                                data-product-name="@cp.Name"
+                                                                data-source-category="@cat"
+                                                                title="Kategoriden çıkar"
+                                                                style="border:0; background:#ef4444; color:#fff; width:16px; height:16px; border-radius:999px; line-height:16px; padding:0; cursor:pointer; font-size:11px;">x</button>
+                                                    }
+                                                </span>
+                                            }
+                                            @if (categoryProducts.Count > 8)
+                                            {
+                                                <span style="font-size:11px; color:#475569;">+@(categoryProducts.Count - 8) daha</span>
+                                            }
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div style="margin-top:8px; font-size:12px; color:#64748b;">Bu kategoriye ürün bırak</div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+
+        <form id="bulkDeleteForm" asp-action="DeleteSelected" asp-controller="Admin" method="post" style="display:none;">
+            @Html.AntiForgeryToken()
         </form>
+
+        <form id="renameCategoryForm" asp-action="RenameCategory" asp-controller="Admin" method="post" style="display:none;">
+            @Html.AntiForgeryToken()
+            <input type="hidden" id="renameOldCategoryName" name="oldCategoryName" />
+            <input type="hidden" id="renameNewCategoryName" name="renamedCategoryName" />
+        </form>
+
+        <form id="deleteCategoryForm" asp-action="DeleteCategory" asp-controller="Admin" method="post" style="display:none;">
+            @Html.AntiForgeryToken()
+            <input type="hidden" id="deleteCategoryName" name="categoryName" />
+        </form>
+
+        <form id="moveProductForm" asp-action="MoveProductToCategory" asp-controller="Admin" method="post" style="display:none;">
+            @Html.AntiForgeryToken()
+            <input type="hidden" id="moveProductId" name="productId" />
+            <input type="hidden" id="moveCategoryName" name="category" />
+        </form>
+
+        <div id="categoryMoveModal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,.55); z-index:9999; align-items:center; justify-content:center; padding:16px;">
+            <div style="width:min(460px,100%); background:#fff; border-radius:12px; padding:16px; border:1px solid #e2e8f0; box-shadow:0 20px 60px rgba(2,6,23,.25);">
+                <div style="font-weight:700; color:#0f172a; margin-bottom:8px;">Kategori Ürünlerini Taşı</div>
+                <div style="font-size:13px; color:#475569; margin-bottom:12px;">Kaynak kategorideki tüm ürünler seçtiğiniz hedef kategoriye taşınır.</div>
+                <div style="display:grid; gap:10px;">
+                    <div>
+                        <label style="font-size:12px; color:#334155;">Kaynak Kategori</label>
+                        <input type="text" id="moveSourceCategory" class="form-input" readonly />
+                    </div>
+                    <div>
+                        <label style="font-size:12px; color:#334155;">Hedef Kategori</label>
+                        <select id="moveTargetCategory" class="form-input">
+                            <option value="">Seçiniz</option>
+                            @foreach (var cat in existingCategories)
+                            {
+                                <option value="@cat">@cat</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:14px;">
+                    <button type="button" id="cancelCategoryMoveBtn" class="btn" style="background:#64748b;">Vazgeç</button>
+                    <button type="button" id="confirmCategoryMoveBtn" class="btn" style="background:#0f766e;">Taşı</button>
+                </div>
+            </div>
+        </div>
     }
 </section>
 
 <script>
-    const selectAllCheckbox = document.getElementById('selectAllItems');
     const itemCheckboxes = document.querySelectorAll('.item-checkbox');
     const multiDeleteBtn = document.getElementById('multiDeleteBtn');
     const selectedCountSpan = document.getElementById('selectedCount');
+    const assignCategoryBtn = document.getElementById('assignCategoryBtn');
+    const selectedCategoryCount = document.getElementById('selectedCategoryCount');
+    const toggleCategoryCreateBtn = document.getElementById('toggleCategoryCreateBtn');
+    const createCategoryForm = document.getElementById('createCategoryForm');
+    const draggableProducts = document.querySelectorAll('.draggable-product');
+    const dropCategories = document.querySelectorAll('.drop-category');
+    const moveProductForm = document.getElementById('moveProductForm');
+    const moveProductId = document.getElementById('moveProductId');
+    const moveCategoryName = document.getElementById('moveCategoryName');
+    const categoryMoveModal = document.getElementById('categoryMoveModal');
+    const moveSourceCategory = document.getElementById('moveSourceCategory');
+    const moveTargetCategory = document.getElementById('moveTargetCategory');
+    const cancelCategoryMoveBtn = document.getElementById('cancelCategoryMoveBtn');
+    const confirmCategoryMoveBtn = document.getElementById('confirmCategoryMoveBtn');
+    const moveCategoryButtons = document.querySelectorAll('.move-category-btn');
+    const renameCategoryButtons = document.querySelectorAll('.rename-category-btn');
+    const deleteCategoryButtons = document.querySelectorAll('.delete-category-btn');
+    const removeProductFromCategoryButtons = document.querySelectorAll('.remove-product-from-category-btn');
+    const renameCategoryForm = document.getElementById('renameCategoryForm');
+    const renameOldCategoryName = document.getElementById('renameOldCategoryName');
+    const renameNewCategoryName = document.getElementById('renameNewCategoryName');
+    const deleteCategoryForm = document.getElementById('deleteCategoryForm');
+    const deleteCategoryName = document.getElementById('deleteCategoryName');
+    let activeSourceCategory = '';
 
     function updateDeleteButtonUI() {
         const checkedCount = document.querySelectorAll('.item-checkbox:checked').length;
         if (checkedCount > 0) {
             multiDeleteBtn.style.display = 'inline-flex';
             selectedCountSpan.textContent = checkedCount;
+            if (assignCategoryBtn) {
+                assignCategoryBtn.style.display = 'inline-flex';
+                selectedCategoryCount.textContent = checkedCount;
+            }
         } else {
             multiDeleteBtn.style.display = 'none';
+            if (assignCategoryBtn) {
+                assignCategoryBtn.style.display = 'none';
+            }
         }
-        
-        if (selectAllCheckbox) {
-            selectAllCheckbox.checked = (checkedCount === itemCheckboxes.length && itemCheckboxes.length > 0);
-        }
-    }
-
-    if (selectAllCheckbox) {
-        selectAllCheckbox.addEventListener('change', function() {
-            itemCheckboxes.forEach(cb => {
-                cb.checked = selectAllCheckbox.checked;
-            });
-            updateDeleteButtonUI();
-        });
     }
 
     itemCheckboxes.forEach(cb => {
         cb.addEventListener('change', updateDeleteButtonUI);
     });
 
+    if (toggleCategoryCreateBtn && createCategoryForm) {
+        toggleCategoryCreateBtn.addEventListener('click', function() {
+            createCategoryForm.style.display = createCategoryForm.style.display === 'none' ? 'block' : 'none';
+        });
+    }
+
     function submitBulkDelete() {
-        const checkedCount = document.querySelectorAll('.item-checkbox:checked').length;
+        const checked = Array.from(document.querySelectorAll('.item-checkbox:checked'));
+        const checkedCount = checked.length;
+        if (checkedCount === 0) {
+            alert('Lütfen silinecek ürünleri seçin.');
+            return;
+        }
+
         if (confirm(`${checkedCount} ürünü silmek istediğinize emin misiniz?`)) {
-            document.getElementById('bulkDeleteForm').submit();
+            const form = document.getElementById('bulkDeleteForm');
+            form.querySelectorAll('input[name="selectedIds"]').forEach(el => el.remove());
+
+            checked.forEach(cb => {
+                const hidden = document.createElement('input');
+                hidden.type = 'hidden';
+                hidden.name = 'selectedIds';
+                hidden.value = cb.value;
+                form.appendChild(hidden);
+            });
+
+            form.submit();
         }
     }
+
+    function submitCategoryAssign() {
+        const checked = document.querySelectorAll('.item-checkbox:checked');
+        if (checked.length === 0) {
+            alert('Lütfen en az bir ürün seçin.');
+            return;
+        }
+
+        const form = document.getElementById('categoryAssignForm');
+        form.querySelectorAll('input[name="selectedIds"]').forEach(el => el.remove());
+        checked.forEach(cb => {
+            const hidden = document.createElement('input');
+            hidden.type = 'hidden';
+            hidden.name = 'selectedIds';
+            hidden.value = cb.value;
+            form.appendChild(hidden);
+        });
+
+        form.submit();
+    }
+
+    draggableProducts.forEach(card => {
+        card.addEventListener('dragstart', function (e) {
+            e.dataTransfer.setData('productId', card.dataset.productId || '');
+            e.dataTransfer.setData('productName', card.dataset.productName || '');
+            card.style.opacity = '0.55';
+        });
+
+        card.addEventListener('dragend', function () {
+            card.style.opacity = '1';
+        });
+    });
+
+    dropCategories.forEach(zone => {
+        zone.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            zone.style.borderColor = '#0ea5e9';
+            zone.style.background = '#e0f2fe';
+        });
+
+        zone.addEventListener('dragleave', function () {
+            zone.style.borderColor = '#94a3b8';
+            zone.style.background = '#f8fafc';
+        });
+
+        zone.addEventListener('drop', function (e) {
+            e.preventDefault();
+            zone.style.borderColor = '#94a3b8';
+            zone.style.background = '#f8fafc';
+
+            const productId = e.dataTransfer.getData('productId');
+            const productName = e.dataTransfer.getData('productName');
+            const categoryName = zone.dataset.categoryName || '';
+
+            if (!productId || !categoryName || !moveProductForm || !moveProductId || !moveCategoryName) {
+                return;
+            }
+
+            const ok = confirm(`'${productName}' ürününü '${categoryName}' kategorisine taşımak istiyor musunuz?`);
+            if (!ok) return;
+
+            moveProductId.value = productId;
+            moveCategoryName.value = categoryName;
+            moveProductForm.submit();
+        });
+    });
+
+    function openCategoryMoveModal(sourceCategory) {
+        if (!categoryMoveModal || !moveSourceCategory || !moveTargetCategory) return;
+
+        activeSourceCategory = sourceCategory || '';
+        moveSourceCategory.value = activeSourceCategory;
+
+        for (const opt of moveTargetCategory.options) {
+            if (!opt.value) {
+                opt.hidden = false;
+                continue;
+            }
+            opt.hidden = opt.value.toLowerCase() === activeSourceCategory.toLowerCase();
+        }
+
+        moveTargetCategory.value = '';
+        categoryMoveModal.style.display = 'flex';
+    }
+
+    function closeCategoryMoveModal() {
+        if (!categoryMoveModal) return;
+        categoryMoveModal.style.display = 'none';
+    }
+
+    moveCategoryButtons.forEach(btn => {
+        btn.addEventListener('click', function () {
+            openCategoryMoveModal(btn.dataset.sourceCategory || '');
+        });
+    });
+
+    renameCategoryButtons.forEach(btn => {
+        btn.addEventListener('click', function () {
+            const oldCategory = (btn.dataset.oldCategory || '').trim();
+            const input = btn.parentElement ? btn.parentElement.querySelector('.rename-category-input') : null;
+            const newCategory = (input && input.value ? input.value : '').trim();
+
+            if (!oldCategory || !newCategory) {
+                alert('Eski ve yeni kategori adını girin.');
+                return;
+            }
+
+            renameOldCategoryName.value = oldCategory;
+            renameNewCategoryName.value = newCategory;
+            renameCategoryForm.submit();
+        });
+    });
+
+    deleteCategoryButtons.forEach(btn => {
+        btn.addEventListener('click', function () {
+            const category = (btn.dataset.categoryName || '').trim();
+            if (!category) return;
+
+            const ok = confirm('Bu kategoriyi silmek istediğinize emin misiniz? İçinde ürün varsa silinmez. Önce Ürünleri Taşı ile başka kategoriye taşıyın.');
+            if (!ok) return;
+
+            deleteCategoryName.value = category;
+            deleteCategoryForm.submit();
+        });
+    });
+
+    function getAntiForgeryToken() {
+        const tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+        return tokenInput ? tokenInput.value : '';
+    }
+
+    if (cancelCategoryMoveBtn) {
+        cancelCategoryMoveBtn.addEventListener('click', closeCategoryMoveModal);
+    }
+
+    if (categoryMoveModal) {
+        categoryMoveModal.addEventListener('click', function (e) {
+            if (e.target === categoryMoveModal) {
+                closeCategoryMoveModal();
+            }
+        });
+    }
+
+    if (confirmCategoryMoveBtn) {
+        confirmCategoryMoveBtn.addEventListener('click', async function () {
+            const target = (moveTargetCategory?.value || '').trim();
+            const source = (activeSourceCategory || '').trim();
+            if (!source || !target) {
+                alert('Kaynak ve hedef kategori seçimi zorunludur.');
+                return;
+            }
+
+            const antiForgeryToken = getAntiForgeryToken();
+
+            try {
+                const response = await fetch('@Url.Action("MoveCategoryProductsAjax", "Admin")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': antiForgeryToken
+                    },
+                    body: JSON.stringify({ sourceCategory: source, targetCategory: target })
+                });
+
+                const payload = await response.json();
+                if (!response.ok || !payload.success) {
+                    throw new Error(payload.message || 'Taşıma sırasında hata oluştu.');
+                }
+
+                alert(payload.message || 'Kategori taşıma tamamlandı.');
+                window.location.reload();
+            } catch (err) {
+                alert(err && err.message ? err.message : 'Taşıma sırasında hata oluştu.');
+            }
+        });
+    }
+
+    removeProductFromCategoryButtons.forEach(btn => {
+        btn.addEventListener('click', async function () {
+            const productId = (btn.dataset.productId || '').trim();
+            const productName = (btn.dataset.productName || '').trim();
+            const sourceCategory = (btn.dataset.sourceCategory || '').trim();
+            if (!productId || !sourceCategory) return;
+
+            const ok = confirm(`'${productName}' ürününü '${sourceCategory}' kategorisinden çıkarmak istiyor musunuz?`);
+            if (!ok) return;
+
+            try {
+                const response = await fetch('@Url.Action("RemoveProductFromCategoryAjax", "Admin")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': getAntiForgeryToken()
+                    },
+                    body: JSON.stringify({ productId, sourceCategory })
+                });
+
+                const payload = await response.json();
+                if (!response.ok || !payload.success) {
+                    throw new Error(payload.message || 'İşlem başarısız.');
+                }
+
+                alert(payload.message || 'Ürün kategoriden çıkarıldı (kategorisiz).');
+                window.location.reload();
+            } catch (err) {
+                alert(err && err.message ? err.message : 'Ürün kategoriden çıkarılamadı.');
+            }
+        });
+    });
 </script>

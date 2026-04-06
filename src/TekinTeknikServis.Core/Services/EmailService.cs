@@ -42,7 +42,11 @@ namespace TekinTeknikServis.Core.Services
             body.AppendLine("--- TALEP DETAYLARI ---");
             body.AppendLine("Ad Soyad: " + form.AdSoyad);
             body.AppendLine("Telefon: " + form.Telefon);
-            body.AppendLine("Cihaz Türü: " + form.CihazTuru);
+            body.AppendLine("Kategori: " + form.CihazTuru);
+            if (!string.IsNullOrWhiteSpace(form.SecilenParcaAdi))
+            {
+                body.AppendLine("Seçilen Parça: " + form.SecilenParcaAdi);
+            }
             body.AppendLine("Arıza Açıklaması: " + form.ArizaAciklamasi);
             body.AppendLine();
             body.AppendLine("---");

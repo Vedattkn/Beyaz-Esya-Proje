@@ -8,11 +8,14 @@ namespace TekinTeknikServis.Core.Controllers
     public class AccountController : Controller
     {
         private readonly SupabaseService _supabase;
+        private readonly JwtTokenService _jwtTokenService;
         private const string SessionKey = "CurrentUser";
+        private const string SessionJwtKey = "AuthToken";
 
-        public AccountController(SupabaseService supabase)
+        public AccountController(SupabaseService supabase, JwtTokenService jwtTokenService)
         {
             _supabase = supabase;
+            _jwtTokenService = jwtTokenService;
         }
 
         // ─── Kayıt Sayfası (GET) ──────────────────────────────────────
@@ -82,6 +85,26 @@ namespace TekinTeknikServis.Core.Controllers
                 // Session'a kullanıcı bilgilerini kaydet
                 HttpContext.Session.SetJson(SessionKey, session);
 
+                // Kullanıcı için JWT üret ve session/cookie üzerinde sakla
+                var token = _jwtTokenService.GenerateToken(session);
+                HttpContext.Session.SetString(SessionJwtKey, token);
+
+                if (model.BeniHatirla)
+                {
+                    Response.Cookies.Append(SessionJwtKey, token, new CookieOptions
+                    {
+                        HttpOnly = true,
+                        IsEssential = true,
+                        SameSite = SameSiteMode.Lax,
+                        Secure = HttpContext.Request.IsHttps,
+                        Expires = DateTimeOffset.UtcNow.AddDays(14)
+                    });
+                }
+                else
+                {
+                    Response.Cookies.Delete(SessionJwtKey);
+                }
+
                 TempData["SuccessMessage"] = "Hoş geldiniz, " + session.AdSoyad + "!";
                 return RedirectToRoute("home");
             }
@@ -97,8 +120,10 @@ namespace TekinTeknikServis.Core.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Logout()
         {
+            HttpContext.Session.Remove(SessionJwtKey);
             HttpContext.Session.Remove(SessionKey);
             HttpContext.Session.Clear();
+            Response.Cookies.Delete(SessionJwtKey);
             TempData["SuccessMessage"] = "Başarıyla çıkış yaptınız.";
             return RedirectToRoute("home");
         }

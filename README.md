@@ -79,6 +79,26 @@ dotnet build
 dotnet run
 ```
 
+### 4. Supabase Migration (Kategori Tablosu)
+Kategori yönetimi için aşağıdaki SQL migration dosyasını Supabase SQL Editor'de çalıştırın:
+
+```text
+db/supabase/migrations/20260406_add_kategoriler_table.sql
+```
+
+Bu migration:
+- `kategoriler` tablosunu oluşturur.
+- `urunler.category` içindeki mevcut kategorileri `kategoriler` tablosuna taşır.
+
+---
+
+## 📊 Raporlar
+
+Sohbet boyunca hazırlanan güncel rapor ve sunum rehberleri:
+
+- [6. Hafta Final Raporu (Detaylı)](src/TekinTeknikServis.Web/wwwroot/reports/degisiklik-raporu-6hafta-final.html)
+- [Sunum Rehberi (6. Hafta)](src/TekinTeknikServis.Web/wwwroot/reports/sunum-rehberi-6hafta.html)
+
 ---
 
 ## 📁 Proje Yapısı

@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sunum Rehberi - 6. Hafta</title>
+  <style>
+    :root {
+      --bg: #f5f7fc;
+      --ink: #1b2743;
+      --muted: #5a6787;
+      --card: #ffffff;
+      --line: #d7e0f0;
+      --accent: #2059d4;
+      --ok: #19753b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(160deg, #f7f9ff 0%, #f1f4fb 100%);
+      line-height: 1.45;
+    }
+    .wrap {
+      max-width: 1060px;
+      margin: 26px auto;
+      padding: 0 16px 28px;
+    }
+    .hero, .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 8px 22px rgba(33, 54, 103, .07);
+    }
+    .hero { padding: 20px; }
+    .card { padding: 16px; margin-top: 14px; }
+    h1 { margin: 0 0 8px; font-size: 29px; }
+    h2 { margin: 0 0 8px; font-size: 20px; }
+    h3 { margin: 0 0 8px; font-size: 16px; }
+    p { margin: 0; color: var(--muted); }
+    ul { margin: 8px 0 0 18px; }
+    li { margin: 6px 0; }
+    .step {
+      border-left: 4px solid var(--accent);
+      padding-left: 12px;
+      margin-top: 12px;
+    }
+    .timeline {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .item {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px;
+      background: #fbfdff;
+    }
+    .tip {
+      background: #ecf3ff;
+      border: 1px solid #cfe0ff;
+      color: #2a4476;
+      border-radius: 10px;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    .check {
+      color: var(--ok);
+      font-weight: 700;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: #f6f9ff; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <h1>Sunum Rehberi - 6. Hafta</h1>
+      <p>Amac: 6. hafta ciktilarini 10-15 dakikada etkili, net ve teknik olarak guvenilir sekilde anlatmak.</p>
+      <p style="margin-top:6px;">Tarih: 06.04.2026</p>
+    </div>
+
+    <div class="card">
+      <h2>1) Sunum Akisi (Onerilen Sure Dagilimi)</h2>
+      <table>
+        <thead>
+          <tr><th>Bolum</th><th>Sure</th><th>Ne Anlatilacak</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Giris ve hedef</td><td>1 dk</td><td>6. hafta plani ve kapsam</td></tr>
+          <tr><td>Tamamlanan isler</td><td>3 dk</td><td>Auth, checkout, servis talep, admin urun/kategori</td></tr>
+          <tr><td>Canli demo</td><td>5 dk</td><td>Talep olusturma, admin cevap, kategori tasima/silme</td></tr>
+          <tr><td>Hata ve cozum</td><td>3 dk</td><td>Kritik hata listesi, teknik cozum yaklasimi</td></tr>
+          <tr><td>Kapanis</td><td>1-2 dk</td><td>Kazanimlar ve sonraki adimlar</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>2) Slayt Plani (Baslik Bazli)</h2>
+      <div class="timeline">
+        <div class="item"><strong>Slayt 1:</strong> Problem tanimi ve 6. hafta hedefleri</div>
+        <div class="item"><strong>Slayt 2:</strong> Mimari karar - REST'ten DB-only yaklasima gecis</div>
+        <div class="item"><strong>Slayt 3:</strong> Servis talep modulu: durum, sohbet, kapanis kurallari</div>
+        <div class="item"><strong>Slayt 4:</strong> Admin urun/kategori paneli: surukle-birak ve AJAX is akislari</div>
+        <div class="item"><strong>Slayt 5:</strong> Karsilasilan hatalar ve cozum matrisi</div>
+        <div class="item"><strong>Slayt 6:</strong> Plan disi ama degerli gelistirmeler</div>
+        <div class="item"><strong>Slayt 7:</strong> Sonuc, metrik, sonraki sprint</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>3) Canli Demo Senaryosu</h2>
+      <div class="step">
+        <h3>Adim A - Musteri akis</h3>
+        <ul>
+          <li>Servis talebi olustur</li>
+          <li>Taleplerim ekraninda kaydin gorundugunu goster</li>
+          <li>Cevap ver ve cooldown kuralina takilan senaryoyu anlat</li>
+        </ul>
+      </div>
+      <div class="step">
+        <h3>Adim B - Admin akis</h3>
+        <ul>
+          <li>Talebi sec, mesaj gonder, tek tusla durumu ilerlet</li>
+          <li>Talep kapandiginda iki tarafli yazma kilidini goster</li>
+        </ul>
+      </div>
+      <div class="step">
+        <h3>Adim C - Kategori akis</h3>
+        <ul>
+          <li>Kategori adini guncelle</li>
+          <li>AJAX ile kategori bazli urun tasima</li>
+          <li>Urun varken kategori silme engelini goster</li>
+          <li>Urun etiketindeki x ile kategoriden cikarma goster</li>
+        </ul>
+      </div>
+      <div class="tip"><strong>Ipuç:</strong> Demo sirasinda once basarili akis, sonra kontrollu hata akislarini gostermek juriye guven verir.</div>
+    </div>
+
+    <div class="card">
+      <h2>4) Sorulabilecek Teknik Sorulara Hazir Cevaplar</h2>
+      <ul>
+        <li><strong>Neden DB-only?</strong> RLS/API key kaynakli REST tutarsizliklarini elimine edip kestirilebilirlik artirmak icin.</li>
+        <li><strong>Veri butunlugu nasil korunuyor?</strong> Kategori rename/delete gibi islemler transaction ile yapiliyor.</li>
+        <li><strong>Yetki nasil korunuyor?</strong> Controller seviyesinde rol/oturum filtreleri ve server-side kural kontrolleri var.</li>
+        <li><strong>Kapanmis taleplerde neden kilit var?</strong> Is kurali tutarliligi ve surec kapanisinin netligi icin.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>5) Sunumda Vurgulanacak Degerler</h2>
+      <ul>
+        <li><span class="check">Guvenilirlik:</span> Sessiz hata yerine acik hata yonetimi</li>
+        <li><span class="check">Is kurali netligi:</span> Kapanmis talep, kategori silme kurallari</li>
+        <li><span class="check">Kullanilabilirlik:</span> AJAX tabanli hizli yonetim aksiyonlari</li>
+        <li><span class="check">Bakim kolayligi:</span> Tek veri yolu, DB merkezli servisler</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>6) Kapanis Cumlesi Onerisi</h2>
+      <p>6. haftada plan hedeflerini tamamlayip, operasyonel riski yuksek alanlarda ek iyilestirmelerle sistemi daha guvenilir, yonetilebilir ve genisletilebilir hale getirdik.</p>
+    </div>
+  </div>
+</body>
+</html>

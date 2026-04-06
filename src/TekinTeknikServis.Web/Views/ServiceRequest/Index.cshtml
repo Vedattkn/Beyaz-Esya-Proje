@@ -37,18 +37,34 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="CihazTuru"><i class="fas fa-blender"></i> Cihaz Türü</label>
+                <label asp-for="CihazTuru"><i class="fas fa-layer-group"></i> Kategori</label>
                 <select asp-for="CihazTuru" class="form-input" style="width: 100%; height: auto;" required>
                     <option value="">Seçiniz</option>
-                    @if (ViewBag.DeviceTypes != null)
+                    @if (ViewBag.Categories != null)
                     {
-                        foreach (string dt in ViewBag.DeviceTypes)
+                        foreach (string category in ViewBag.Categories)
                         {
-                            <option value="@dt">@dt</option>
+                            <option value="@category">@category</option>
                         }
                     }
                 </select>
                 <span asp-validation-for="CihazTuru" class="error-text"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SecilenParcaId"><i class="fas fa-microchip"></i> Parça (İsteğe Bağlı)</label>
+                <select asp-for="SecilenParcaId" id="secilenParca" class="form-input" style="width: 100%; height: auto;">
+                    <option value="">Parça seçmek istemiyorum</option>
+                    @if (ViewBag.Parts != null)
+                    {
+                        foreach (TekinTeknikServis.Core.Services.Product p in ViewBag.Parts)
+                        {
+                            <option value="@p.Id" data-category="@p.Category">@p.Name (@p.Category)</option>
+                        }
+                    }
+                </select>
+                <small class="service-form-hint">Önce kategori seçerseniz, parça listesi o kategoriye göre filtrelenir.</small>
+                <span asp-validation-for="SecilenParcaId" class="error-text"></span>
             </div>
 
             <div class="form-group">
@@ -64,5 +80,44 @@
         </form>
     </div>
 </section>
+
+@section Scripts {
+    <script>
+        const categorySelect = document.getElementById('CihazTuru');
+        const partSelect = document.getElementById('secilenParca');
+
+        function filterPartsByCategory() {
+            if (!categorySelect || !partSelect) return;
+
+            const selectedCategory = categorySelect.value;
+            const currentPartValue = partSelect.value;
+            let hasCurrentOption = false;
+
+            for (const option of partSelect.options) {
+                if (!option.value) {
+                    option.hidden = false;
+                    continue;
+                }
+
+                const optionCategory = option.getAttribute('data-category') || '';
+                const visible = !selectedCategory || optionCategory.toLowerCase() === selectedCategory.toLowerCase();
+                option.hidden = !visible;
+                if (visible && option.value === currentPartValue) {
+                    hasCurrentOption = true;
+                }
+            }
+
+            if (!hasCurrentOption && currentPartValue) {
+                partSelect.value = '';
+            }
+        }
+
+        if (categorySelect) {
+            categorySelect.addEventListener('change', filterPartsByCategory);
+        }
+
+        filterPartsByCategory();
+    </script>
+}
 
 

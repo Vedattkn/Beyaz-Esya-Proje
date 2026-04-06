@@ -42,6 +42,12 @@
             <span asp-validation-for="PriceText" style="color: #dc2626; font-size: 0.8rem;"></span>
         </div>
 
+        <div class="form-field">
+            <label class="form-label">Kategori</label>
+            <input asp-for="Category" class="form-input" placeholder="Örn: Buzdolabı" required />
+            <span asp-validation-for="Category" style="color: #dc2626; font-size: 0.8rem;"></span>
+        </div>
+
         <div class="form-field" style="background: #f8fafc; padding: 1.5rem; border-radius: 12px; border: 1px dashed #cbd5e1;">
             <label class="form-label">Ürün Fotoğrafı (.jpg, .png)</label>
             <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 1rem;">

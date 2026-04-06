@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -40,6 +41,15 @@ namespace TekinTeknikServis.Core.Models
 
         [JsonPropertyName("kayit_tarihi")]
         public DateTime? KayitTarihi { get; set; }
+
+        [JsonIgnore]
+        public List<ServiceRequestMessage> SohbetMesajlari { get; set; } = new List<ServiceRequestMessage>();
+
+        [JsonIgnore]
+        public string? SecilenParcaId { get; set; }
+
+        [JsonIgnore]
+        public string? SecilenParcaAdi { get; set; }
     }
 }
 

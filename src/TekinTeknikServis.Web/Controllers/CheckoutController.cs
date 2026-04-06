@@ -18,30 +18,43 @@ namespace TekinTeknikServis.Core.Controllers
             var cart = HttpContext.Session.GetJson<List<CartItem>>(CartSessionKey) ?? new List<CartItem>();
             if (!cart.Any()) return RedirectToRoute("sepet");
 
-            ViewBag.TotalTry = cart.Sum(x => x.LineTotalTry);
-            return View(cart);
+            var model = new CheckoutViewModel
+            {
+                CartItems = cart
+            };
+
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Complete(string adSoyad, string kartNo, string sonKullanma, string cvc, string email, string sartlar)
+        public IActionResult Complete(CheckoutViewModel model)
         {
-            if (string.IsNullOrWhiteSpace(adSoyad) ||
-                string.IsNullOrWhiteSpace(kartNo) ||
-                string.IsNullOrWhiteSpace(sonKullanma) ||
-                string.IsNullOrWhiteSpace(cvc) ||
-                string.IsNullOrWhiteSpace(email) ||
-                string.IsNullOrWhiteSpace(sartlar))
+            var cart = HttpContext.Session.GetJson<List<CartItem>>(CartSessionKey) ?? new List<CartItem>();
+            if (!cart.Any())
             {
-                return BadRequest("Lütfen tüm alanları doldurun.");
+                TempData["CheckoutError"] = "Sepetiniz boş olduğu için ödeme alınamadı.";
+                return RedirectToRoute("sepet");
             }
 
-            var cart = HttpContext.Session.GetJson<List<CartItem>>(CartSessionKey) ?? new List<CartItem>();
-            var total = cart.Sum(x => x.LineTotalTry);
+            model.CartItems = cart;
+
+            // Temel normalize işlemleri; validasyon bu formatlar üzerinde çalışır.
+            model.KartNo = new string((model.KartNo ?? string.Empty).Where(char.IsDigit).ToArray());
+            model.Cvc = new string((model.Cvc ?? string.Empty).Where(char.IsDigit).ToArray());
+            model.SonKullanma = (model.SonKullanma ?? string.Empty).Trim();
+
+            if (!ModelState.IsValid)
+            {
+                return View("Index", model);
+            }
+
+            var total = model.TotalTry;
 
             HttpContext.Session.SetJson(CartSessionKey, new List<CartItem>());
-            ViewBag.Email = email;
+            ViewBag.Email = model.Email;
             ViewBag.TotalTry = total;
+            ViewBag.OrderNo = $"TTS-{DateTime.Now:yyyyMMddHHmmss}";
             return View("Success");
         }
     }

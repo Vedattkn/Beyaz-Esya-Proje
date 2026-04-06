@@ -2,65 +2,100 @@
 @{
     ViewBag.Title = "Taleplerim";
     Layout = "_Layout";
+    long? selectedId = ViewBag.SelectedId != null ? (long)ViewBag.SelectedId : null;
 }
 
-<section class="auth-section" style="padding: 40px 20px;">
-    <div class="page-container" style="max-width: 900px;">
-        <h2 style="text-align: center; color: #1e3a8a; margin-bottom: 30px; font-size: 32px;">Servis Taleplerim</h2>
+<section class="user-chat-page">
+    <div class="user-chat-shell">
+        <h2>Servis Taleplerim</h2>
+
+        @if (TempData["UserError"] != null)
+        {
+            <div class="validation-errors">@TempData["UserError"]</div>
+        }
+
+        @if (TempData["UserSuccess"] != null)
+        {
+            <div class="success-alert"><p>@TempData["UserSuccess"]</p></div>
+        }
 
         @if (Model == null || !Model.Any())
         {
-            <div style="background: white; padding: 40px; border-radius: 16px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-                <i class="fas fa-history" style="font-size: 48px; color: #cbd5e1; margin-bottom: 15px;"></i>
-                <p style="color: #64748b;">Henüz açmış olduğunuz bir servis talebi bulunmuyor.</p>
-                <a href="@Url.Action("Index", "ServiceRequest")" class="btn" style="margin-top: 20px;">Yeni Talep Oluştur</a>
+            <div class="user-chat-empty">
+                <i class="fas fa-history"></i>
+                <p>Henüz açmış olduğunuz bir servis talebi bulunmuyor.</p>
+                <a href="@Url.Action("Index", "ServiceRequest")" class="btn">Yeni Talep Oluştur</a>
             </div>
         }
         else
         {
-            <div style="display: flex; flex-direction: column; gap: 20px;">
+            <div class="user-chat-list">
                 @foreach (var r in Model)
                 {
-                    <div style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.04); border: 1px solid #f1f5f9; border-left: 6px solid @(r.Durum == "Onaylandı" ? "#10b981" : r.Durum == "Reddedildi" ? "#ef4444" : "#f59e0b");">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                    var isSelected = selectedId.HasValue && r.Id == selectedId.Value;
+                    var isClosed = string.Equals(r.Durum, "Kapatildi", StringComparison.OrdinalIgnoreCase)
+                        || string.Equals(r.Durum, "Cozuldu", StringComparison.OrdinalIgnoreCase)
+                        || string.Equals(r.Durum, "Kapali", StringComparison.OrdinalIgnoreCase)
+                        || string.Equals(r.Durum, "Kapalı", StringComparison.OrdinalIgnoreCase);
+                    <article class="user-chat-card @(isSelected ? "selected" : "")">
+                        <header class="user-chat-card-header">
                             <div>
-                                <h3 style="margin: 0; color: #1e293b; font-size: 20px;">@r.CihazTuru</h3>
-                                <span style="font-size: 13px; color: #94a3b8;"><i class="fas fa-clock"></i> Talep No: #@r.Id</span>
+                                <h3>@r.CihazTuru</h3>
+                                <div>Talep No: #@r.Id</div>
                             </div>
-                            <span style="background: #f1f5f9; padding: 6px 14px; border-radius: 99px; font-size: 13px; font-weight: 600; color: #475569;">Durum: @r.Durum</span>
-                        </div>
-                        
-                        <div style="background: #f8fafc; padding: 15px; border-radius: 10px; margin-bottom: 20px; color: #475569;">
-                            <strong style="font-size: 13px; color: #94a3b8; display: block; margin-bottom: 5px;">Arıza Açıklamanız:</strong>
-                            @r.ArizaAciklamasi
+                            <span class="user-chat-status">@r.Durum</span>
+                        </header>
+
+                        <div class="user-chat-thread">
+                            @if (r.SohbetMesajlari == null || !r.SohbetMesajlari.Any())
+                            {
+                                <div class="user-chat-empty">Mesaj geçmişi bulunamadı.</div>
+                            }
+                            else
+                            {
+                                @foreach (var msg in r.SohbetMesajlari)
+                                {
+                                    var roleClass = msg.Role == "admin" ? "admin" : msg.Role == "system" ? "system" : "user";
+                                    <div class="chat-bubble-row @roleClass">
+                                        <div class="chat-bubble @roleClass">
+                                            <div class="chat-bubble-text">@msg.Text</div>
+                                            <div class="chat-bubble-time">@msg.SentAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</div>
+                                        </div>
+                                    </div>
+                                }
+                            }
                         </div>
 
-                        @if (!string.IsNullOrWhiteSpace(r.AdminCevabi))
+                        @if (isClosed)
                         {
-                            <div style="background: #eff6ff; padding: 20px; border-radius: 12px; border-left: 4px solid #3b82f6; margin-bottom: 20px;">
-                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-                                    <i class="fas fa-user-cog" style="color: #3b82f6;"></i>
-                                    <strong style="color: #1e40af; font-size: 15px;">Tekin Teknik Servis Yanıtı:</strong>
-                                </div>
-                                <p style="margin: 0; color: #1e40af; line-height: 1.6;">@r.AdminCevabi</p>
-                            </div>
-
-                            <form asp-controller="ServiceRequest" asp-action="UpdateReply" method="post" style="display: flex; gap: 10px; margin-top: 15px;">
-                                @Html.AntiForgeryToken()
-                                <input type="hidden" name="id" value="@r.Id" />
-                                <input type="text" name="kullaniciCevabi" placeholder="Cevap veya ek açıklama yazın..." value="@r.KullaniciCevabi" class="form-input" style="flex: 1; border: 1px solid #e2e8f0;" />
-                                <button type="submit" class="form-btn-primary" style="padding: 10px 25px;">Gönder</button>
-                            </form>
+                            <div class="user-chat-empty">Bu talep kapatıldı. Artık mesaj gönderemezsiniz.</div>
                         }
                         else
                         {
-                            <div style="font-size: 14px; color: #94a3b8; font-style: italic; background: #f8fafc; padding: 12px; border-radius: 8px; text-align: center;">
-                                <i class="fas fa-spinner fa-spin"></i> Uzman ekibimiz talebinizi inceliyor, yanıt geldiğinde buradan mesajlaşabilirsiniz.
-                            </div>
+                            <form asp-controller="ServiceRequest" asp-action="UpdateReply" method="post" class="user-chat-reply-form">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@r.Id" />
+                                <input type="text" name="kullaniciCevabi" class="form-input" placeholder="Cevabınızı yazın..." />
+                                <button type="submit" class="btn">Cevap Ver</button>
+                            </form>
+
+                            <form asp-controller="ServiceRequest" asp-action="CloseAsSolved" method="post" class="user-chat-close-form">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@r.Id" />
+                                <button type="submit" class="btn user-chat-close-btn" onclick="return confirm('Bu talebi çözüldü olarak kapatmak istiyor musunuz?');">Çözüldü Olarak Kapat</button>
+                            </form>
                         }
-                    </div>
+                    </article>
                 }
             </div>
         }
     </div>
 </section>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.user-chat-thread').forEach(function (el) {
+            el.scrollTop = el.scrollHeight;
+        });
+    </script>
+}
