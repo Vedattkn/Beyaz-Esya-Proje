@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TekinTeknikServis.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+02929e5bea9840df979687378bbfbc09c0cc49f2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("TekinTeknikServis.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TekinTeknikServis.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

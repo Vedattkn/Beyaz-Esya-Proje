@@ -31,9 +31,9 @@
         <div class="admin-sticky-bar" style="position: sticky; top: 0; background: #1e293b; color: white; padding: 10px 20px; z-index: 1000; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); display: flex; justify-content: space-between; align-items: center;">
             <div style="font-weight: bold; font-size: 14px; letter-spacing: 1px;"><i class="fas fa-user-shield"></i> YÖNETİCİ PANELİ</div>
             <div style="display: flex; gap: 20px;">
-                <a href="@Url.Action("Products", "Admin")" style="color: #cbd5e1; text-decoration: none; font-size: 14px; transition: color 0.2s;"><i class="fas fa-box"></i> Ürün Listesi</a>
-                <a href="@Url.Action("ServiceRequests", "Admin")" style="color: #cbd5e1; text-decoration: none; font-size: 14px; transition: color 0.2s;"><i class="fas fa-list-alt"></i> Tüm Talepler</a>
-                <a href="@Url.Action("AddProduct", "Admin")" style="color: #cbd5e1; text-decoration: none; font-size: 14px; transition: color 0.2s;"><i class="fas fa-plus"></i> Ürün Ekle</a>
+                <a href="@Url.Action("Products", "Admin")" style="color: #cbd5e1; text-decoration: none; font-size: 14px; transition: color 0.2s;"><i class="fas fa-box"></i> Urun Listesi</a>
+                <a href="@Url.Action("ServiceRequests", "Admin")" style="color: #cbd5e1; text-decoration: none; font-size: 14px; transition: color 0.2s;"><i class="fas fa-list-alt"></i> Tum Talepler</a>
+                <a href="@Url.Action("AddProduct", "Admin")" style="color: #cbd5e1; text-decoration: none; font-size: 14px; transition: color 0.2s;"><i class="fas fa-plus"></i> Urun Ekle</a>
             </div>
         </div>
     }
@@ -46,7 +46,7 @@
         <h1>Tekin Teknik Servis</h1>
     </header>
 
-    <nav>
+    <nav class="site-nav">
         @{
             var ctrl = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
             var act = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
@@ -61,11 +61,18 @@
                 userSession = System.Text.Json.JsonSerializer.Deserialize<TekinTeknikServis.Core.Models.UserSession>(currentUser);
             }
         }
-        <a href="@Url.RouteUrl("home")" class="@(IsActive("Home", "Index") ? "active" : "")">Ana Sayfa</a>
-        <a href="@Url.RouteUrl("hizmetler")" class="@(IsActive("Home", "Hizmetler") ? "active" : "")">Hizmetler</a>
-        <a href="@Url.RouteUrl("urunler")" class="@(IsActive("Home", "Urunler") || IsActive("Products", "Detail") ? "active" : "")">Ürünler</a>
-        <a href="@Url.RouteUrl("iletisim")" class="@(IsActive("Home", "Iletisim") ? "active" : "")">İletişim</a>
-        <a href="@Url.RouteUrl("servis-talep")" class="@(IsActive("ServiceRequest") ? "active" : "")">Servis Talep</a>
+        <button class="nav-toggle" type="button" aria-label="Menü" aria-expanded="false">
+            <span class="nav-toggle-bar"></span>
+            <span class="nav-toggle-bar"></span>
+            <span class="nav-toggle-bar"></span>
+        </button>
+        <div class="nav-links">
+            <a href="@Url.RouteUrl("home")" class="@(IsActive("Home", "Index") ? "active" : "")">Ana Sayfa</a>
+            <a href="@Url.RouteUrl("hizmetler")" class="@(IsActive("Home", "Hizmetler") ? "active" : "")">Hizmetler</a>
+            <a href="@Url.RouteUrl("urunler")" class="@(IsActive("Home", "Urunler") || IsActive("Products", "Detail") ? "active" : "")">Ürünler</a>
+            <a href="@Url.RouteUrl("iletisim")" class="@(IsActive("Home", "Iletisim") ? "active" : "")">İletişim</a>
+            <a href="@Url.RouteUrl("servis-talep")" class="@(IsActive("ServiceRequest") ? "active" : "")">Servis Talep</a>
+        </div>
 
         <span class="auth-nav-section">
             @if (userSession != null)
@@ -99,9 +106,56 @@
         @RenderBody()
     </main>
 
-    <footer>
-        <p>© 2026 Tekin Teknik Servis | Tüm Hakları Saklıdır</p>
+    <div class="floating-contact-widget" aria-label="Hizli iletisim">
+        <a class="floating-contact-item call" href="tel:05414574609" aria-label="05414574609 numarasini ara">
+            <i class="fas fa-phone"></i>
+            <span class="sr-only">Ara</span>
+        </a>
+        <a class="floating-contact-item whatsapp" href="https://wa.me/905414574609" target="_blank" rel="noopener" aria-label="WhatsApp ile mesaj gonder">
+            <i class="fab fa-whatsapp"></i>
+            <span class="sr-only">WhatsApp</span>
+        </a>
+    </div>
+
+    <footer class="site-footer">
+        <div class="page-container footer-grid">
+            <div class="footer-column">
+                <h3><i class="fas fa-screwdriver-wrench"></i> Tekin Teknik Servis</h3>
+                <p>Güvenli bakım, hızlı servis ve garantili onarım çözümleriyle yanınızdayız.</p>
+            </div>
+            <div class="footer-column">
+                <h4><i class="fas fa-layer-group"></i> Hizmetler</h4>
+                <ul class="footer-services">
+                    <li>Tüm Beyaz Eşya Servis Hizmetleri</li>
+                    <li>Beyaz Eşya Tamir ve Bakım Hizmetleri</li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4><i class="fas fa-phone"></i> İletişim</h4>
+                <ul>
+                    <li><i class="fas fa-phone"></i> 0541 457 46 09</li>
+                    <li><i class="fas fa-location-dot"></i> Van / İpekyolu / Merkez</li>
+                    <li><i class="fas fa-envelope"></i> vedattkn8@gmail.com</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2026 Tekin Teknik Servis | Tüm Hakları Saklıdır
+        </div>
     </footer>
     @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const nav = document.querySelector(".site-nav");
+            const toggle = document.querySelector(".nav-toggle");
+            if (!nav || !toggle) {
+                return;
+            }
+            toggle.addEventListener("click", () => {
+                const isOpen = nav.classList.toggle("nav-open");
+                toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+            });
+        });
+    </script>
 </body>
 </html>

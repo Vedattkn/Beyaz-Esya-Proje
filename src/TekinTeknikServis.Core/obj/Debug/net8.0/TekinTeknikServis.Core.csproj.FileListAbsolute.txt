@@ -10,3 +10,6 @@ C:\Users\ilhan\OneDrive\Desktop\sistem analiz proje\dotnet-mvc5\src\TekinTeknikS
 C:\Users\ilhan\OneDrive\Desktop\sistem analiz proje\dotnet-mvc5\src\TekinTeknikServis.Core\obj\Debug\net8.0\refint\TekinTeknikServis.Core.dll
 C:\Users\ilhan\OneDrive\Desktop\sistem analiz proje\dotnet-mvc5\src\TekinTeknikServis.Core\obj\Debug\net8.0\TekinTeknikServis.Core.pdb
 C:\Users\ilhan\OneDrive\Desktop\sistem analiz proje\dotnet-mvc5\src\TekinTeknikServis.Core\obj\Debug\net8.0\ref\TekinTeknikServis.Core.dll
+C:\Users\ilhan\OneDrive\Desktop\sistem analiz proje\dotnet-mvc5\src\TekinTeknikServis.Core\obj\Debug\net8.0\TekinTeknikServis.Core.csproj.AssemblyReference.cache
+C:\Users\ilhan\OneDrive\Desktop\sistem analiz proje\dotnet-mvc5\src\TekinTeknikServis.Core\bin\Debug\net8.0\TekinTeknikServis.Core.runtimeconfig.json
+C:\Users\ilhan\OneDrive\Desktop\sistem analiz proje\dotnet-mvc5\src\TekinTeknikServis.Core\obj\Debug\net8.0\TekinTeknikServis.Core.genruntimeconfig.cache

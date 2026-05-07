@@ -1,0 +1,239 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R 6 0 R] /Count 2 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+5 0 obj
+<< /Length 3769 >>
+stream
+BT
+/F1 14 Tf
+50 820 Td (9. Hafta Raporu \\(Detayli\\)) Tj
+ET
+BT
+/F1 10 Tf
+50 798 Td () Tj
+ET
+BT
+50 784 Td (Kapsam: Admin paneli ve guvenlik odakli gelistirmeler, urun/stok yonetimi, servis talepleri kontrolu ve UI modernizasyonu.) Tj
+ET
+BT
+50 770 Td (Tarih: 05.05.2026) Tj
+ET
+BT
+50 756 Td () Tj
+ET
+BT
+50 742 Td (KPI:) Tj
+ET
+BT
+50 728 Td (- 100% admin ve guvenlik hedefleri kapanis) Tj
+ET
+BT
+50 714 Td (- 1 stok yonetimi katmani eklendi) Tj
+ET
+BT
+50 700 Td (- 3+ UI/UX bolumlerinde premium tasarim) Tj
+ET
+BT
+50 686 Td (- CSRF korumasi admin aksiyonlarinda etkin) Tj
+ET
+BT
+50 672 Td () Tj
+ET
+BT
+50 658 Td (YoneticI Ozeti:) Tj
+ET
+BT
+50 644 Td (- Admin paneli urun ekleme/silme/guncelleme akislarinda stok yonetimi tamamlandi.) Tj
+ET
+BT
+50 630 Td (- Admin uzerindeki kritik POST aksiyonlari CSRF dogrulamasi ile guclendirildi.) Tj
+ET
+BT
+50 616 Td (- Hizmetler ve ana sayfa bolumleri modern CTA ve premium kart tasarimi ile yenilendi.) Tj
+ET
+BT
+50 602 Td (- Trust bar, ikonlar, hero ve footer daha profesyonel ve satis odakli hale getirildi.) Tj
+ET
+BT
+50 588 Td () Tj
+ET
+BT
+50 574 Td (Plana Gore Tamamlananlar:) Tj
+ET
+BT
+50 560 Td (- Admin rol kontrolu ve servis talepleri yonetimi \\(mevcut altyapi uzerinden guclendirildi\\).) Tj
+ET
+BT
+50 546 Td (- Urun ekleme/silme/guncelleme akislarina stok alanlari eklendi.) Tj
+ET
+BT
+50 532 Td (- Stok yonetimi \\(model + DB self-heal + admin form\\) tamamlandi.) Tj
+ET
+BT
+50 518 Td (- Guvenlik onlemleri \\(CSRF dogrulamalari\\) tamamlandi.) Tj
+ET
+BT
+50 504 Td () Tj
+ET
+BT
+50 490 Td (Ekstra Kazanimlar:) Tj
+ET
+BT
+50 476 Td (- Hizmetler sayfasina featured kart + rozet + CTA bolumu eklendi.) Tj
+ET
+BT
+50 462 Td (- Ana sayfa hero ve trust bar modernlestirildi, yeni aksan renkleri uygulandi.) Tj
+ET
+BT
+50 448 Td (- Footer 3 kolonlu, ikonlu ve koyu arka planli hale getirildi.) Tj
+ET
+BT
+50 434 Td (- Marka kartlari ve servis kartlari premium hover/gradient gorsellige kavustu.) Tj
+ET
+BT
+50 420 Td () Tj
+ET
+BT
+50 406 Td (Kronolojik Akis:) Tj
+ET
+BT
+50 392 Td (- Ana sayfa hero arka plan, overlay ve CTA iyilestirmeleri yapildi.) Tj
+ET
+BT
+50 378 Td (- Trust bar ikonlari ve kisa metinler guclendirildi.) Tj
+ET
+BT
+50 364 Td (- Hangi Markalar bolumu premium kart tasarimiyla yenilendi.) Tj
+ET
+BT
+50 350 Td (- Hizmetler sayfasinda featured kart, hover ve ikon tasarimi guncellendi.) Tj
+ET
+BT
+50 336 Td (- Hizmetler altina CTA bolumu eklendi.) Tj
+ET
+BT
+50 322 Td (- Footer 3 kolonlu yapiya tasindi ve koyu tema verildi.) Tj
+ET
+BT
+50 308 Td (- Urun modeline stok alani eklendi ve Supabase DB self-heal ile desteklendi.) Tj
+ET
+BT
+50 294 Td (- Admin urun formlarina stok girisi ve listede stok gorunumu eklendi.) Tj
+ET
+BT
+50 280 Td (- Admin urun CRUD POST aksiyonlari CSRF korumasi ile guclendirildi.) Tj
+ET
+BT
+50 266 Td () Tj
+ET
+BT
+50 252 Td (Modul Bazli Detay:) Tj
+ET
+BT
+50 238 Td (- Admin / Urun: stok alani, listede stok gorunumu, formlarda stok input.) Tj
+ET
+BT
+50 224 Td (- Guvenlik: admin create/update/delete aksiyonlarina CSRF dogrulama.) Tj
+ET
+BT
+50 210 Td (- UI/UX: hero, trust bar, footer, hizmet kartlari ve CTA yenilendi.) Tj
+ET
+BT
+50 196 Td (- DB / Supabase: stock kolonu self-heal + CRUD alan entegrasyonu.) Tj
+ET
+BT
+50 182 Td () Tj
+ET
+BT
+50 168 Td (Guncel Is Kurallari:) Tj
+ET
+BT
+50 154 Td (- Stok degeri negatif olamaz.) Tj
+ET
+BT
+50 140 Td (- Admin urun aksiyonlari CSRF token ile korunur.) Tj
+ET
+BT
+50 126 Td (- Hizmetler sayfasinda featured kart onceliklidir.) Tj
+ET
+BT
+50 112 Td () Tj
+ET
+BT
+50 98 Td (Mimari Sonuc:) Tj
+ET
+BT
+50 84 Td (- Stok alani product modeline entegre edildi ve DB tarafinda kalici hale getirildi.) Tj
+ET
+BT
+50 70 Td (- Admin aksiyonlari guvenlik acisindan bir ust seviyeye tasindi.) Tj
+ET
+BT
+50 56 Td (- On yuzde premium hissi guclendiren tutarli bir tasarim dili olustu.) Tj
+ET
+BT
+50 42 Td () Tj
+ET
+BT
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R >> >> /Contents 7 0 R >>
+endobj
+7 0 obj
+<< /Length 582 >>
+stream
+BT
+/F1 14 Tf
+50 820 Td (Devam Eden 9. Hafta Detaylari) Tj
+ET
+BT
+/F1 10 Tf
+50 798 Td (- Stok kolonu DB tarafinda yoksa otomatik olarak eklenir.) Tj
+ET
+BT
+50 784 Td (- CSRF dogrulamalarinin etkin olmasi icin formlarda token bulunmalidir.) Tj
+ET
+BT
+50 770 Td (- Uygulama tasarim guncellemeleri tum sayfalarda tutarli gorunur.) Tj
+ET
+BT
+50 756 Td () Tj
+ET
+BT
+50 742 Td (Genel Sonuc:) Tj
+ET
+BT
+50 728 Td (- 9. hafta kapsaminda admin paneli ve guvenlik hedefleri tamamlandi.) Tj
+ET
+BT
+50 714 Td (- Stok yonetimi ve UI modernizasyonu ile operasyonel ve kullanici deneyimi iyilesti.) Tj
+ET
+endstream
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000127 00000 n 
+0000000253 00000 n 
+0000000323 00000 n 
+0000004143 00000 n 
+0000004269 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R >>
+startxref
+4901
+%EOF

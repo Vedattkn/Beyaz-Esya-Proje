@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using TekinTeknikServis.Core.Data;
 using TekinTeknikServis.Core.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,8 @@ builder.Services.AddSession(options =>
 });
 
 builder.Services.AddHttpClient();
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("SupabaseDb")));
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddHttpClient<SupabaseService>();
@@ -47,6 +51,8 @@ app.MapControllerRoute(name: "giris", pattern: "giris", defaults: new { controll
 app.MapControllerRoute(name: "kayit", pattern: "kayit", defaults: new { controller = "Account", action = "Register" });
 app.MapControllerRoute(name: "profil", pattern: "profil", defaults: new { controller = "Account", action = "Profile" });
 app.MapControllerRoute(name: "cikis", pattern: "cikis", defaults: new { controller = "Account", action = "Logout" });
+
+app.MapControllers();
 
 app.MapControllerRoute(
         name: "default",

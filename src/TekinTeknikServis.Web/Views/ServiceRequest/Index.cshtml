@@ -52,6 +52,12 @@
             </div>
 
             <div class="form-group">
+                <label asp-for="Adres"><i class="fas fa-map-signs"></i> Adres</label>
+                <textarea asp-for="Adres" rows="3" placeholder="Adres bilginizi girin" required></textarea>
+                <span asp-validation-for="Adres" class="error-text"></span>
+            </div>
+
+            <div class="form-group">
                 <label asp-for="SecilenParcaId"><i class="fas fa-microchip"></i> Parça (İsteğe Bağlı)</label>
                 <select asp-for="SecilenParcaId" id="secilenParca" class="form-input" style="width: 100%; height: auto;">
                     <option value="">Parça seçmek istemiyorum</option>
@@ -118,6 +124,7 @@
 
         filterPartsByCategory();
     </script>
+
 }
 
 

@@ -176,6 +176,42 @@ limit 1";
             throw new InvalidOperationException("public.urunler tablosunda 'category' veya 'kategori' kolonu bulunamadı.");
         }
 
+        private async Task<string> ResolveUrunlerStockColumnAsync(NpgsqlConnection conn)
+        {
+            const string sql = @"select column_name
+from information_schema.columns
+where table_schema = 'public'
+  and table_name = 'urunler'
+  and column_name in ('stock','stok')
+order by case when column_name = 'stock' then 0 else 1 end
+limit 1";
+
+            await using var cmd = new NpgsqlCommand(sql, conn);
+            var result = await cmd.ExecuteScalarAsync().ConfigureAwait(false);
+            var value = result?.ToString()?.Trim().ToLowerInvariant();
+
+            if (value == "stock" || value == "stok")
+            {
+                return value;
+            }
+
+            const string alterSql = "alter table public.urunler add column if not exists stock integer default 0";
+            await using (var alterCmd = new NpgsqlCommand(alterSql, conn))
+            {
+                await alterCmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+            }
+
+            await using var recheckCmd = new NpgsqlCommand(sql, conn);
+            var recheck = await recheckCmd.ExecuteScalarAsync().ConfigureAwait(false);
+            var recheckValue = recheck?.ToString()?.Trim().ToLowerInvariant();
+            if (recheckValue == "stock" || recheckValue == "stok")
+            {
+                return recheckValue;
+            }
+
+            throw new InvalidOperationException("public.urunler tablosunda 'stock' veya 'stok' kolonu bulunamadı.");
+        }
+
         private async Task<List<Product>> TryGetProductsFromDbAsync()
         {
             if (string.IsNullOrWhiteSpace(_dbConnectionString))
@@ -186,8 +222,9 @@ limit 1";
             await conn.OpenAsync().ConfigureAwait(false);
 
             var categoryColumn = await ResolveUrunlerCategoryColumnAsync(conn).ConfigureAwait(false);
+            var stockColumn = await ResolveUrunlerStockColumnAsync(conn).ConfigureAwait(false);
 
-            var sql = $@"select id, name, description, price_text, image_url, {categoryColumn} as category, features
+            var sql = $@"select id, name, description, price_text, image_url, {categoryColumn} as category, {stockColumn} as stock, features
 from public.urunler
 order by name asc";
 
@@ -204,7 +241,8 @@ order by name asc";
                     PriceText = reader.IsDBNull(3) ? string.Empty : reader.GetString(3),
                     ImageUrl = reader.IsDBNull(4) ? string.Empty : reader.GetString(4),
                     Category = reader.IsDBNull(5) ? string.Empty : reader.GetString(5),
-                    Features = ParseFeaturesValue(reader.IsDBNull(6) ? null : reader.GetValue(6))
+                    Stock = reader.IsDBNull(6) ? 0 : Convert.ToInt32(reader.GetValue(6)),
+                    Features = ParseFeaturesValue(reader.IsDBNull(7) ? null : reader.GetValue(7))
                 };
 
                 list.Add(product);
@@ -223,8 +261,9 @@ order by name asc";
                 await conn.OpenAsync().ConfigureAwait(false);
 
                 var categoryColumn = await ResolveUrunlerCategoryColumnAsync(conn).ConfigureAwait(false);
+                var stockColumn = await ResolveUrunlerStockColumnAsync(conn).ConfigureAwait(false);
 
-                var sql = $@"select id, name, description, price_text, image_url, {categoryColumn} as category, features
+                var sql = $@"select id, name, description, price_text, image_url, {categoryColumn} as category, {stockColumn} as stock, features
 from public.urunler
 where id = @id
 limit 1";
@@ -243,7 +282,8 @@ limit 1";
                     PriceText = reader.IsDBNull(3) ? string.Empty : reader.GetString(3),
                     ImageUrl = reader.IsDBNull(4) ? string.Empty : reader.GetString(4),
                     Category = reader.IsDBNull(5) ? string.Empty : reader.GetString(5),
-                    Features = ParseFeaturesValue(reader.IsDBNull(6) ? null : reader.GetValue(6))
+                    Stock = reader.IsDBNull(6) ? 0 : Convert.ToInt32(reader.GetValue(6)),
+                    Features = ParseFeaturesValue(reader.IsDBNull(7) ? null : reader.GetValue(7))
                 };
             }
             catch
@@ -658,6 +698,14 @@ values
             return await TryGetServiceRequestsFromDbAsync().ConfigureAwait(false);
         }
 
+        public async Task<ServiceRequestForm?> GetServiceRequestByIdForAdminAsync(long id)
+        {
+            if (string.IsNullOrWhiteSpace(_dbConnectionString))
+                throw new InvalidOperationException("ConnectionStrings:SupabaseDb ayarlı değil.");
+
+            return await GetServiceRequestByIdAsync(id).ConfigureAwait(false);
+        }
+
         public async Task<List<ServiceRequestForm>> GetUserRequestsByUidAsync(string uid)
         {
             if (string.IsNullOrWhiteSpace(_dbConnectionString))
@@ -833,9 +881,10 @@ from public.servis_talepleri";
             await conn.OpenAsync().ConfigureAwait(false);
 
             var categoryColumn = await ResolveUrunlerCategoryColumnAsync(conn).ConfigureAwait(false);
+            var stockColumn = await ResolveUrunlerStockColumnAsync(conn).ConfigureAwait(false);
 
-            var sql = $@"insert into public.urunler(id,name,description,price_text,image_url,{categoryColumn},features)
-values (@id,@name,@description,@price_text,@image_url,@category,cast(@features as jsonb))";
+            var sql = $@"insert into public.urunler(id,name,description,price_text,image_url,{categoryColumn},{stockColumn},features)
+values (@id,@name,@description,@price_text,@image_url,@category,@stock,cast(@features as jsonb))";
 
             await using var cmd = new NpgsqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("id", product.Id ?? string.Empty);
@@ -844,6 +893,7 @@ values (@id,@name,@description,@price_text,@image_url,@category,cast(@features a
             cmd.Parameters.AddWithValue("price_text", product.PriceText ?? string.Empty);
             cmd.Parameters.AddWithValue("image_url", product.ImageUrl ?? string.Empty);
             cmd.Parameters.AddWithValue("category", product.Category ?? string.Empty);
+            cmd.Parameters.AddWithValue("stock", product.Stock);
             cmd.Parameters.AddWithValue("features", JsonSerializer.Serialize(product.Features ?? new List<string>()));
 
             await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
@@ -860,6 +910,7 @@ values (@id,@name,@description,@price_text,@image_url,@category,cast(@features a
             await conn.OpenAsync().ConfigureAwait(false);
 
             var categoryColumn = await ResolveUrunlerCategoryColumnAsync(conn).ConfigureAwait(false);
+            var stockColumn = await ResolveUrunlerStockColumnAsync(conn).ConfigureAwait(false);
 
             var sql = $@"update public.urunler
 set name=@name,
@@ -867,6 +918,7 @@ set name=@name,
     price_text=@price_text,
     image_url=@image_url,
     {categoryColumn}=@category,
+    {stockColumn}=@stock,
     features=cast(@features as jsonb)
 where id=@id";
 
@@ -877,6 +929,7 @@ where id=@id";
             cmd.Parameters.AddWithValue("price_text", product.PriceText ?? string.Empty);
             cmd.Parameters.AddWithValue("image_url", product.ImageUrl ?? string.Empty);
             cmd.Parameters.AddWithValue("category", product.Category ?? string.Empty);
+            cmd.Parameters.AddWithValue("stock", product.Stock);
             cmd.Parameters.AddWithValue("features", JsonSerializer.Serialize(product.Features ?? new List<string>()));
 
             var rows = await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
@@ -1134,18 +1187,206 @@ where id=@id";
                 if (exists != null) return false;
             }
 
-            const string insertSql = @"insert into public.kullanicilar(ad_soyad,email,telefon,sifre,is_admin)
-values(@ad_soyad,@email,@telefon,@sifre,@is_admin)";
+            const string insertSql = @"insert into public.kullanicilar(ad_soyad,email,sifre,is_admin)
+values(@ad_soyad,@email,@sifre,@is_admin)";
 
             await using var insertCmd = new NpgsqlCommand(insertSql, conn);
             insertCmd.Parameters.AddWithValue("ad_soyad", model.AdSoyad ?? string.Empty);
             insertCmd.Parameters.AddWithValue("email", model.Email ?? string.Empty);
-            insertCmd.Parameters.AddWithValue("telefon", model.Telefon ?? string.Empty);
             insertCmd.Parameters.AddWithValue("sifre", BCrypt.Net.BCrypt.HashPassword(model.Sifre ?? string.Empty));
             insertCmd.Parameters.AddWithValue("is_admin", false);
 
             var rows = await insertCmd.ExecuteNonQueryAsync().ConfigureAwait(false);
             return rows > 0;
+        }
+
+        // ─── Kullanıcı Yönetimi (CRUD) ──────────────────────────────
+        public async Task<List<AppUser>> GetAllUsersAsync()
+        {
+            if (string.IsNullOrWhiteSpace(_dbConnectionString))
+                throw new InvalidOperationException("ConnectionStrings:SupabaseDb ayarlı değil.");
+
+            var users = new List<AppUser>();
+            await using var conn = new NpgsqlConnection(_dbConnectionString);
+            await conn.OpenAsync().ConfigureAwait(false);
+
+            const string sql = @"select id, ad_soyad, email, telefon, sifre, is_admin, olusturma_tarihi
+from public.kullanicilar
+order by id asc";
+
+            await using var cmd = new NpgsqlCommand(sql, conn);
+            await using var reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false);
+
+            while (await reader.ReadAsync().ConfigureAwait(false))
+            {
+                users.Add(MapAppUser(reader));
+            }
+
+            return users;
+        }
+
+        public async Task<AppUser?> GetUserByIdAsync(long id)
+        {
+            if (string.IsNullOrWhiteSpace(_dbConnectionString))
+                throw new InvalidOperationException("ConnectionStrings:SupabaseDb ayarlı değil.");
+
+            await using var conn = new NpgsqlConnection(_dbConnectionString);
+            await conn.OpenAsync().ConfigureAwait(false);
+
+            const string sql = @"select id, ad_soyad, email, telefon, sifre, is_admin, olusturma_tarihi
+from public.kullanicilar
+where id = @id
+limit 1";
+
+            await using var cmd = new NpgsqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("id", id);
+
+            await using var reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false);
+            if (!await reader.ReadAsync().ConfigureAwait(false)) return null;
+
+            return MapAppUser(reader);
+        }
+
+        public async Task<long> CreateUserAsync(AppUser user)
+        {
+            if (user == null) throw new ArgumentNullException(nameof(user));
+            if (string.IsNullOrWhiteSpace(_dbConnectionString))
+                throw new InvalidOperationException("ConnectionStrings:SupabaseDb ayarlı değil.");
+
+            await using var conn = new NpgsqlConnection(_dbConnectionString);
+            await conn.OpenAsync().ConfigureAwait(false);
+
+            const string existsSql = "select 1 from public.kullanicilar where lower(email)=lower(@email) limit 1";
+            await using (var existsCmd = new NpgsqlCommand(existsSql, conn))
+            {
+                existsCmd.Parameters.AddWithValue("email", user.Email ?? string.Empty);
+                var exists = await existsCmd.ExecuteScalarAsync().ConfigureAwait(false);
+                if (exists != null)
+                {
+                    throw new InvalidOperationException("Bu e-posta adresi zaten kayıtlı.");
+                }
+            }
+
+            const string insertSql = @"insert into public.kullanicilar(ad_soyad,email,telefon,sifre,is_admin)
+values(@ad_soyad,@email,@telefon,@sifre,@is_admin)
+returning id";
+
+            await using var insertCmd = new NpgsqlCommand(insertSql, conn);
+            insertCmd.Parameters.AddWithValue("ad_soyad", user.AdSoyad ?? string.Empty);
+            insertCmd.Parameters.AddWithValue("email", user.Email ?? string.Empty);
+            insertCmd.Parameters.AddWithValue("telefon", user.Telefon ?? string.Empty);
+            insertCmd.Parameters.AddWithValue("sifre", BCrypt.Net.BCrypt.HashPassword(user.Sifre ?? string.Empty));
+            insertCmd.Parameters.AddWithValue("is_admin", user.IsAdmin);
+
+            var result = await insertCmd.ExecuteScalarAsync().ConfigureAwait(false);
+            if (result == null || result == DBNull.Value)
+            {
+                throw new InvalidOperationException("Kullanıcı oluşturulamadı.");
+            }
+
+            return Convert.ToInt64(result);
+        }
+
+        public async Task UpdateUserAsync(AppUser user)
+        {
+            if (user == null) throw new ArgumentNullException(nameof(user));
+            if (user.Id <= 0) throw new ArgumentException("Geçersiz kullanıcı id.", nameof(user));
+            if (string.IsNullOrWhiteSpace(_dbConnectionString))
+                throw new InvalidOperationException("ConnectionStrings:SupabaseDb ayarlı değil.");
+
+            await using var conn = new NpgsqlConnection(_dbConnectionString);
+            await conn.OpenAsync().ConfigureAwait(false);
+
+            const string updateWithoutPasswordSql = @"update public.kullanicilar
+set ad_soyad = @ad_soyad,
+    email = @email,
+    telefon = @telefon,
+    is_admin = @is_admin
+where id = @id";
+
+            const string updateWithPasswordSql = @"update public.kullanicilar
+set ad_soyad = @ad_soyad,
+    email = @email,
+    telefon = @telefon,
+    is_admin = @is_admin,
+    sifre = @sifre
+where id = @id";
+
+            var updateSql = string.IsNullOrWhiteSpace(user.Sifre)
+                ? updateWithoutPasswordSql
+                : updateWithPasswordSql;
+
+            await using var cmd = new NpgsqlCommand(updateSql, conn);
+            cmd.Parameters.AddWithValue("id", user.Id);
+            cmd.Parameters.AddWithValue("ad_soyad", user.AdSoyad ?? string.Empty);
+            cmd.Parameters.AddWithValue("email", user.Email ?? string.Empty);
+            cmd.Parameters.AddWithValue("telefon", user.Telefon ?? string.Empty);
+            cmd.Parameters.AddWithValue("is_admin", user.IsAdmin);
+            if (!string.IsNullOrWhiteSpace(user.Sifre))
+            {
+                cmd.Parameters.AddWithValue("sifre", BCrypt.Net.BCrypt.HashPassword(user.Sifre));
+            }
+
+            var rows = await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+            if (rows <= 0)
+            {
+                throw new InvalidOperationException("Güncellenecek kullanıcı bulunamadı.");
+            }
+        }
+
+        public async Task DeleteUserAsync(long id)
+        {
+            if (id <= 0) throw new ArgumentException("Geçersiz kullanıcı id.", nameof(id));
+            if (string.IsNullOrWhiteSpace(_dbConnectionString))
+                throw new InvalidOperationException("ConnectionStrings:SupabaseDb ayarlı değil.");
+
+            await using var conn = new NpgsqlConnection(_dbConnectionString);
+            await conn.OpenAsync().ConfigureAwait(false);
+
+            const string sql = "delete from public.kullanicilar where id = @id";
+            await using var cmd = new NpgsqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("id", id);
+
+            var rows = await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+            if (rows <= 0)
+            {
+                throw new InvalidOperationException("Silinecek kullanıcı bulunamadı.");
+            }
+        }
+
+        private static AppUser MapAppUser(NpgsqlDataReader reader)
+        {
+            var idOrd = TryGetOrdinal(reader, "id");
+            var adOrd = TryGetOrdinal(reader, "ad_soyad");
+            var emailOrd = TryGetOrdinal(reader, "email");
+            var telOrd = TryGetOrdinal(reader, "telefon");
+            var sifreOrd = TryGetOrdinal(reader, "sifre");
+            var isAdminOrd = TryGetOrdinal(reader, "is_admin");
+            var olusturmaOrd = TryGetOrdinal(reader, "olusturma_tarihi");
+
+            return new AppUser
+            {
+                Id = idOrd.HasValue && !reader.IsDBNull(idOrd.Value)
+                    ? Convert.ToInt64(reader.GetValue(idOrd.Value))
+                    : 0,
+                AdSoyad = adOrd.HasValue && !reader.IsDBNull(adOrd.Value)
+                    ? reader.GetValue(adOrd.Value).ToString() ?? string.Empty
+                    : string.Empty,
+                Email = emailOrd.HasValue && !reader.IsDBNull(emailOrd.Value)
+                    ? reader.GetValue(emailOrd.Value).ToString() ?? string.Empty
+                    : string.Empty,
+                Telefon = telOrd.HasValue && !reader.IsDBNull(telOrd.Value)
+                    ? reader.GetValue(telOrd.Value).ToString() ?? string.Empty
+                    : string.Empty,
+                Sifre = sifreOrd.HasValue && !reader.IsDBNull(sifreOrd.Value)
+                    ? reader.GetValue(sifreOrd.Value).ToString() ?? string.Empty
+                    : string.Empty,
+                IsAdmin = isAdminOrd.HasValue && !reader.IsDBNull(isAdminOrd.Value)
+                    && Convert.ToBoolean(reader.GetValue(isAdminOrd.Value)),
+                OlusturmaTarihi = olusturmaOrd.HasValue && !reader.IsDBNull(olusturmaOrd.Value)
+                    ? Convert.ToDateTime(reader.GetValue(olusturmaOrd.Value))
+                    : null
+            };
         }
     }
 }

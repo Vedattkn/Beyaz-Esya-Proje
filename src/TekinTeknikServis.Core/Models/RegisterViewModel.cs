@@ -14,12 +14,6 @@ namespace TekinTeknikServis.Core.Models
         [Display(Name = "E-posta")]
         public string Email { get; set; } = "";
 
-        [Required(ErrorMessage = "Telefon zorunludur.")]
-        [RegularExpression(@"^[0-9]{11}$", ErrorMessage = "Telefon numarası 11 haneli olmalı ve sadece rakamlardan oluşmalıdır (Örn: 05xxxxxxxxx).")]
-        [StringLength(11, MinimumLength = 11, ErrorMessage = "Telefon numarası tam 11 hane olmalıdır.")]
-        [Display(Name = "Telefon")]
-        public string Telefon { get; set; } = "";
-
         [Required(ErrorMessage = "Şifre zorunludur.")]
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Şifre en az 6 karakter olmalıdır.")]
         [Display(Name = "Şifre")]

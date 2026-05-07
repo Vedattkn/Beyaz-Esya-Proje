@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ilhan\\OneDrive\\Desktop\\sistem analiz proje\\dotnet-mvc5\\src\\TekinTeknikServis.Web\\TekinTeknikServis.Web.csproj": {}
+    "C:\\Users\\ilhan\\OneDrive\\Desktop\\sistem analiz proje\\dotnet-mvc5\\src\\TekinTeknikServis.web\\TekinTeknikServis.Web.csproj": {}
   },
   "projects": {
     "C:\\Users\\ilhan\\OneDrive\\Desktop\\sistem analiz proje\\dotnet-mvc5\\src\\TekinTeknikServis.Core\\TekinTeknikServis.Core.csproj": {
@@ -43,6 +43,30 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.11, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.11, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[8.0.11, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[7.5.1, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -66,14 +90,14 @@
         }
       }
     },
-    "C:\\Users\\ilhan\\OneDrive\\Desktop\\sistem analiz proje\\dotnet-mvc5\\src\\TekinTeknikServis.Web\\TekinTeknikServis.Web.csproj": {
+    "C:\\Users\\ilhan\\OneDrive\\Desktop\\sistem analiz proje\\dotnet-mvc5\\src\\TekinTeknikServis.web\\TekinTeknikServis.Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ilhan\\OneDrive\\Desktop\\sistem analiz proje\\dotnet-mvc5\\src\\TekinTeknikServis.Web\\TekinTeknikServis.Web.csproj",
+        "projectUniqueName": "C:\\Users\\ilhan\\OneDrive\\Desktop\\sistem analiz proje\\dotnet-mvc5\\src\\TekinTeknikServis.web\\TekinTeknikServis.Web.csproj",
         "projectName": "TekinTeknikServis.Web",
-        "projectPath": "C:\\Users\\ilhan\\OneDrive\\Desktop\\sistem analiz proje\\dotnet-mvc5\\src\\TekinTeknikServis.Web\\TekinTeknikServis.Web.csproj",
+        "projectPath": "C:\\Users\\ilhan\\OneDrive\\Desktop\\sistem analiz proje\\dotnet-mvc5\\src\\TekinTeknikServis.web\\TekinTeknikServis.Web.csproj",
         "packagesPath": "C:\\Users\\ilhan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ilhan\\OneDrive\\Desktop\\sistem analiz proje\\dotnet-mvc5\\src\\TekinTeknikServis.Web\\obj\\",
+        "outputPath": "C:\\Users\\ilhan\\OneDrive\\Desktop\\sistem analiz proje\\dotnet-mvc5\\src\\TekinTeknikServis.web\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ilhan\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -109,6 +133,14 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.11, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

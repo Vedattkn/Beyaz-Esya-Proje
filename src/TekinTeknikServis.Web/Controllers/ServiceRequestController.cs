@@ -85,6 +85,9 @@ namespace TekinTeknikServis.Core.Controllers
                 form.ArizaAciklamasi = form.ArizaAciklamasi.Trim() + Environment.NewLine + "Seçilen Parça: " + form.SecilenParcaAdi;
             }
 
+            var adresBlok = "Adres: " + form.Adres.Trim();
+            form.ArizaAciklamasi = form.ArizaAciklamasi.Trim() + Environment.NewLine + adresBlok;
+
             if (!_emailService.IsConfigured)
             {
                 ModelState.AddModelError("", "E-posta ayarları yapılmamış. appsettings.json içinde Email:To, SmtpHost, SmtpUser, SmtpPassword alanlarını doldurun.");

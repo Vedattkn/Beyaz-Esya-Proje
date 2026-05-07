@@ -50,6 +50,112 @@ namespace TekinTeknikServis.Core.Data.Migrations
 
                     b.ToTable("kategoriler", "public");
                 });
+
+            modelBuilder.Entity("TekinTeknikServis.Core.Data.OrderEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("now()");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(320)
+                        .HasColumnType("character varying(320)")
+                        .HasColumnName("email");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("full_name");
+
+                    b.Property<string>("OrderNo")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)")
+                        .HasColumnName("order_no");
+
+                    b.Property<int>("TotalTry")
+                        .HasColumnType("integer")
+                        .HasColumnName("total_try");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("siparisler", "public");
+                });
+
+            modelBuilder.Entity("TekinTeknikServis.Core.Data.OrderItemEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("LineTotalTry")
+                        .HasColumnType("integer")
+                        .HasColumnName("line_total_try");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("order_id");
+
+                    b.Property<string>("PriceText")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("price_text");
+
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("product_id");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("product_name");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer")
+                        .HasColumnName("quantity");
+
+                    b.Property<int>("UnitPriceTry")
+                        .HasColumnType("integer")
+                        .HasColumnName("unit_price_try");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("siparis_kalemleri", "public");
+                });
+
+
+            modelBuilder.Entity("TekinTeknikServis.Core.Data.OrderItemEntity", b =>
+                {
+                    b.HasOne("TekinTeknikServis.Core.Data.OrderEntity", "Order")
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("TekinTeknikServis.Core.Data.OrderEntity", b =>
+                {
+                    b.Navigation("Items");
+                });
 #pragma warning restore 612, 618
         }
     }

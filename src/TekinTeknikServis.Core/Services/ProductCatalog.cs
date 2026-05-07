@@ -25,6 +25,9 @@ namespace TekinTeknikServis.Core.Services
 
         [JsonPropertyName("category")]
         public string Category { get; set; } = "";
+
+        [JsonPropertyName("stock")]
+        public int Stock { get; set; }
     }
 
     public static class ProductCatalog

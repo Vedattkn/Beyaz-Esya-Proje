@@ -27,6 +27,10 @@ namespace TekinTeknikServis.Core.Models
         public string CihazTuru { get; set; } = "";
 
         [Required]
+        public string Adres { get; set; } = "";
+
+
+        [Required]
         [JsonPropertyName("ariza_aciklamasi")]
         public string ArizaAciklamasi { get; set; } = "";
 

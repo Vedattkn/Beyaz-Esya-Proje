@@ -4,59 +4,144 @@
 }
 
 <section class="hero">
+    <div class="hero-shapes" aria-hidden="true">
+        <span class="hero-shape hero-shape-one"></span>
+        <span class="hero-shape hero-shape-two"></span>
+    </div>
     <div class="page-container">
         <h1>Tekin Teknik Servis ile Güvenli Bakım</h1>
-        <p>Buzdolabı, çamaşır ve bulaşık makineniz için profesyonel çözümler</p>
+        <p>Buzdolabı Servisi, Çamaşır Makinesi Servisi, Bulaşık Makinesi Servisi, Ankastra (Fırın) Servisi, Kurutma Makinesi servisi, Termosifon Servisi, Küçük Ev Aletleri servisi</p>
         <a href="@Url.Action("Index","ServiceRequest")" class="btn"><i class="fas fa-tools"></i> Hemen Servis Talebi Oluştur</a>
     </div>
 </section>
 
-<section class="services" style="padding: 40px 20px;">
-    <div class="page-container" style="max-width: 1400px;">
-        <h2 style="text-align: center; margin-bottom: 30px;">Hizmetlerimiz</h2>
-
-        <div class="service-container" style="gap: 20px;">
-            <div class="card">
-                <i class="fas fa-snowflake" style="font-size: 50px; color: #3b82f6; margin-bottom: 20px;"></i>
-                <h3>Buzdolabı Servisi</h3>
-                <p>Aniden bozulan buzdolaplarınız için aynı gün tamir ve bakım desteği veriyoruz.</p>
+<section class="trust-bar">
+    <div class="page-container trust-bar-inner">
+        <div class="trust-item">
+            <div class="trust-icon"><i class="fas fa-briefcase"></i></div>
+            <div class="trust-text">
+                <span class="trust-count">10+</span>
+                <span class="trust-label">Years experience</span>
             </div>
-
-            <div class="card">
-                <i class="fas fa-tshirt" style="font-size: 50px; color: #3b82f6; margin-bottom: 20px;"></i>
-                <h3>Çamaşır Makinesi Servisi</h3>
-                <p>Parça değişimi ve arıza tespitleri için profesyonel servis ekibimiz yanınızda.</p>
+        </div>
+        <div class="trust-item">
+            <div class="trust-icon"><i class="fas fa-users"></i></div>
+            <div class="trust-text">
+                <span class="trust-count">1000+</span>
+                <span class="trust-label">Happy customers</span>
             </div>
-
-            <div class="card">
-                <i class="fas fa-water" style="font-size: 50px; color: #3b82f6; margin-bottom: 20px;"></i>
-                <h3>Bulaşık Makinesi</h3>
-                <p>Su kaçağı, program hatası gibi tüm sorunlarda yerinde servis sağlıyoruz.</p>
-            </div>
-
-            <div class="card">
-                <i class="fas fa-fire" style="font-size: 50px; color: #3b82f6; margin-bottom: 20px;"></i>
-                <h3>Ankastra Fırın Servisi</h3>
-                <p>Ankastra fırınların tüm arızalarında hızlı ve güvenilir servis hizmeti sunuyoruz.</p>
-            </div>
-
-            <div class="card">
-                <i class="fas fa-fan" style="font-size: 50px; color: #3b82f6; margin-bottom: 20px;"></i>
-                <h3>Kurutma Makinesi Servisi</h3>
-                <p>Kurutma makinesi arızaları ve bakımı için profesyonel teknikçilerimiz hizmetinizdedir.</p>
-            </div>
-
-            <div class="card">
-                <i class="fas fa-droplet" style="font-size: 50px; color: #3b82f6; margin-bottom: 20px;"></i>
-                <h3>Termosifon Servisi</h3>
-                <p>Termosifon onarımı, bakımı ve limanlama işlemlerini güvenli şekilde yapıyoruz.</p>
-            </div>
-
-            <div class="card">
-                <i class="fas fa-plug" style="font-size: 50px; color: #3b82f6; margin-bottom: 20px;"></i>
-                <h3>Küçük Ev Aletleri</h3>
-                <p>Mikrodalga, elektrikli ısıtıcı, kahvehane ve diğer küçük ev aletlerinin tamiri.</p>
+        </div>
+        <div class="trust-item">
+            <div class="trust-icon"><i class="fas fa-bolt"></i></div>
+            <div class="trust-text">
+                <span class="trust-count">Same day</span>
+                <span class="trust-label">Service</span>
             </div>
         </div>
     </div>
 </section>
+
+<section class="home-brands">
+    <div class="page-container">
+        <div class="section-header">
+            <h2>Hangi Markalara Hizmet Veriyoruz</h2>
+            <p>Geniş marka yelpazemiz ile aynı gün servis desteği sağlıyoruz.</p>
+        </div>
+        <div class="brand-group-grid">
+            <div class="brand-group-card">
+                <div class="brand-group-title">Arçelik Grubu</div>
+                <div class="brand-chip-list">
+                    <span class="brand-chip">Arçelik</span>
+                    <span class="brand-chip">Beko</span>
+                    <span class="brand-chip">Altus</span>
+                    <span class="brand-chip">Grundig</span>
+                </div>
+            </div>
+            <div class="brand-group-card">
+                <div class="brand-group-title">Vestel Grubu</div>
+                <div class="brand-chip-list">
+                    <span class="brand-chip">Vestel</span>
+                    <span class="brand-chip">Regal</span>
+                    <span class="brand-chip">Finlux</span>
+                    <span class="brand-chip">SEG</span>
+                </div>
+            </div>
+            <div class="brand-group-card">
+                <div class="brand-group-title">Bosch Grubu</div>
+                <div class="brand-chip-list">
+                    <span class="brand-chip">Bosch</span>
+                    <span class="brand-chip">Siemens</span>
+                    <span class="brand-chip">Profilo</span>
+                    <span class="brand-chip">Gaggenau</span>
+                </div>
+            </div>
+            <div class="brand-group-card">
+                <div class="brand-group-title">Global ve Diğer Markalar</div>
+                <div class="brand-chip-list">
+                    <span class="brand-chip">Samsung</span>
+                    <span class="brand-chip">LG</span>
+                    <span class="brand-chip">Ariston</span>
+                    <span class="brand-chip">Electrolux</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="home-testimonials">
+    <div class="page-container">
+        <div class="section-header">
+            <h2>Müşteri Yorumlari</h2>
+            <p>Guven veren servis deneyimleriyle yaninizdayiz.</p>
+        </div>
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-stars" aria-label="5 yildiz">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p class="testimonial-quote">Uygun fiyat, temiz işçilik. Tavsiye ederim.</p>
+                <div class="testimonial-meta">Seda T.</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars" aria-label="5 yildiz">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p class="testimonial-quote">Gerçekten güvenilir bir servis teşekkürler.</p>
+                <div class="testimonial-meta">Ahmet Y.</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars" aria-label="5 yildiz">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p class="testimonial-quote">Fiyat performans olarak çok iyi.</p>
+                <div class="testimonial-meta">Nermin D.</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars" aria-label="5 yildiz">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p class="testimonial-quote">Sorunumuz kısa sürede ve etkili şekilde giderildi teşekkür ederiz.</p>
+                <div class="testimonial-meta">Kenan O.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+

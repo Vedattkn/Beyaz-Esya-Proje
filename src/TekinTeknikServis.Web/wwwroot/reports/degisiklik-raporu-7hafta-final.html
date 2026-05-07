@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>7. Hafta Final Raporu - Detayli</title>
+  <style>
+    :root {
+      --bg: #f2f5fc;
+      --ink: #1b2844;
+      --muted: #5d6b8c;
+      --card: #ffffff;
+      --line: #d8e0ef;
+      --ok: #1e7a3a;
+      --warn: #b45309;
+      --err: #b42318;
+      --accent: #245ad6;
+      --chip: #edf2ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at 8% 0%, #f8faff 0, #f1f5fd 45%, #edf2fb 100%);
+      line-height: 1.45;
+    }
+    .wrap {
+      max-width: 1240px;
+      margin: 24px auto;
+      padding: 0 16px 26px;
+    }
+    .hero, .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 9px 24px rgba(31, 52, 104, .07);
+    }
+    .hero { padding: 20px; }
+    .card { padding: 16px; margin-top: 14px; }
+    h1 { margin: 0 0 8px; font-size: 30px; }
+    h2 { margin: 0 0 9px; font-size: 21px; }
+    h3 { margin: 0 0 8px; font-size: 16px; }
+    p { margin: 0; color: var(--muted); }
+    ul { margin: 8px 0 0 18px; padding: 0; }
+    li { margin: 6px 0; }
+    .muted { color: var(--muted); }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .02em;
+      border-radius: 999px;
+      padding: 4px 10px;
+      margin-bottom: 8px;
+    }
+    .ok { color: var(--ok); background: #e8f7ec; border: 1px solid #bde3c9; }
+    .warn { color: var(--warn); background: #fff5e6; border: 1px solid #f4d7af; }
+    .err { color: var(--err); background: #fff0f0; border: 1px solid #f2c3c3; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .chip {
+      background: var(--chip);
+      border: 1px solid #cfdbff;
+      color: #29437d;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+    }
+    .kpi {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 10px;
+    }
+    .kpi .box {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fbfdff;
+      padding: 10px;
+    }
+    .kpi .n {
+      display: block;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      padding: 8px;
+    }
+    th { background: #f6f9ff; }
+    .timeline {
+      margin-top: 6px;
+      display: grid;
+      gap: 8px;
+    }
+    .event {
+      border: 1px dashed #c9d7f5;
+      background: #fbfdff;
+      border-radius: 10px;
+      padding: 10px;
+    }
+    .event strong { color: #1f3f82; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <h1>7. Hafta Final Raporu (Detayli)</h1>
+      <p>Kapsam: 7. hafta boyunca kullanici iletisim odakli arayuz iyilestirmeleri, mobil gorunum duzeltmeleri, sabit iletisim butonu ve sayfa bazli ikon aksiyonlarinin uygulanmasi.</p>
+      <p style="margin-top:6px;">Tarih: 15-16.04.2026</p>
+
+      <div class="kpi">
+        <div class="box"><span class="n">100%</span> 7. hafta UI hedefleri tamamlandi</div>
+        <div class="box"><span class="n">4</span> Ana dosyada kapsamli guncelleme</div>
+        <div class="box"><span class="n">395</span> Satir degisikligi (395 ekleme, 2 silme)</div>
+        <div class="box"><span class="n">Mobil+</span> Responsive ve erisilebilirlik guclendirildi</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="badge ok">YONETICI OZETI</span>
+      <h2>Ust Seviye Sonuc</h2>
+      <ul>
+        <li>Ana sayfa iletisim alani sade, profesyonel ve ikon odakli olacak sekilde yeniden tasarlandi.</li>
+        <li>Alt saga sabit floating iletisim butonu eklenerek hizli erisim guclendirildi.</li>
+        <li>Mobilde sag tarafta olusan beyaz bosluk sorunu giderildi.</li>
+        <li>Iletisim sayfasinda "Acil Teknik Destek" bloguna ikon bazli call/WhatsApp aksiyonlari entegre edildi.</li>
+        <li>Gorsel dil; WhatsApp yesil vurgu, kontrollu pulse animasyon ve tutarli buton sistemiyle iyilestirildi.</li>
+      </ul>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <span class="badge ok">7. HAFTA PLANI</span>
+        <h2>Plana Gore Tamamlananlar</h2>
+        <ul>
+          <li>Ana sayfada telefon/WhatsApp erisim akislarinin eklenmesi</li>
+          <li>Butonlarin profesyonel tasarim ile sadele?tirilmesi (ikon-only)</li>
+          <li>Floating mini iletisim widgetinin eklenmesi</li>
+          <li>Ilk gorunurde dikkat cekici pulse animasyonu</li>
+          <li>Mobil layout tasmasi ve yatay bosluk hatasinin duzeltilmesi</li>
+          <li>Iletisim sayfasi acil destek blogunda ikon aksiyonlarinin konumlandirilmasi</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="badge warn">PLANDAN AYRI DEGER KATAN</span>
+        <h2>Ekstra Kazanimlar</h2>
+        <ul>
+          <li>Erisilebilirlik icin ikon-only butonlara sr-only metinleri eklendi.</li>
+          <li>Button hover/golge davranislari hem desktop hem mobil icin dengeye alindi.</li>
+          <li>Aksiyon kartinin yuksekligi ve dikey bosluklari optimize edilerek daha kompakt gorunum elde edildi.</li>
+          <li>Iletisim aksiyonlari ana sayfa ve iletisim sayfasi arasinda ortak siniflarla standardize edildi.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="badge ok">KRONOLOJIK AKIS</span>
+      <h2>Adim Adim Uygulama Sureci</h2>
+      <div class="timeline">
+        <div class="event"><strong>1)</strong> Ana sayfaya telefon ve WhatsApp butonlari eklendi; iki numarali yapi denendi.</div>
+        <div class="event"><strong>2)</strong> Kullanici geri bildirimi ile tek numaraya gecildi ve butonlar profesyonel stillerle revize edildi.</div>
+        <div class="event"><strong>3)</strong> Alt sagda sabit mini iletisim widgeti eklendi (toggle + call/WhatsApp secenekleri).</div>
+        <div class="event"><strong>4)</strong> Pulse animasyon ilk denemede zayif kaldigi icin guclendirildi ve WhatsApp renk temasina cekildi.</div>
+        <div class="event"><strong>5)</strong> Mobilde sag bosluk sorunu tespit edildi; overflow ve responsive card kurallariyla cozuldu.</div>
+        <div class="event"><strong>6)</strong> Ana sayfa iletisim bloklarindan metinler temizlenip ikon-only, ortali ve buyuk buton sistemine gecildi.</div>
+        <div class="event"><strong>7)</strong> Iletisim sayfasina da call/WhatsApp ikonlari eklendi, acil destek metni altina tasindi.</div>
+        <div class="event"><strong>8)</strong> Mavi aksiyon blogu daha kompakt hale getirildi; ikonlarin alti hizalandi.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="badge ok">MODUL BAZLI DETAY</span>
+      <h2>Teknik Degisiklik Haritasi</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Modul</th>
+            <th>Yapilan Is</th>
+            <th>Kazanim</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Ana Sayfa (Home/Index)</td>
+            <td>Iletisim bolumu ikon-only yapida yeniden duzenlendi; numara gorunurlugu kaldirildi.</td>
+            <td>Daha sade, hizli algilanan ve modern iletisim alani</td>
+          </tr>
+          <tr>
+            <td>Layout (Shared/_Layout)</td>
+            <td>Floating contact widget + JS toggle + dis tiklama ile kapanma davranisi eklendi.</td>
+            <td>Sayfa genelinde aninda erisim saglayan iletisim kisayolu</td>
+          </tr>
+          <tr>
+            <td>Iletisim Sayfasi (Home/Iletisim)</td>
+            <td>Acil destek karti altina call/WhatsApp ikonlari entegre edildi ve konum revize edildi.</td>
+            <td>Kullaniciya tek noktada dogrudan aksiyon imkani</td>
+          </tr>
+          <tr>
+            <td>Global CSS (wwwroot/css/style.css)</td>
+            <td>Home contact, floating widget, pulse animasyon, responsive overflow ve ikon boyutlari guncellendi.</td>
+            <td>Tutarlilik, mobil stabilite ve profesyonel gorsel kalite</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <span class="badge err">HATA ENVENTERI</span>
+      <h2>Karsilasilan Sorunlar ve Cozumler</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Hata/Sorun</th>
+            <th>Kok Neden</th>
+            <th>Uygulanan Cozum</th>
+            <th>Sonuc</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Mobilde sag tarafta beyaz bosluk</td>
+            <td>Yatay tasma olusturan card/flex kombinasyonu</td>
+            <td>html, body overflow-x: hidden + card wrap + responsive duzeltme</td>
+            <td>Cozuldu</td>
+          </tr>
+          <tr>
+            <td>Pulse animasyonu fark edilmiyor</td>
+            <td>Dusuk kontrast ve yetersiz keyframe etkisi</td>
+            <td>Halo/ring ve glow animasyonlari guclendirilip WhatsApp tonuna cekildi</td>
+            <td>Cozuldu</td>
+          </tr>
+          <tr>
+            <td>Ikonlar mobilde gereksiz genisliyor</td>
+            <td>Mobil media query icinde flex:1 override</td>
+            <td>Ikon-only butonlar icin flex:none ve sabit genislik tanimi</td>
+            <td>Cozuldu</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <span class="badge ok">YENI IS KURALLARI</span>
+        <h2>Guncel Arayuz Kurallari</h2>
+        <ul>
+          <li>Ana sayfa iletisim alaninda telefon numarasi metin olarak gosterilmiyor.</li>
+          <li>Arama ve WhatsApp aksiyonlari ikon-only butonlarla sunuluyor.</li>
+          <li>Iletisim widgeti sayfa genelinde sabit ve tiklamayla acilir/kapanir.</li>
+          <li>Iletisim sayfasinda acil destek aksiyon ikonlari metnin altinda konumlaniyor.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <span class="badge ok">MIMARI SONUC</span>
+        <h2>Tasarim ve UX Degerlendirmesi</h2>
+        <ul>
+          <li>Ortak siniflar sayesinde Home ve Iletisim sayfalari arasinda gorsel butunluk saglandi.</li>
+          <li>Floating widget sayesinde kullanici aksiyon mesafesi tum sayfalarda kisaldi.</li>
+          <li>Mobilde stabil davranis elde edilerek kullanici deneyimi kesintisiz hale getirildi.</li>
+        </ul>
+        <div class="chips">
+          <span class="chip">ASP.NET Core MVC</span>
+          <span class="chip">Razor</span>
+          <span class="chip">CSS Animations</span>
+          <span class="chip">Responsive Design</span>
+          <span class="chip">Accessibility</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="badge warn">DOGRULAMA / OPERASYON</span>
+      <h2>Build ve Calisma Notlari</h2>
+      <ul>
+        <li>Degisiklikler sonrasinda build yeniden alinmis ve basarili tamamlanmistir.</li>
+        <li>Bazi asamalarda calisan process kaynakli DLL lock sorunu taskkill ile giderilmistir.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <span class="badge ok">GENEL SONUC</span>
+      <h2>Kapanis Degerlendirmesi</h2>
+      <p>7. hafta calismalari ile projenin iletisim odakli kullanici deneyimi hem gorsel kalite hem de mobil kullanim acisindan belirgin bicimde olgunlastirilmistir. Yapilan tum guncellemeler kullanici geri bildirimi odakli ilerletilmis ve operasyonel olarak daha net bir akis ortaya konmustur.</p>
+      <p style="margin-top:8px;" class="muted">Rapor, 6. hafta modern rapor tasarim dili korunarak 7. hafta icerigi ile yeniden hazirlanmistir.</p>
+    </div>
+  </div>
+</body>
+</html>

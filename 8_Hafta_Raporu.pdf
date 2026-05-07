@@ -1,0 +1,136 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+5 0 obj
+<< /Length 1697 >>
+stream
+BT
+/F1 18 Tf
+50 770 Td (8. Hafta Calisma Raporu) Tj
+ET
+BT
+/F1 12 Tf
+50 750 Td () Tj
+ET
+BT
+/F1 12 Tf
+50 730 Td (Proje: Tekin Teknik Servis) Tj
+ET
+BT
+/F1 12 Tf
+50 714 Td (Tarih: 30.04.2026) Tj
+ET
+BT
+/F1 12 Tf
+50 698 Td () Tj
+ET
+BT
+/F1 12 Tf
+50 682 Td (Genel Ozet:) Tj
+ET
+BT
+/F1 12 Tf
+50 666 Td (- Sepet ve siparis sistemi tamamlandi, veriler DB'ye yazildi.) Tj
+ET
+BT
+/F1 12 Tf
+50 650 Td (- Ana sayfa guven bar'i, marka gruplari ve modern kartlarla guncellendi.) Tj
+ET
+BT
+/F1 12 Tf
+50 634 Td (- Mustreri yorum bolumu tasarim olarak eklendi ve statik gosterime cekildi.) Tj
+ET
+BT
+/F1 12 Tf
+50 618 Td () Tj
+ET
+BT
+/F1 12 Tf
+50 602 Td (Yapilan Isler:) Tj
+ET
+BT
+/F1 12 Tf
+50 586 Td (- Sepet/siparis akis duzenlemeleri ve checkout iyilestirmeleri.) Tj
+ET
+BT
+/F1 12 Tf
+50 570 Td (- Ana sayfa: guven, markalar, yorumlar bolumleri.) Tj
+ET
+BT
+/F1 12 Tf
+50 554 Td (- UI tarafinda kart, grid ve hover etkileri.) Tj
+ET
+BT
+/F1 12 Tf
+50 538 Td () Tj
+ET
+BT
+/F1 12 Tf
+50 522 Td (Teknik Detaylar:) Tj
+ET
+BT
+/F1 12 Tf
+50 506 Td (- EF Core ile siparis ve siparis kalemleri tablolarinin kullanimi.) Tj
+ET
+BT
+/F1 12 Tf
+50 490 Td (- Razor view ve CSS tarafinda modern yerlesim ve tipografi.) Tj
+ET
+BT
+/F1 12 Tf
+50 474 Td () Tj
+ET
+BT
+/F1 12 Tf
+50 458 Td (Test ve Dogrulama:) Tj
+ET
+BT
+/F1 12 Tf
+50 442 Td (- Sepete urun ekleme ve siparis tamamlama akisi manuel test edildi.) Tj
+ET
+BT
+/F1 12 Tf
+50 426 Td (- Ana sayfa bolumleri masaustu/mobil gorunumde kontrol edildi.) Tj
+ET
+BT
+/F1 12 Tf
+50 410 Td () Tj
+ET
+BT
+/F1 12 Tf
+50 394 Td (Sonraki Adimlar:) Tj
+ET
+BT
+/F1 12 Tf
+50 378 Td (- Siparis takip ve durum guncelleme ekranlari eklenebilir.) Tj
+ET
+BT
+/F1 12 Tf
+50 362 Td (- Erisilebilirlik ve performans iyilestirmeleri.) Tj
+ET
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000121 00000 n 
+0000000247 00000 n 
+0000000317 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+2065
+%EOF

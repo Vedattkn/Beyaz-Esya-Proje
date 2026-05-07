@@ -1,0 +1,208 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+5 0 obj
+<< /Length 3102 >>
+stream
+BT
+/F1 18 Tf
+50 770 Td (7. Hafta Calisma Raporu) Tj
+ET
+BT
+/F1 12 Tf
+50 750 Td () Tj
+ET
+BT
+/F1 12 Tf
+50 730 Td (Proje: Tekin Teknik Servis) Tj
+ET
+BT
+/F1 12 Tf
+50 714 Td () Tj
+ET
+BT
+/F1 12 Tf
+50 698 Td (Hedef: Web sitesinin iletisim deneyimini profesyonel ve mobil uyumlu hale getirmek.) Tj
+ET
+BT
+/F1 12 Tf
+50 682 Td () Tj
+ET
+BT
+/F1 12 Tf
+50 666 Td (1. Ana Sayfa Iletisim Bloklari) Tj
+ET
+BT
+/F1 12 Tf
+50 650 Td (- "Bize Hemen Ulasin" bolumunde telefon numarasi gorunumu kaldirildi.) Tj
+ET
+BT
+/F1 12 Tf
+50 634 Td (- Arama ve WhatsApp islemleri ikon-only butonlari ile yeniden tasarlandi.) Tj
+ET
+BT
+/F1 12 Tf
+50 618 Td (- Kartin beyaz arka plani ve kalin border/golge stili kaldirildi.) Tj
+ET
+BT
+/F1 12 Tf
+50 602 Td (- Iconlar daha buyuk, daha net ve ortali hale getirildi.) Tj
+ET
+BT
+/F1 12 Tf
+50 586 Td () Tj
+ET
+BT
+/F1 12 Tf
+50 570 Td (2. Sabit Floating Iletisim Butonu) Tj
+ET
+BT
+/F1 12 Tf
+50 554 Td (- Alt sagda sabit bir mini iletisim widgeti eklendi.) Tj
+ET
+BT
+/F1 12 Tf
+50 538 Td (- Buton WhatsApp yesil temasina gore guncellendi.) Tj
+ET
+BT
+/F1 12 Tf
+50 522 Td (- Ilk acilis icin belirgin pulse animasyonu eklendi.) Tj
+ET
+BT
+/F1 12 Tf
+50 506 Td () Tj
+ET
+BT
+/F1 12 Tf
+50 490 Td (3. Mobil Uyum ve Layout Duzeltmeleri) Tj
+ET
+BT
+/F1 12 Tf
+50 474 Td (- Sayfa geneli icin yatay overflow problemi onlendi.) Tj
+ET
+BT
+/F1 12 Tf
+50 458 Td (- .home-contact-card responsive olarak wrap edecek sekilde ayarlandi.) Tj
+ET
+BT
+/F1 12 Tf
+50 442 Td (- Mobil kirmiza boyunca butonlarin ve metinlerin hizalanmasi guclendirildi.) Tj
+ET
+BT
+/F1 12 Tf
+50 426 Td () Tj
+ET
+BT
+/F1 12 Tf
+50 410 Td (4. Iletisim Sayfasi Guncellemeleri) Tj
+ET
+BT
+/F1 12 Tf
+50 394 Td (- Iletisim sayfasina ikon-only arama ve WhatsApp butonlari eklendi.) Tj
+ET
+BT
+/F1 12 Tf
+50 378 Td (- "Acil Teknik Destek Lazim mi?" bolumunun altina ikon grubu tasarlandi.) Tj
+ET
+BT
+/F1 12 Tf
+50 362 Td (- Mavi aksiyon kartinin yuksekligi optimize edildi.) Tj
+ET
+BT
+/F1 12 Tf
+50 346 Td () Tj
+ET
+BT
+/F1 12 Tf
+50 330 Td (5. Stiller ve Tutarlilik) Tj
+ET
+BT
+/F1 12 Tf
+50 314 Td (- Tumu https://fonts.googleapis.com/ font uyumlu bir stil yapisi kullanildi.) Tj
+ET
+BT
+/F1 12 Tf
+50 298 Td (- Butonlarin hover efektleri ve gˆlge derinlikleri profesyonelce ayarlandi.) Tj
+ET
+BT
+/F1 12 Tf
+50 282 Td () Tj
+ET
+BT
+/F1 12 Tf
+50 266 Td (Degistirilen dosyalar:) Tj
+ET
+BT
+/F1 12 Tf
+50 250 Td (- src/TekinTeknikServis.Web/Views/Home/Index.cshtml) Tj
+ET
+BT
+/F1 12 Tf
+50 234 Td (- src/TekinTeknikServis.Web/Views/Home/Iletisim.cshtml) Tj
+ET
+BT
+/F1 12 Tf
+50 218 Td (- src/TekinTeknikServis.Web/Views/Shared/_Layout.cshtml) Tj
+ET
+BT
+/F1 12 Tf
+50 202 Td (- src/TekinTeknikServis.Web/wwwroot/css/style.css) Tj
+ET
+BT
+/F1 12 Tf
+50 186 Td () Tj
+ET
+BT
+/F1 12 Tf
+50 170 Td (Toplam Degisiklik:) Tj
+ET
+BT
+/F1 12 Tf
+50 154 Td (- 4 ana dosya degisimi) Tj
+ET
+BT
+/F1 12 Tf
+50 138 Td (- 395 satir degisikligi: 395 ekleme, 2 silme) Tj
+ET
+BT
+/F1 12 Tf
+50 122 Td () Tj
+ET
+BT
+/F1 12 Tf
+50 106 Td (Onerilen sonraki adimlar:) Tj
+ET
+BT
+/F1 12 Tf
+50 90 Td (- Kullanici testi ve mobil cihazlarda son kontrol.) Tj
+ET
+BT
+/F1 12 Tf
+50 74 Td (- Iletisim aksiyonlarinin izlenmesi ve geri bildirim toplanmasi.) Tj
+ET
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000121 00000 n 
+0000000247 00000 n 
+0000000317 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+3470
+%EOF

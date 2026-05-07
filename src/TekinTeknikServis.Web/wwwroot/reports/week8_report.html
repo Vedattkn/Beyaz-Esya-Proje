@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>8. Hafta Raporu - Tekin Teknik Servis</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --accent: #2563eb;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    header {
+      background: linear-gradient(135deg, #1e3a8a, #2563eb);
+      color: #fff;
+      padding: 36px 20px;
+      text-align: center;
+    }
+    header h1 { margin: 0 0 8px; font-size: 28px; }
+    header p { margin: 0; color: #e2e8f0; }
+    main { max-width: 980px; margin: 24px auto 40px; padding: 0 16px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 20px;
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+      margin-bottom: 16px;
+    }
+    h2 { margin: 0 0 10px; font-size: 20px; color: #1e3a8a; }
+    ul { margin: 0; padding-left: 18px; }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .tag {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 24px 10px 40px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>8. Hafta Calisma Raporu</h1>
+    <p>Tekin Teknik Servis - MVC5 Projesi</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Genel Ozet</h2>
+      <p>Bu haftada e-ticaret akisina sepet ve siparis sureci entegre edildi. Ana sayfa arayuzu guven ve markala bolumleriyle zenginlestirildi. Mustreri yorum bolumu tasarim olarak eklendi ve daha sonra dinamik yorum sistemi kaldirilarak statik gosterim yapildi.</p>
+      <div class="meta">
+        <span class="tag">8. Hafta</span>
+        <span class="tag">MVC</span>
+        <span class="tag">EF Core</span>
+        <span class="tag">UI/UX</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Yapilan Isler</h2>
+      <ul>
+        <li>Sepet ve siparis sistemi tamamlandi, siparis verisi veritabanina yazildi.</li>
+        <li>Urun listeleme ve sepet akisi ile odeme/checkout sayfalari iyilestirildi.</li>
+        <li>Ana sayfaya guven bar’i, marka gruplari ve modern kart tasarimlari eklendi.</li>
+        <li>Mustreri yorumlari icin kartli tasarim ve 5 yildizli ornek yorumlar yerlestirildi.</li>
+        <li>Yorum sistemi istek dogrultusunda dinamik yapi yerine statik gosterime cekildi.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Teknik Detaylar</h2>
+      <ul>
+        <li>EF Core ile siparis ve siparis kalemleri tablolari kullanildi.</li>
+        <li>Controller tarafinda sepet/veri akisina uygun duzenlemeler yapildi.</li>
+        <li>Razor view’larda yeni bolumler ve kart yapilari eklendi.</li>
+        <li>CSS tarafinda modern kart, grid ve hover etkileri tanimlandi.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Test ve Dogrulama</h2>
+      <ul>
+        <li>Sepete urun ekleme ve siparis tamamlama akisi manuel test edildi.</li>
+        <li>Ana sayfa bolumleri masaustu ve mobil gorunumlerde kontrol edildi.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Sonraki Adimlar</h2>
+      <ul>
+        <li>Siparis takip ve durum guncelleme ekranlari eklenebilir.</li>
+        <li>UI tarafinda performans ve erisilebilirlik duzenlemeleri yapilabilir.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <div>Rapor tarihi: 30.04.2026</div>
+  </footer>
+</body>
+</html>

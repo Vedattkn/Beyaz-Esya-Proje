@@ -109,10 +109,12 @@ namespace TekinTeknikServis.Core.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddProduct(Product product, Microsoft.AspNetCore.Http.IFormFile? ImageFile, [FromServices] Microsoft.AspNetCore.Hosting.IWebHostEnvironment env)
         {
             if (string.IsNullOrWhiteSpace(product.Name)) ModelState.AddModelError("Name", "Ürün adı boş olamaz.");
             if (string.IsNullOrWhiteSpace(product.Category)) ModelState.AddModelError("Category", "Kategori boş olamaz.");
+            if (product.Stock < 0) ModelState.AddModelError("Stock", "Stok değeri negatif olamaz.");
 
             if (!ModelState.IsValid || ImageFile == null) 
             {
@@ -402,10 +404,12 @@ namespace TekinTeknikServis.Core.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditProduct(Product product, Microsoft.AspNetCore.Http.IFormFile? ImageFile, [FromServices] Microsoft.AspNetCore.Hosting.IWebHostEnvironment env)
         {
             if (string.IsNullOrWhiteSpace(product.Name)) ModelState.AddModelError("Name", "Ürün adı boş olamaz.");
             if (string.IsNullOrWhiteSpace(product.Category)) ModelState.AddModelError("Category", "Kategori boş olamaz.");
+            if (product.Stock < 0) ModelState.AddModelError("Stock", "Stok değeri negatif olamaz.");
             if (!ModelState.IsValid) return View(product);
 
             try
@@ -448,6 +452,7 @@ namespace TekinTeknikServis.Core.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteProduct(string id)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
@@ -465,6 +470,7 @@ namespace TekinTeknikServis.Core.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteSelected(System.Collections.Generic.List<string> selectedIds)
         {
             if (selectedIds == null || !selectedIds.Any()) 

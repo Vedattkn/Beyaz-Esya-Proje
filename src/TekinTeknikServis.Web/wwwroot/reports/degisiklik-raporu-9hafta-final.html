@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>9. Hafta Raporu - Detayli</title>
+  <style>
+    :root {
+      --bg: #f2f5fc;
+      --ink: #1b2844;
+      --muted: #5d6b8c;
+      --card: #ffffff;
+      --line: #d8e0ef;
+      --ok: #1e7a3a;
+      --warn: #b45309;
+      --err: #b42318;
+      --accent: #245ad6;
+      --chip: #edf2ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at 8% 0%, #f8faff 0, #f1f5fd 45%, #edf2fb 100%);
+      line-height: 1.45;
+    }
+    .wrap {
+      max-width: 1240px;
+      margin: 24px auto;
+      padding: 0 16px 26px;
+    }
+    .hero, .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 9px 24px rgba(31, 52, 104, .07);
+    }
+    .hero { padding: 20px; }
+    .card { padding: 16px; margin-top: 14px; }
+    h1 { margin: 0 0 8px; font-size: 30px; }
+    h2 { margin: 0 0 9px; font-size: 21px; }
+    h3 { margin: 0 0 8px; font-size: 16px; }
+    p { margin: 0; color: var(--muted); }
+    ul { margin: 8px 0 0 18px; padding: 0; }
+    li { margin: 6px 0; }
+    .muted { color: var(--muted); }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .02em;
+      border-radius: 999px;
+      padding: 4px 10px;
+      margin-bottom: 8px;
+    }
+    .ok { color: var(--ok); background: #e8f7ec; border: 1px solid #bde3c9; }
+    .warn { color: var(--warn); background: #fff5e6; border: 1px solid #f4d7af; }
+    .err { color: var(--err); background: #fff0f0; border: 1px solid #f2c3c3; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .chip {
+      background: var(--chip);
+      border: 1px solid #cfdbff;
+      color: #29437d;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+    }
+    .kpi {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 10px;
+    }
+    .kpi .box {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fbfdff;
+      padding: 10px;
+    }
+    .kpi .n {
+      display: block;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      padding: 8px;
+    }
+    th { background: #f6f9ff; }
+    .timeline {
+      margin-top: 6px;
+      display: grid;
+      gap: 8px;
+    }
+    .event {
+      border: 1px dashed #c9d7f5;
+      background: #fbfdff;
+      border-radius: 10px;
+      padding: 10px;
+    }
+    .event strong { color: #1f3f82; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <h1>9. Hafta Raporu (Detayli)</h1>
+      <p>Kapsam: Admin paneli ve guvenlik odakli gelistirmeler, urun/stok yonetimi, servis talepleri kontrolu ve UI modernizasyonu.</p>
+      <p style="margin-top:6px;">Tarih: 05.05.2026</p>
+
+      <div class="kpi">
+        <div class="box"><span class="n">100%</span> Admin ve guvenlik hedefleri kapanis</div>
+        <div class="box"><span class="n">1</span> Stok yonetimi katmani eklendi</div>
+        <div class="box"><span class="n">3+</span> UI/UX bolumlerinde premium tasarim</div>
+        <div class="box"><span class="n">CSRF</span> Admin aksiyonlari guclendirildi</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="badge ok">YONETICI OZETI</span>
+      <h2>Ust Seviye Sonuc</h2>
+      <ul>
+        <li>Admin paneli urun ekleme/silme/guncelleme akislarinda stok yonetimi tamamlandi.</li>
+        <li>Admin uzerindeki kritik POST aksiyonlari CSRF dogrulamasi ile guclendirildi.</li>
+        <li>Hizmetler ve ana sayfa bolumleri modern CTA ve premium kart tasarimi ile yenilendi.</li>
+        <li>Trust bar, ikonlar, hero ve footer daha profesyonel ve satis odakli hale getirildi.</li>
+        <li>Navigasyon menusu animasyonlu underline ve mobil hamburger yapisina cekildi.</li>
+        <li>Iletisim kartlari hizmetler paletiyle eslendi, gradient ve ikon stili tutarlilastirildi.</li>
+        <li>Footer icerikleri sadeleştirildi ve alt bosluk sorunu giderildi.</li>
+        <li>Ana sayfa musteri yorumlari 4 karta cikarildi ve kompakt gorunume alindi.</li>
+      </ul>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <span class="badge ok">9. HAFTA PLANI</span>
+        <h2>Plana Gore Tamamlananlar</h2>
+        <ul>
+          <li>Admin rol kontrolu ve servis talepleri yonetimi (mevcut altyapi uzerinden guclendirildi)</li>
+          <li>Urun ekleme/silme/guncelleme akislari (stok alanlari eklendi)</li>
+          <li>Stok yonetimi (model + DB self-heal + admin form)</li>
+          <li>Guvenlik onlemleri (CSRF dogrulamalari tamamlandi)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="badge warn">PLANDAN AYRI DEGER KATAN</span>
+        <h2>Ekstra Kazanimlar</h2>
+        <ul>
+          <li>Hizmetler sayfasina featured kart + rozet + CTA bolumu eklendi.</li>
+          <li>Ana sayfa hero ve trust bar modernlestirildi, yeni aksan renkleri uygulandi.</li>
+          <li>Footer 3 kolonlu, ikonlu ve koyu arka planli hale getirildi.</li>
+          <li>Marka kartlari ve servis kartlari premium hover/gradient gorselligine kavustu.</li>
+          <li>Navbar hover underline, aktif sarı cizgi ve mobil acilir menu animasyonlari eklendi.</li>
+          <li>Iletisim kart ikonlari ve arka planlari hizmetler kartlariyla ayni stile getirildi.</li>
+          <li>Footer hizmetler metni tek mesaj formatinda sadeleştirildi.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="badge ok">KRONOLOJIK AKIS</span>
+      <h2>Hafta Icinde Yapilanlar - Adim Adim</h2>
+      <div class="timeline">
+        <div class="event"><strong>1)</strong> Ana sayfa hero arka plan, overlay ve CTA iyilestirmeleri yapildi.</div>
+        <div class="event"><strong>2)</strong> Trust bar ikonlari ve kisa metinler guclendirildi.</div>
+        <div class="event"><strong>3)</strong> Hangi Markalar bolumu premium kart tasarimiyla yenilendi.</div>
+        <div class="event"><strong>4)</strong> Hizmetler sayfasinda featured kart, hover ve ikon tasarimi guncellendi.</div>
+        <div class="event"><strong>5)</strong> Hizmetler altina CTA bolumu eklendi.</div>
+        <div class="event"><strong>6)</strong> Footer 3 kolonlu yapiya tasindi ve koyu tema verildi.</div>
+        <div class="event"><strong>7)</strong> Urun modeline stok alani eklendi ve Supabase DB self-heal ile desteklendi.</div>
+        <div class="event"><strong>8)</strong> Admin urun formlarina stok girisi ve listede stok gorunumu eklendi.</div>
+        <div class="event"><strong>9)</strong> Admin urun CRUD POST aksiyonlari CSRF korumasi ile guclendirildi.</div>
+        <div class="event"><strong>10)</strong> Navbar hover/active underline animasyonu ve mobil hamburger menusu uygulandi.</div>
+        <div class="event"><strong>11)</strong> Iletisim sayfasi kart/ikon renkleri hizmetler temasi ile eslendi.</div>
+        <div class="event"><strong>12)</strong> Footer hizmetler metni sadeleştirildi, bosluklar optimize edildi.</div>
+        <div class="event"><strong>13)</strong> Müşteri yorumlari 4 karta cikartilip tipografi kucultuldu.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="badge ok">MODUL BAZLI DETAY</span>
+      <h2>Teknik Degisiklik Haritasi</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Modul</th>
+            <th>Yapilan Is</th>
+            <th>Kazanim</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Admin / Urun</td>
+            <td>Stok alani eklendi, listede stok gorunumu, formlarda stok input</td>
+            <td>Gercek envanter takibi basladi</td>
+          </tr>
+          <tr>
+            <td>Guvenlik</td>
+            <td>Admin create/update/delete aksiyonlarina CSRF dogrulama</td>
+            <td>Yetkisiz istek riskleri azaltildi</td>
+          </tr>
+          <tr>
+            <td>UI/UX</td>
+            <td>Hero, trust bar, footer, hizmet kartlari ve CTA yenilendi</td>
+            <td>Daha profesyonel ve satis odakli arayuz</td>
+          </tr>
+          <tr>
+            <td>Navigasyon</td>
+            <td>Animasyonlu underline, aktif sari cizgi ve mobil hamburger menu</td>
+            <td>Modern, responsive ve dikkat cekici menu deneyimi</td>
+          </tr>
+          <tr>
+            <td>Iletisim</td>
+            <td>Kart/ikon renkleri hizmetler paletiyle uyumlandi, gradient eklendi</td>
+            <td>Sayfalar arasi gorsel tutarlilik</td>
+          </tr>
+          <tr>
+            <td>Ana Sayfa / Yorumlar</td>
+            <td>Yorum kartlari 4 adet yapildi, boyut ve tipografi kucultuldu</td>
+            <td>Daha dengeli ve sik yorum alanı</td>
+          </tr>
+          <tr>
+            <td>DB / Supabase</td>
+            <td>Stock kolonu self-heal + CRUD alan entegrasyonu</td>
+            <td>Eski veritabanlariyla uyum korundu</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <span class="badge ok">GUNCEL IS KURALLARI</span>
+        <h2>Is Kurallari</h2>
+        <ul>
+          <li>Stok degeri negatif olamaz.</li>
+          <li>Admin urun aksiyonlari CSRF token ile korunur.</li>
+          <li>Hizmetler sayfasinda featured kart onceliklidir.</li>
+          <li>Navigasyon aktif oge sarı alt cizgi ile vurgulanir.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <span class="badge ok">MIMARI SONUC</span>
+        <h2>Teknik Degerlendirme</h2>
+        <ul>
+          <li>Stok alani product modeline entegre edildi ve DB tarafinda kalici hale getirildi.</li>
+          <li>Admin aksiyonlari guvenlik acisindan bir ust seviyeye tasindi.</li>
+          <li>On yuzde premium hissi guclendiren tutarli bir tasarim dili olustu.</li>
+        </ul>
+        <div class="chips">
+          <span class="chip">ASP.NET Core MVC</span>
+          <span class="chip">Razor</span>
+          <span class="chip">Npgsql</span>
+          <span class="chip">CSRF</span>
+          <span class="chip">Supabase</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="badge warn">DOGRULAMA / OPERASYON</span>
+      <h2>Notlar</h2>
+      <ul>
+        <li>Stok kolonu DB tarafinda yoksa otomatik olarak eklenir.</li>
+        <li>CSRF dogrulamalarinin etkin olmasi icin formlarda token bulunmalidir.</li>
+        <li>Uygulama tasarim guncellemeleri tum sayfalarda tutarli gorunur.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <span class="badge ok">GENEL SONUC</span>
+      <h2>Kapanis Degerlendirmesi</h2>
+      <p>9. hafta kapsaminda admin paneli ve guvenlik hedefleri tamamlandi. Stok yonetimi ve UI modernizasyonu ile hem operasyonel hem de kullanici deneyimi tarafinda onemli iyilestirmeler saglandi.</p>
+      <p style="margin-top:8px;" class="muted">Rapor, mevcut hafta gelistirmeleri dikkate alinarak detayli bicimde hazirlanmistir.</p>
+    </div>
+  </div>
+</body>
+</html>
