@@ -1,4 +1,9 @@
-# 📄 [6. Hafta Final Raporu (PDF)](6.%20Hafta%20Final%20Raporu%20-%20Detayli.pdf)
+# 📄 PDF Kisa Yollar
+
+- [6. Hafta Final Raporu (PDF)](6.%20Hafta%20Final%20Raporu%20-%20Detayli.pdf)
+- [7. Hafta Raporu (PDF)](7_Hafta_Raporu.pdf)
+- [8. Hafta Raporu (PDF)](8_Hafta_Raporu.pdf)
+- [9. Hafta Degisiklik Raporu (PDF)](src/TekinTeknikServis.Web/wwwroot/reports/degisiklik-raporu-9hafta-final.pdf)
 
 # 🛠️ Tekin Teknik Servis - Beyaz Eşya Yönetim Sistemi
 
@@ -96,9 +101,12 @@ Bu migration:
 
 ## 📊 Raporlar
 
-Sohbet boyunca hazırlanan güncel rapor:
+Sohbet boyunca hazirlanan guncel raporlar:
 
 - [6. Hafta Final Raporu (PDF)](6.%20Hafta%20Final%20Raporu%20-%20Detayli.pdf)
+- [7. Hafta Raporu (PDF)](7_Hafta_Raporu.pdf)
+- [8. Hafta Raporu (PDF)](8_Hafta_Raporu.pdf)
+- [9. Hafta Degisiklik Raporu (PDF)](src/TekinTeknikServis.Web/wwwroot/reports/degisiklik-raporu-9hafta-final.pdf)
 
 ---
 
