@@ -11,6 +11,7 @@ namespace TekinTeknikServis.Core.Data
         public DbSet<CategoryEntity> Categories => Set<CategoryEntity>();
         public DbSet<OrderEntity> Orders => Set<OrderEntity>();
         public DbSet<OrderItemEntity> OrderItems => Set<OrderItemEntity>();
+        public DbSet<ServiceRequestEntity> ServiceRequests => Set<ServiceRequestEntity>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -94,6 +95,32 @@ namespace TekinTeknikServis.Core.Data
                 .WithMany(x => x.Items)
                 .HasForeignKey(x => x.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            var serviceRequests = modelBuilder.Entity<ServiceRequestEntity>();
+            serviceRequests.ToTable("servis_talepleri", "public");
+            serviceRequests.HasKey(x => x.Id);
+            serviceRequests.Property(x => x.Id).HasColumnName("id");
+            serviceRequests.Property(x => x.KullaniciId).HasColumnName("kullanici_id");
+            serviceRequests.Property(x => x.AdSoyad).HasColumnName("ad_soyad").HasMaxLength(200);
+            serviceRequests.Property(x => x.Telefon).HasColumnName("telefon").HasMaxLength(20);
+            serviceRequests.Property(x => x.CihazTuru).HasColumnName("cihaz_turu").HasMaxLength(120);
+            serviceRequests.Property(x => x.ArizaAciklamasi).HasColumnName("ariza_aciklamasi");
+            serviceRequests.Property(x => x.Durum).HasColumnName("durum").HasMaxLength(80);
+            serviceRequests.Property(x => x.AdminCevabi).HasColumnName("admin_cevabi");
+            serviceRequests.Property(x => x.KullaniciCevabi).HasColumnName("kullanici_cevabi");
+            serviceRequests.Property(x => x.KayitTarihi).HasColumnName("kayit_tarihi");
+            serviceRequests.Property(x => x.CustomerEmail).HasColumnName("customer_email").HasMaxLength(320);
+            serviceRequests.Property(x => x.FaultyPart).HasColumnName("faulty_part").HasMaxLength(200);
+            serviceRequests.Property(x => x.ReplacementPart).HasColumnName("replacement_part").HasMaxLength(200);
+            serviceRequests.Property(x => x.RepairDetails).HasColumnName("repair_details");
+            serviceRequests.Property(x => x.LaborPriceTry).HasColumnName("labor_price").HasColumnType("numeric(12,2)");
+            serviceRequests.Property(x => x.PartPriceTry).HasColumnName("part_price").HasColumnType("numeric(12,2)");
+            serviceRequests.Property(x => x.TotalPriceTry).HasColumnName("total_price").HasColumnType("numeric(12,2)");
+            serviceRequests.Property(x => x.AdminNotes).HasColumnName("admin_notes");
+            serviceRequests.Property(x => x.ApprovalStatus).HasColumnName("approval_status").HasMaxLength(60);
+            serviceRequests.Property(x => x.ApprovalDate).HasColumnName("approval_date");
+            serviceRequests.Property(x => x.ApprovalToken).HasColumnName("approval_token").HasMaxLength(120);
+            serviceRequests.Property(x => x.ApprovalRequestedAt).HasColumnName("approval_requested_at");
 
         }
     }

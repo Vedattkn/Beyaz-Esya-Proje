@@ -1,4 +1,5 @@
 @model TekinTeknikServis.Core.Models.AdminServiceRequestsViewModel
+@using TekinTeknikServis.Core.Models
 @{
     ViewBag.Title = "Tüm Talepler";
     Layout = "_Layout";
@@ -42,13 +43,18 @@
                         @foreach (var req in Model.Requests)
                         {
                             var selected = Model.SelectedRequest?.Id == req.Id;
+                            var approvalClass = string.Equals(req.ApprovalStatus, ServiceRequestStatusHelper.Approved, StringComparison.OrdinalIgnoreCase)
+                                ? "approval-approved"
+                                : string.Equals(req.ApprovalStatus, ServiceRequestStatusHelper.Rejected, StringComparison.OrdinalIgnoreCase)
+                                    ? "approval-rejected"
+                                    : string.Empty;
                             <a asp-controller="Admin"
                                asp-action="ServiceRequests"
                                asp-route-q="@Model.Query"
                                asp-route-selectedId="@req.Id"
-                               class="admin-chat-list-item @(selected ? "active" : "")">
+                               class="admin-chat-list-item @(selected ? "active" : "") @approvalClass">
                                 <div class="admin-chat-list-title">@req.AdSoyad</div>
-                                <div class="admin-chat-list-meta">Talep #@req.Id • @req.Durum</div>
+                                <div class="admin-chat-list-meta">Talep #@req.Id • @ServiceRequestStatusHelper.ToDisplay(req.Durum)</div>
                                 <div class="admin-chat-list-meta">@req.Telefon</div>
                             </a>
                         }
@@ -64,17 +70,11 @@
                 else
                 {
                     var r = Model.SelectedRequest;
-                    var isClosed = string.Equals(r.Durum, "Kapatildi", StringComparison.OrdinalIgnoreCase)
-                        || string.Equals(r.Durum, "Cozuldu", StringComparison.OrdinalIgnoreCase)
-                        || string.Equals(r.Durum, "Kapali", StringComparison.OrdinalIgnoreCase)
-                        || string.Equals(r.Durum, "Kapalı", StringComparison.OrdinalIgnoreCase);
-                    var nextStatusButtonText = string.Equals(r.Durum, "Inceleniyor", StringComparison.OrdinalIgnoreCase)
-                        ? "Talebi Kapat"
-                        : "İnceleniyor Yap";
+                    var isClosed = ServiceRequestStatusHelper.IsClosed(r.Durum);
                     <div class="admin-chat-thread-header">
                         <div>
                             <h3>@r.AdSoyad</h3>
-                            <div>Talep No: #@r.Id • Kategori: @r.CihazTuru • Durum: @r.Durum</div>
+                            <div>Talep No: #@r.Id • Kategori: @r.CihazTuru • Durum: @ServiceRequestStatusHelper.ToDisplay(r.Durum)</div>
                         </div>
                         <div>@(r.KayitTarihi?.ToString("dd.MM.yyyy HH:mm"))</div>
                     </div>
@@ -118,12 +118,53 @@
                             </div>
                         </form>
 
-                        <form asp-controller="Admin" asp-action="AdvanceServiceRequestStatus" method="post" class="admin-chat-actions-form" style="padding-top:0;">
+                        <form asp-controller="Admin" asp-action="UpdateRepairReview" method="post" class="admin-chat-actions-form" style="margin-top:16px;">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@r.Id" />
+                            <input type="hidden" name="q" value="@Model.Query" />
+
+                            <label for="faultyPart">Arızalı Parça</label>
+                            <input id="faultyPart" name="faultyPart" class="form-input" value="@r.FaultyPart" placeholder="Arızalı parça bilgisi" />
+
+                            <label for="replacementPart">Değişen Parça</label>
+                            <input id="replacementPart" name="replacementPart" class="form-input" value="@r.ReplacementPart" placeholder="Değişen parça bilgisi" />
+
+                            <label for="repairDetails">Onarım Detayı</label>
+                            <textarea id="repairDetails" name="repairDetails" class="form-input" rows="3" placeholder="Yapılan işlemleri yazın...">@r.RepairDetails</textarea>
+
+                            <div class="admin-chat-action-buttons" style="gap:12px; align-items: flex-end;">
+                                <div style="flex:1;">
+                                    <label for="laborPriceTry">İşçilik (TL)</label>
+                                    <input id="laborPriceTry" name="laborPriceTry" class="form-input price-input" type="number" step="0.01" min="0" value="@(r.LaborPriceTry?.ToString("0.00"))" />
+                                </div>
+                                <div style="flex:1;">
+                                    <label for="partPriceTry">Parça (TL)</label>
+                                    <input id="partPriceTry" name="partPriceTry" class="form-input price-input" type="number" step="0.01" min="0" value="@(r.PartPriceTry?.ToString("0.00"))" />
+                                </div>
+                                <div style="flex:1;">
+                                    <label for="totalPriceTry">Toplam (TL)</label>
+                                    <input id="totalPriceTry" class="form-input" type="number" step="0.01" readonly value="@(r.TotalPriceTry?.ToString("0.00"))" />
+                                </div>
+                            </div>
+
+                            <label for="adminNotes">Admin Notu</label>
+                            <textarea id="adminNotes" name="adminNotes" class="form-input" rows="2" placeholder="Müşteriye görünmeyecek notlar...">@r.AdminNotes</textarea>
+
+                            <div class="admin-chat-action-buttons">
+                                <button type="submit" name="submitAction" value="save" class="btn">İnceleme Kaydet</button>
+                                <button type="submit" name="submitAction" value="send" class="btn">Müşteri Onayı İste</button>
+                            </div>
+                        </form>
+                    }
+
+                    @if (string.Equals(r.Durum, ServiceRequestStatusHelper.Approved, StringComparison.OrdinalIgnoreCase))
+                    {
+                        <form asp-controller="Admin" asp-action="MarkCompleted" method="post" class="admin-chat-actions-form" style="padding-top:0;">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@r.Id" />
                             <input type="hidden" name="q" value="@Model.Query" />
                             <div class="admin-chat-action-buttons">
-                                <button type="submit" class="btn">@nextStatusButtonText</button>
+                                <button type="submit" class="btn">Tamamlandı Olarak İşaretle</button>
                             </div>
                         </form>
                     }
@@ -143,9 +184,32 @@
 </section>
 
 @section Scripts {
+    <style>
+        .admin-chat-list-item.approval-approved {
+            border: 1px solid #28a745;
+            background: #e9f7ef;
+        }
+
+        .admin-chat-list-item.approval-rejected {
+            border: 1px solid #dc3545;
+            background: #fdecea;
+        }
+    </style>
     <script>
         document.querySelectorAll('.admin-chat-thread-body').forEach(function (el) {
             el.scrollTop = el.scrollHeight;
+        });
+
+        function updateTotals() {
+            const labor = parseFloat(document.getElementById('laborPriceTry')?.value || '0');
+            const part = parseFloat(document.getElementById('partPriceTry')?.value || '0');
+            const total = (isNaN(labor) ? 0 : labor) + (isNaN(part) ? 0 : part);
+            const totalInput = document.getElementById('totalPriceTry');
+            if (totalInput) totalInput.value = total.toFixed(2);
+        }
+
+        document.querySelectorAll('.price-input').forEach(function (input) {
+            input.addEventListener('input', updateTotals);
         });
     </script>
 }

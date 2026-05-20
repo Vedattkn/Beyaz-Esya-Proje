@@ -404,16 +404,30 @@ returning id;";
                 .ToList();
         }
 
-            private static bool IsClosedStatus(string? status)
-            {
-                if (string.IsNullOrWhiteSpace(status)) return false;
+        private static bool IsClosedStatus(string? status)
+        {
+            return ServiceRequestStatusHelper.IsClosed(status);
+        }
 
-                var normalized = status.Trim();
-                return string.Equals(normalized, "Kapatildi", StringComparison.OrdinalIgnoreCase)
-                || string.Equals(normalized, "Cozuldu", StringComparison.OrdinalIgnoreCase)
-                    || string.Equals(normalized, "Kapali", StringComparison.OrdinalIgnoreCase)
-                || string.Equals(normalized, "Kapalı", StringComparison.OrdinalIgnoreCase);
-            }
+        private async Task EnsureServiceRequestColumnsAsync(NpgsqlConnection conn)
+        {
+            const string sql = @"alter table public.servis_talepleri
+add column if not exists customer_email text,
+add column if not exists faulty_part text,
+add column if not exists replacement_part text,
+add column if not exists repair_details text,
+add column if not exists labor_price numeric(12,2),
+add column if not exists part_price numeric(12,2),
+add column if not exists total_price numeric(12,2),
+add column if not exists admin_notes text,
+add column if not exists approval_status text,
+add column if not exists approval_date timestamp,
+add column if not exists approval_token text,
+add column if not exists approval_requested_at timestamp;";
+
+            await using var cmd = new NpgsqlCommand(sql, conn);
+            await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+        }
 
         private async Task<ServiceRequestForm?> GetServiceRequestByIdAsync(long id, string? userId = null)
         {
@@ -431,7 +445,10 @@ returning id;";
             await using var conn = new NpgsqlConnection(_dbConnectionString);
             await conn.OpenAsync().ConfigureAwait(false);
 
-            var sql = @"select id, kullanici_id, ad_soyad, telefon, cihaz_turu, ariza_aciklamasi, durum, admin_cevabi, kullanici_cevabi, kayit_tarihi
+            await EnsureServiceRequestColumnsAsync(conn).ConfigureAwait(false);
+
+            var sql = @"select id, kullanici_id, ad_soyad, telefon, cihaz_turu, ariza_aciklamasi, durum, admin_cevabi, kullanici_cevabi, kayit_tarihi,
+customer_email, faulty_part, replacement_part, repair_details, labor_price, part_price, total_price, admin_notes, approval_status, approval_date, approval_token, approval_requested_at
 from public.servis_talepleri
 where id = @id";
 
@@ -460,10 +477,22 @@ where id = @id";
                 Telefon = reader.IsDBNull(3) ? string.Empty : reader.GetValue(3).ToString() ?? string.Empty,
                 CihazTuru = reader.IsDBNull(4) ? string.Empty : reader.GetValue(4).ToString() ?? string.Empty,
                 ArizaAciklamasi = reader.IsDBNull(5) ? string.Empty : reader.GetValue(5).ToString() ?? string.Empty,
-                Durum = reader.IsDBNull(6) ? "Bekliyor" : reader.GetValue(6).ToString(),
+                Durum = reader.IsDBNull(6) ? ServiceRequestStatusHelper.Pending : reader.GetValue(6).ToString(),
                 AdminCevabi = reader.IsDBNull(7) ? string.Empty : reader.GetValue(7).ToString(),
                 KullaniciCevabi = reader.IsDBNull(8) ? string.Empty : reader.GetValue(8).ToString(),
-                KayitTarihi = reader.IsDBNull(9) ? null : Convert.ToDateTime(reader.GetValue(9))
+                KayitTarihi = reader.IsDBNull(9) ? null : Convert.ToDateTime(reader.GetValue(9)),
+                CustomerEmail = reader.IsDBNull(10) ? null : reader.GetValue(10).ToString(),
+                FaultyPart = reader.IsDBNull(11) ? null : reader.GetValue(11).ToString(),
+                ReplacementPart = reader.IsDBNull(12) ? null : reader.GetValue(12).ToString(),
+                RepairDetails = reader.IsDBNull(13) ? null : reader.GetValue(13).ToString(),
+                LaborPriceTry = reader.IsDBNull(14) ? null : Convert.ToDecimal(reader.GetValue(14)),
+                PartPriceTry = reader.IsDBNull(15) ? null : Convert.ToDecimal(reader.GetValue(15)),
+                TotalPriceTry = reader.IsDBNull(16) ? null : Convert.ToDecimal(reader.GetValue(16)),
+                AdminNotes = reader.IsDBNull(17) ? null : reader.GetValue(17).ToString(),
+                ApprovalStatus = reader.IsDBNull(18) ? null : reader.GetValue(18).ToString(),
+                ApprovalDate = reader.IsDBNull(19) ? null : Convert.ToDateTime(reader.GetValue(19)),
+                ApprovalToken = reader.IsDBNull(20) ? null : reader.GetValue(20).ToString(),
+                ApprovalRequestedAt = reader.IsDBNull(21) ? null : Convert.ToDateTime(reader.GetValue(21))
             };
 
             request.SohbetMesajlari = BuildConversationForDisplay(request);
@@ -527,7 +556,7 @@ where id = @id";
             await using var cmd = new NpgsqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("admin_cevabi", adminCevabiJson ?? string.Empty);
             cmd.Parameters.AddWithValue("kullanici_cevabi", (object?)kullaniciCevabi ?? DBNull.Value);
-            cmd.Parameters.AddWithValue("durum", durum ?? "Bekliyor");
+            cmd.Parameters.AddWithValue("durum", durum ?? ServiceRequestStatusHelper.Pending);
             cmd.Parameters.AddWithValue("id", id);
             if (userId.HasValue)
             {
@@ -649,10 +678,12 @@ where id = @id";
             await using var conn = new NpgsqlConnection(_dbConnectionString);
             await conn.OpenAsync().ConfigureAwait(false);
 
+            await EnsureServiceRequestColumnsAsync(conn).ConfigureAwait(false);
+
             const string sql = @"insert into public.servis_talepleri
-(kullanici_id, ad_soyad, telefon, cihaz_turu, ariza_aciklamasi, durum, admin_cevabi, kullanici_cevabi)
+(kullanici_id, ad_soyad, telefon, cihaz_turu, ariza_aciklamasi, durum, admin_cevabi, kullanici_cevabi, customer_email, faulty_part, replacement_part, repair_details, labor_price, part_price, total_price, admin_notes, approval_status, approval_date, approval_token, approval_requested_at)
 values
-(@kullanici_id, @ad_soyad, @telefon, @cihaz_turu, @ariza_aciklamasi, @durum, @admin_cevabi, @kullanici_cevabi)";
+(@kullanici_id, @ad_soyad, @telefon, @cihaz_turu, @ariza_aciklamasi, @durum, @admin_cevabi, @kullanici_cevabi, @customer_email, @faulty_part, @replacement_part, @repair_details, @labor_price, @part_price, @total_price, @admin_notes, @approval_status, @approval_date, @approval_token, @approval_requested_at)";
 
             await using var cmd = new NpgsqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("kullanici_id", (object?)form.KullaniciId ?? DBNull.Value);
@@ -660,9 +691,21 @@ values
             cmd.Parameters.AddWithValue("telefon", form.Telefon ?? string.Empty);
             cmd.Parameters.AddWithValue("cihaz_turu", form.CihazTuru ?? string.Empty);
             cmd.Parameters.AddWithValue("ariza_aciklamasi", form.ArizaAciklamasi ?? string.Empty);
-            cmd.Parameters.AddWithValue("durum", form.Durum ?? "Bekliyor");
+            cmd.Parameters.AddWithValue("durum", form.Durum ?? ServiceRequestStatusHelper.Pending);
             cmd.Parameters.AddWithValue("admin_cevabi", form.AdminCevabi ?? string.Empty);
             cmd.Parameters.AddWithValue("kullanici_cevabi", form.KullaniciCevabi ?? string.Empty);
+            cmd.Parameters.AddWithValue("customer_email", (object?)form.CustomerEmail ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("faulty_part", (object?)form.FaultyPart ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("replacement_part", (object?)form.ReplacementPart ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("repair_details", (object?)form.RepairDetails ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("labor_price", (object?)form.LaborPriceTry ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("part_price", (object?)form.PartPriceTry ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("total_price", (object?)form.TotalPriceTry ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("admin_notes", (object?)form.AdminNotes ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("approval_status", (object?)form.ApprovalStatus ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("approval_date", (object?)form.ApprovalDate ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("approval_token", (object?)form.ApprovalToken ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("approval_requested_at", (object?)form.ApprovalRequestedAt ?? DBNull.Value);
 
             await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
         }
@@ -722,7 +765,10 @@ values
             await using var conn = new NpgsqlConnection(_dbConnectionString);
             await conn.OpenAsync().ConfigureAwait(false);
 
-            var sql = @"select id, kullanici_id, ad_soyad, telefon, cihaz_turu, ariza_aciklamasi, durum, admin_cevabi, kullanici_cevabi, kayit_tarihi
+            await EnsureServiceRequestColumnsAsync(conn).ConfigureAwait(false);
+
+            var sql = @"select id, kullanici_id, ad_soyad, telefon, cihaz_turu, ariza_aciklamasi, durum, admin_cevabi, kullanici_cevabi, kayit_tarihi,
+customer_email, faulty_part, replacement_part, repair_details, labor_price, part_price, total_price, admin_notes, approval_status, approval_date, approval_token, approval_requested_at
 from public.servis_talepleri";
 
             if (userId.HasValue)
@@ -750,6 +796,18 @@ from public.servis_talepleri";
             var adminOrd = TryGetOrdinal(reader, "admin_cevabi");
             var kullaniciCevabiOrd = TryGetOrdinal(reader, "kullanici_cevabi");
             var kayitTarihiOrd = TryGetOrdinal(reader, "kayit_tarihi");
+            var customerEmailOrd = TryGetOrdinal(reader, "customer_email");
+            var faultyPartOrd = TryGetOrdinal(reader, "faulty_part");
+            var replacementPartOrd = TryGetOrdinal(reader, "replacement_part");
+            var repairDetailsOrd = TryGetOrdinal(reader, "repair_details");
+            var laborPriceOrd = TryGetOrdinal(reader, "labor_price");
+            var partPriceOrd = TryGetOrdinal(reader, "part_price");
+            var totalPriceOrd = TryGetOrdinal(reader, "total_price");
+            var adminNotesOrd = TryGetOrdinal(reader, "admin_notes");
+            var approvalStatusOrd = TryGetOrdinal(reader, "approval_status");
+            var approvalDateOrd = TryGetOrdinal(reader, "approval_date");
+            var approvalTokenOrd = TryGetOrdinal(reader, "approval_token");
+            var approvalRequestedOrd = TryGetOrdinal(reader, "approval_requested_at");
 
             while (await reader.ReadAsync().ConfigureAwait(false))
             {
@@ -761,10 +819,22 @@ from public.servis_talepleri";
                     Telefon = telefonOrd.HasValue && !reader.IsDBNull(telefonOrd.Value) ? reader.GetValue(telefonOrd.Value).ToString() ?? string.Empty : string.Empty,
                     CihazTuru = cihazTuruOrd.HasValue && !reader.IsDBNull(cihazTuruOrd.Value) ? reader.GetValue(cihazTuruOrd.Value).ToString() ?? string.Empty : string.Empty,
                     ArizaAciklamasi = arizaOrd.HasValue && !reader.IsDBNull(arizaOrd.Value) ? reader.GetValue(arizaOrd.Value).ToString() ?? string.Empty : string.Empty,
-                    Durum = durumOrd.HasValue && !reader.IsDBNull(durumOrd.Value) ? reader.GetValue(durumOrd.Value).ToString() : "Bekliyor",
+                    Durum = durumOrd.HasValue && !reader.IsDBNull(durumOrd.Value) ? reader.GetValue(durumOrd.Value).ToString() : ServiceRequestStatusHelper.Pending,
                     AdminCevabi = adminOrd.HasValue && !reader.IsDBNull(adminOrd.Value) ? reader.GetValue(adminOrd.Value).ToString() : string.Empty,
                     KullaniciCevabi = kullaniciCevabiOrd.HasValue && !reader.IsDBNull(kullaniciCevabiOrd.Value) ? reader.GetValue(kullaniciCevabiOrd.Value).ToString() : string.Empty,
-                    KayitTarihi = kayitTarihiOrd.HasValue && !reader.IsDBNull(kayitTarihiOrd.Value) ? Convert.ToDateTime(reader.GetValue(kayitTarihiOrd.Value)) : null
+                    KayitTarihi = kayitTarihiOrd.HasValue && !reader.IsDBNull(kayitTarihiOrd.Value) ? Convert.ToDateTime(reader.GetValue(kayitTarihiOrd.Value)) : null,
+                    CustomerEmail = customerEmailOrd.HasValue && !reader.IsDBNull(customerEmailOrd.Value) ? reader.GetValue(customerEmailOrd.Value).ToString() : null,
+                    FaultyPart = faultyPartOrd.HasValue && !reader.IsDBNull(faultyPartOrd.Value) ? reader.GetValue(faultyPartOrd.Value).ToString() : null,
+                    ReplacementPart = replacementPartOrd.HasValue && !reader.IsDBNull(replacementPartOrd.Value) ? reader.GetValue(replacementPartOrd.Value).ToString() : null,
+                    RepairDetails = repairDetailsOrd.HasValue && !reader.IsDBNull(repairDetailsOrd.Value) ? reader.GetValue(repairDetailsOrd.Value).ToString() : null,
+                    LaborPriceTry = laborPriceOrd.HasValue && !reader.IsDBNull(laborPriceOrd.Value) ? Convert.ToDecimal(reader.GetValue(laborPriceOrd.Value)) : null,
+                    PartPriceTry = partPriceOrd.HasValue && !reader.IsDBNull(partPriceOrd.Value) ? Convert.ToDecimal(reader.GetValue(partPriceOrd.Value)) : null,
+                    TotalPriceTry = totalPriceOrd.HasValue && !reader.IsDBNull(totalPriceOrd.Value) ? Convert.ToDecimal(reader.GetValue(totalPriceOrd.Value)) : null,
+                    AdminNotes = adminNotesOrd.HasValue && !reader.IsDBNull(adminNotesOrd.Value) ? reader.GetValue(adminNotesOrd.Value).ToString() : null,
+                    ApprovalStatus = approvalStatusOrd.HasValue && !reader.IsDBNull(approvalStatusOrd.Value) ? reader.GetValue(approvalStatusOrd.Value).ToString() : null,
+                    ApprovalDate = approvalDateOrd.HasValue && !reader.IsDBNull(approvalDateOrd.Value) ? Convert.ToDateTime(reader.GetValue(approvalDateOrd.Value)) : null,
+                    ApprovalToken = approvalTokenOrd.HasValue && !reader.IsDBNull(approvalTokenOrd.Value) ? reader.GetValue(approvalTokenOrd.Value).ToString() : null,
+                    ApprovalRequestedAt = approvalRequestedOrd.HasValue && !reader.IsDBNull(approvalRequestedOrd.Value) ? Convert.ToDateTime(reader.GetValue(approvalRequestedOrd.Value)) : null
                 };
 
                 item.SohbetMesajlari = BuildConversationForDisplay(item);
@@ -791,7 +861,7 @@ from public.servis_talepleri";
                 throw new InvalidOperationException($"Yeni cevap göndermek için {remainingMinutes} dakika bekleyin.");
             }
 
-            await UpdateConversationAsync(id, "user", kullaniciCevabi, "Musteri Yanitladi", userId).ConfigureAwait(false);
+            await UpdateConversationAsync(id, "user", kullaniciCevabi, null, userId).ConfigureAwait(false);
         }
 
         private static TimeSpan GetUserReplyCooldownRemaining(ServiceRequestForm request, TimeSpan cooldown)
@@ -821,10 +891,10 @@ from public.servis_talepleri";
 
         public async Task CloseRequestAsSolvedAsync(long id, string userId)
         {
-            await UpdateConversationAsync(id, "system", null, "Cozuldu", userId).ConfigureAwait(false);
+            await UpdateConversationAsync(id, "system", null, ServiceRequestStatusHelper.Completed, userId).ConfigureAwait(false);
         }
 
-        public async Task UpdateAdminReplyAsync(long id, string adminCevabi, string durum)
+        public async Task UpdateAdminReplyAsync(long id, string adminCevabi, string? durum = null)
         {
             await UpdateConversationAsync(id, "admin", adminCevabi, durum, null).ConfigureAwait(false);
         }
@@ -843,9 +913,24 @@ from public.servis_talepleri";
             }
 
             var current = (request.Durum ?? string.Empty).Trim();
-            var next = string.Equals(current, "Inceleniyor", StringComparison.OrdinalIgnoreCase)
-                ? "Kapatildi"
-                : "Inceleniyor";
+            string next;
+
+            if (string.Equals(current, ServiceRequestStatusHelper.Pending, StringComparison.OrdinalIgnoreCase) || string.Equals(current, "Bekliyor", StringComparison.OrdinalIgnoreCase))
+            {
+                next = ServiceRequestStatusHelper.Reviewed;
+            }
+            else if (string.Equals(current, ServiceRequestStatusHelper.Reviewed, StringComparison.OrdinalIgnoreCase))
+            {
+                next = ServiceRequestStatusHelper.WaitingCustomerApproval;
+            }
+            else if (string.Equals(current, ServiceRequestStatusHelper.Approved, StringComparison.OrdinalIgnoreCase))
+            {
+                next = ServiceRequestStatusHelper.Completed;
+            }
+            else
+            {
+                throw new InvalidOperationException("Talep durumu güncellenemiyor.");
+            }
 
             await UpdateConversationAsync(id, "system", null, next, null).ConfigureAwait(false);
         }

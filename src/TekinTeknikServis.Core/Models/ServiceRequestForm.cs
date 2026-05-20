@@ -35,7 +35,10 @@ namespace TekinTeknikServis.Core.Models
         public string ArizaAciklamasi { get; set; } = "";
 
         [JsonPropertyName("durum")]
-        public string? Durum { get; set; } = "Bekliyor";
+        public string? Durum { get; set; } = ServiceRequestStatusHelper.Pending;
+
+        [JsonPropertyName("customer_email")]
+        public string? CustomerEmail { get; set; }
 
         [JsonPropertyName("admin_cevabi")]
         public string? AdminCevabi { get; set; }
@@ -45,6 +48,39 @@ namespace TekinTeknikServis.Core.Models
 
         [JsonPropertyName("kayit_tarihi")]
         public DateTime? KayitTarihi { get; set; }
+
+        [JsonPropertyName("faulty_part")]
+        public string? FaultyPart { get; set; }
+
+        [JsonPropertyName("replacement_part")]
+        public string? ReplacementPart { get; set; }
+
+        [JsonPropertyName("repair_details")]
+        public string? RepairDetails { get; set; }
+
+        [JsonPropertyName("labor_price")]
+        public decimal? LaborPriceTry { get; set; }
+
+        [JsonPropertyName("part_price")]
+        public decimal? PartPriceTry { get; set; }
+
+        [JsonPropertyName("total_price")]
+        public decimal? TotalPriceTry { get; set; }
+
+        [JsonPropertyName("admin_notes")]
+        public string? AdminNotes { get; set; }
+
+        [JsonPropertyName("approval_status")]
+        public string? ApprovalStatus { get; set; }
+
+        [JsonPropertyName("approval_date")]
+        public DateTime? ApprovalDate { get; set; }
+
+        [JsonPropertyName("approval_token")]
+        public string? ApprovalToken { get; set; }
+
+        [JsonPropertyName("approval_requested_at")]
+        public DateTime? ApprovalRequestedAt { get; set; }
 
         [JsonIgnore]
         public List<ServiceRequestMessage> SohbetMesajlari { get; set; } = new List<ServiceRequestMessage>();

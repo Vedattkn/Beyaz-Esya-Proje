@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>10. Hafta Raporu</title>
+    <style>
+        body { font-family: Arial, Helvetica, sans-serif; color: #0f172a; background: #f8fafc; margin: 0; }
+        .page { max-width: 900px; margin: 32px auto; background: #fff; border-radius: 12px; padding: 28px 32px; box-shadow: 0 12px 30px -18px rgba(15, 23, 42, 0.4); }
+        h1, h2 { margin: 0 0 12px; }
+        h1 { font-size: 24px; }
+        h2 { font-size: 18px; margin-top: 24px; }
+        p { line-height: 1.6; }
+        ul { padding-left: 18px; }
+        .meta { display: flex; flex-wrap: wrap; gap: 16px; font-size: 14px; color: #475569; }
+        .pill { background: #e2e8f0; padding: 6px 10px; border-radius: 999px; }
+        .section { margin-top: 18px; }
+        .note { background: #fef3c7; border: 1px solid #fde68a; padding: 10px 12px; border-radius: 8px; }
+        .files { columns: 2; column-gap: 24px; }
+        .files li { break-inside: avoid; }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <h1>10. Hafta Raporu</h1>
+        <div class="meta">
+            <div class="pill">Tarih: 20.05.2026</div>
+            <div class="pill">Proje: Tekin Teknik Servis</div>
+            <div class="pill">Konu: Servis Onay Akisi + Admin Navigasyon + WhatsApp Business</div>
+        </div>
+
+        <div class="section">
+            <h2>Ozet</h2>
+            <p>
+                Bu hafta servis talep sistemine profesyonel onay akisi eklendi, admin ve musteri arayuzleri
+                genisletildi, servis durum yonetimi standartlastirildi ve admin navigasyonu yeniden tasarlandi.
+                Mevcut servis talep formu ve sohbet yapisi korunarak yeni alanlar ve onay linki akisi entegre edildi.
+                Müşteri servis talep formunu doldurduktan sonra dogrudan kendi talepler listesine yönlendirildi.
+                WhatsApp Business onay bildirimi akisi da devreye alindi.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Yapilan Gelistirmeler</h2>
+            <ul>
+                <li>Servis onay sureci: beklemede, incelendi, musteri onayi bekleniyor, onaylandi, reddedildi, tamamlandi.</li>
+                <li>Admin inceleme alani: arizali parca, degisen parca, onarim detayi, iscilik, parca ve toplam fiyat.</li>
+                <li>Musteri onay sayfasi: onay/ret butonlari ve fiyat-ozet gorunumu.</li>
+                <li>Onay linki gonderimi: e-posta ve WhatsApp Business entegrasyonu.</li>
+                <li>Musteri formu gonderince otomatik olarak taleplerine yonlendirildi.</li>
+                <li>Onay sonucu ve tarihinin veritabanina kaydi.</li>
+                <li>Admin panelinde servis talepleri renkli durum vurgusu ve bildirim rozetleri.</li>
+                <li>Admin navigasyonu gruplanmis ve profesyonel yapida yeniden duzenlendi.</li>
+                <li>Onay sayfasinda son durum mesajlari guncellendi.</li>
+                <li>Musteri taleplerim ekraninda servis ozeti ve admin cevabi gorunumu eklendi.</li>
+                <li>Musteri yorumlari metinleri duzeltildi ve Turkcelestirme tamamlandi.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Arayuz Degisiklikleri</h2>
+            <ul>
+                <li>Admin bar: Urun Yonetimi ve Servis Yonetimi dropdown menuleri.</li>
+                <li>Servis Yonetimi basligina toplu bildirim rozeti.</li>
+                <li>Servis talepleri listesinde onay/ret renk vurgusu.</li>
+                <li>Public menude cikis butonu kaldirildi.</li>
+                <li>Ana sayfa guven/basari bloklari Turkcelestirildi.</li>
+                <li>Yorum kartlarindaki ifade duzeltmeleri yapildi.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Teknik Detaylar</h2>
+            <ul>
+                <li>Yeni servis talep alanlari icin DB kolonlari otomatik olusturuldu.</li>
+                <li>EF model eslemeleri genisletildi.</li>
+                <li>Admin ve musteri akislari async controller action olarak calisiyor.</li>
+                <li>Auth filter, onay linki icin anonim erisimi destekleyecek sekilde guncellendi.</li>
+                <li>WhatsApp Business template ayarlari ve bildirim akisi aktif hale getirildi.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Degisen/Olusturulan Dosyalar</h2>
+            <ul class="files">
+                <li>src/TekinTeknikServis.Core/Models/ServiceRequestForm.cs</li>
+                <li>src/TekinTeknikServis.Core/Models/ServiceRequestStatusHelper.cs</li>
+                <li>src/TekinTeknikServis.Core/Models/ServiceRequestApprovalViewModel.cs</li>
+                <li>src/TekinTeknikServis.Core/Data/ServiceRequestEntity.cs</li>
+                <li>src/TekinTeknikServis.Core/Data/AppDbContext.cs</li>
+                <li>src/TekinTeknikServis.Core/Services/SupabaseService.cs</li>
+                <li>src/TekinTeknikServis.Core/Services/EmailService.cs</li>
+                <li>src/TekinTeknikServis.Core/Services/WhatsAppService.cs</li>
+                <li>src/TekinTeknikServis.Core/Services/WhatsAppCloudOptions.cs</li>
+                <li>src/TekinTeknikServis.Core/Filters/AuthCheckAttribute.cs</li>
+                <li>src/TekinTeknikServis.Web/Controllers/ServiceRequestController.cs</li>
+                <li>src/TekinTeknikServis.Web/Controllers/AdminController.cs</li>
+                <li>src/TekinTeknikServis.Web/Views/Admin/ServiceRequests.cshtml</li>
+                <li>src/TekinTeknikServis.Web/Views/ServiceRequest/MyRequests.cshtml</li>
+                <li>src/TekinTeknikServis.Web/Views/ServiceRequest/Approval.cshtml</li>
+                <li>src/TekinTeknikServis.Web/Views/Shared/_Layout.cshtml</li>
+                <li>src/TekinTeknikServis.Web/Views/Home/Index.cshtml</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Test Durumu</h2>
+            <div class="note">Bu hafta otomatik test calistirilmadi. Manuel akista onay linki, admin guncelleme ve musteri onay/ret adimlari kontrol edildi.</div>
+        </div>
+
+        <div class="section">
+            <h2>Sonraki Adimlar</h2>
+            <ul>
+                <li>Servis talep durumlari icin filtreli admin sayfasi gelistirme.</li>
+                <li>Onay tarihi ve log kayitlari icin raporlama.</li>
+                <li>Mobil dropdown davranisini tiklama ile ac/kapat olarak iyilestirme.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

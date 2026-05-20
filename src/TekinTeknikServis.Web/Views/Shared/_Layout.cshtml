@@ -8,8 +8,33 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    @using Microsoft.EntityFrameworkCore
+    @using TekinTeknikServis.Core.Models
+    @inject TekinTeknikServis.Core.Data.AppDbContext Db
     @{
         var isSystemAdmin = Context.Session.GetString("CurrentUser")?.Contains("\"IsAdmin\":true") == true;
+        var pendingCount = 0;
+        var waitingApprovalCount = 0;
+        var adminNotifyCount = 0;
+        if (isSystemAdmin)
+        {
+            try
+            {
+                pendingCount = Db.ServiceRequests
+                    .AsNoTracking()
+                    .Count(x => x.Durum == ServiceRequestStatusHelper.Pending);
+                waitingApprovalCount = Db.ServiceRequests
+                    .AsNoTracking()
+                    .Count(x => x.Durum == ServiceRequestStatusHelper.WaitingCustomerApproval);
+                adminNotifyCount = pendingCount + waitingApprovalCount;
+            }
+            catch
+            {
+                pendingCount = 0;
+                waitingApprovalCount = 0;
+                adminNotifyCount = 0;
+            }
+        }
         var cartCount = 0;
         var cartJson = Context.Session.GetString("Cart");
         if (!string.IsNullOrWhiteSpace(cartJson))
@@ -28,12 +53,58 @@
     }
     @if (isSystemAdmin)
     {
-        <div class="admin-sticky-bar" style="position: sticky; top: 0; background: #1e293b; color: white; padding: 10px 20px; z-index: 1000; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); display: flex; justify-content: space-between; align-items: center;">
-            <div style="font-weight: bold; font-size: 14px; letter-spacing: 1px;"><i class="fas fa-user-shield"></i> YÖNETİCİ PANELİ</div>
-            <div style="display: flex; gap: 20px;">
-                <a href="@Url.Action("Products", "Admin")" style="color: #cbd5e1; text-decoration: none; font-size: 14px; transition: color 0.2s;"><i class="fas fa-box"></i> Urun Listesi</a>
-                <a href="@Url.Action("ServiceRequests", "Admin")" style="color: #cbd5e1; text-decoration: none; font-size: 14px; transition: color 0.2s;"><i class="fas fa-list-alt"></i> Tum Talepler</a>
-                <a href="@Url.Action("AddProduct", "Admin")" style="color: #cbd5e1; text-decoration: none; font-size: 14px; transition: color 0.2s;"><i class="fas fa-plus"></i> Urun Ekle</a>
+        <div class="admin-sticky-bar admin-nav" style="position: sticky; top: 0; background: #0f172a; color: white; padding: 10px 20px; z-index: 1000; box-shadow: 0 4px 10px -2px rgb(0 0 0 / 0.25);">
+            <div class="admin-nav-inner">
+                <div class="admin-brand"><i class="fas fa-user-shield"></i> YÖNETİCİ PANELİ</div>
+
+                <nav class="admin-menu" aria-label="Yönetici menüsü">
+                    <a class="admin-link" href="@Url.Action("ServiceRequests", "Admin")"><i class="fas fa-chart-line"></i> Dashboard</a>
+
+                    <div class="admin-dropdown">
+                        <button class="admin-link admin-dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-box"></i> Ürün Yönetimi
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="admin-dropdown-menu" role="menu">
+                            <a href="@Url.Action("Products", "Admin")" class="admin-dropdown-item">Ürün Listesi</a>
+                            <a href="@Url.Action("AddProduct", "Admin")" class="admin-dropdown-item">Ürün Ekle</a>
+                        </div>
+                    </div>
+
+                    <div class="admin-dropdown">
+                        <button class="admin-link admin-dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-list-check"></i> Servis Yönetimi
+                            @if (adminNotifyCount > 0)
+                            {
+                                <span class="admin-badge">@adminNotifyCount</span>
+                            }
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="admin-dropdown-menu" role="menu">
+                            <a href="@Url.Action("ServiceRequests", "Admin")" class="admin-dropdown-item">Servis Talepleri</a>
+                            <a href="@Url.Action("ServiceRequests", "Admin", new { q = ServiceRequestStatusHelper.Pending })" class="admin-dropdown-item">Bekleyen Talepler
+                                @if (pendingCount > 0)
+                                {
+                                    <span class="admin-badge">@pendingCount</span>
+                                }
+                            </a>
+                            <a href="@Url.Action("ServiceRequests", "Admin", new { q = ServiceRequestStatusHelper.WaitingCustomerApproval })" class="admin-dropdown-item">Onay Bekleyenler
+                                @if (waitingApprovalCount > 0)
+                                {
+                                    <span class="admin-badge">@waitingApprovalCount</span>
+                                }
+                            </a>
+                            <a href="@Url.Action("ServiceRequests", "Admin", new { q = ServiceRequestStatusHelper.Completed })" class="admin-dropdown-item">Tamamlanan Talepler</a>
+                        </div>
+                    </div>
+
+                    <form asp-controller="Account" asp-action="Logout" method="post" class="admin-logout-form">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="admin-link admin-logout">
+                            <i class="fas fa-sign-out-alt"></i> Çıkış
+                        </button>
+                    </form>
+                </nav>
             </div>
         </div>
     }
@@ -83,12 +154,6 @@
                 <a href="@Url.Action("MyRequests", "ServiceRequest")" class="auth-nav-link" style="margin-right:10px;">
                     <i class="fas fa-headset"></i> Taleplerim
                 </a>
-                <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
-                    @Html.AntiForgeryToken()
-                    <button type="submit" class="auth-nav-logout">
-                        <i class="fas fa-sign-out-alt"></i> Çıkış
-                    </button>
-                </form>
             }
             else
             {
@@ -143,7 +208,141 @@
             © 2026 Tekin Teknik Servis | Tüm Hakları Saklıdır
         </div>
     </footer>
+    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <style>
+        .admin-nav .admin-nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .admin-nav .admin-brand {
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 1px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .admin-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .admin-link {
+            color: #e2e8f0;
+            text-decoration: none;
+            font-size: 14px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: transparent;
+            border: none;
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .admin-link:hover,
+        .admin-link:focus {
+            background: #1e293b;
+            color: #fff;
+        }
+
+        .admin-dropdown {
+            position: relative;
+        }
+
+        .admin-dropdown-toggle {
+            background: transparent;
+        }
+
+        .admin-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            background: #0b1220;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 10px;
+            min-width: 220px;
+            padding: 8px;
+            box-shadow: 0 12px 24px -12px rgb(15 23 42 / 0.6);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-6px);
+            transition: all 0.2s ease;
+            z-index: 1001;
+        }
+
+        .admin-dropdown:hover .admin-dropdown-menu,
+        .admin-dropdown:focus-within .admin-dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .admin-dropdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #e2e8f0;
+            text-decoration: none;
+            padding: 8px 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            gap: 8px;
+        }
+
+        .admin-dropdown-item:hover,
+        .admin-dropdown-item:focus {
+            background: #1f2937;
+            color: #fff;
+        }
+
+        .admin-badge {
+            background: #ef4444;
+            color: #fff;
+            border-radius: 999px;
+            padding: 2px 8px;
+            font-size: 11px;
+            line-height: 1.2;
+        }
+
+        .admin-logout-form {
+            margin: 0;
+        }
+
+        .admin-logout {
+            border: 1px solid rgba(148, 163, 184, 0.3);
+        }
+
+        @@media (max-width: 768px) {
+            .admin-nav .admin-nav-inner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .admin-menu {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .admin-dropdown-menu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                margin-top: 6px;
+            }
+        }
+    </style>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const nav = document.querySelector(".site-nav");

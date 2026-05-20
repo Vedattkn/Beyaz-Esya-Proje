@@ -68,5 +68,42 @@ namespace TekinTeknikServis.Core.Services
 
             await client.SendMailAsync(msg, ct).ConfigureAwait(false);
         }
+
+        public async Task SendServiceRequestApprovalAsync(ServiceRequestForm form, string approvalLink, CancellationToken ct = default)
+        {
+            if (!IsConfigured) return;
+
+            var toCustomer = form.CustomerEmail?.Trim();
+            if (string.IsNullOrWhiteSpace(toCustomer)) return;
+
+            var subject = "[Tekin Teknik Servis] Onay Bekleyen Servis İşlemi";
+            var body = new StringBuilder();
+            body.AppendLine("Merhaba " + form.AdSoyad + ",");
+            body.AppendLine();
+            body.AppendLine("Servis işlemi için fiyat teklifimizi onaylamanız gerekiyor.");
+            body.AppendLine("Toplam Tutar: " + (form.TotalPriceTry?.ToString("N2") ?? "-") + " TL");
+            body.AppendLine();
+            body.AppendLine("Onaylamak veya reddetmek için aşağıdaki linke tıklayın:");
+            body.AppendLine(approvalLink);
+            body.AppendLine();
+            body.AppendLine("Teşekkürler.");
+
+            using var client = new SmtpClient(_smtpHost, _smtpPort)
+            {
+                EnableSsl = true,
+                Credentials = new NetworkCredential(_smtpUser, _smtpPassword)
+            };
+
+            var msg = new MailMessage
+            {
+                From = new MailAddress(_fromEmail ?? _smtpUser!, "Tekin Teknik Servis"),
+                Subject = subject,
+                Body = body.ToString(),
+                IsBodyHtml = false
+            };
+            msg.To.Add(toCustomer);
+
+            await client.SendMailAsync(msg, ct).ConfigureAwait(false);
+        }
     }
 }

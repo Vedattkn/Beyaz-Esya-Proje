@@ -1,3 +1,5 @@
+using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
@@ -10,6 +12,16 @@ namespace TekinTeknikServis.Core.Filters
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
+            var allowsAnonymous = context.ActionDescriptor.EndpointMetadata
+                .OfType<AllowAnonymousAttribute>()
+                .Any();
+
+            if (allowsAnonymous)
+            {
+                base.OnActionExecuting(context);
+                return;
+            }
+
             var user = context.HttpContext.Session.GetJson<UserSession>("CurrentUser");
             if (user == null)
             {

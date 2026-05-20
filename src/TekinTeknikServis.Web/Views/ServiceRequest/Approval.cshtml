@@ -1,0 +1,95 @@
+@model TekinTeknikServis.Core.Models.ServiceRequestApprovalViewModel
+@using TekinTeknikServis.Core.Models
+@{
+    ViewBag.Title = "Servis Onayı";
+    Layout = "_Layout";
+}
+
+<section class="container" style="max-width: 860px; padding: 32px 16px;">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h2 class="card-title">Servis Onay Bilgileri</h2>
+
+            @if (TempData["ApprovalMessage"] != null)
+            {
+                <div class="alert alert-info">@TempData["ApprovalMessage"]</div>
+            }
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-danger">@ViewBag.Error</div>
+            }
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div><strong>Müşteri:</strong> @Model.CustomerName</div>
+                </div>
+                <div class="col-md-6">
+                    <div><strong>Cihaz:</strong> @Model.DeviceType</div>
+                </div>
+                <div class="col-md-6">
+                    <div><strong>Durum:</strong> @ServiceRequestStatusHelper.ToDisplay(Model.Status)</div>
+                </div>
+                <div class="col-md-6">
+                    <div><strong>Onay:</strong> @(string.IsNullOrWhiteSpace(Model.ApprovalStatus) ? "-" : ServiceRequestStatusHelper.ToDisplay(Model.ApprovalStatus))</div>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div><strong>Arızalı Parça:</strong> @(!string.IsNullOrWhiteSpace(Model.FaultyPart) ? Model.FaultyPart : "-")</div>
+                </div>
+                <div class="col-md-6">
+                    <div><strong>Değişen Parça:</strong> @(!string.IsNullOrWhiteSpace(Model.ReplacementPart) ? Model.ReplacementPart : "-")</div>
+                </div>
+                <div class="col-12">
+                    <div><strong>Onarım Detayı:</strong> @(!string.IsNullOrWhiteSpace(Model.RepairDetails) ? Model.RepairDetails : "-")</div>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row g-3">
+                <div class="col-md-4"><strong>İşçilik:</strong> @(Model.LaborPriceTry?.ToString("N2") ?? "-") TL</div>
+                <div class="col-md-4"><strong>Parça:</strong> @(Model.PartPriceTry?.ToString("N2") ?? "-") TL</div>
+                <div class="col-md-4"><strong>Toplam:</strong> @(Model.TotalPriceTry?.ToString("N2") ?? "-") TL</div>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(Model.AdminNotes))
+            {
+                <hr />
+                <div><strong>Not:</strong> @Model.AdminNotes</div>
+            }
+
+            <hr />
+
+            @if (Model.CanRespond)
+            {
+                <form asp-action="ApprovalDecision" asp-controller="ServiceRequest" method="post" class="d-flex gap-2 flex-wrap">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <input type="hidden" name="token" value="@Model.Token" />
+                    <button type="submit" name="decision" value="approve" class="btn btn-success">Onayla</button>
+                    <button type="submit" name="decision" value="reject" class="btn btn-outline-danger">Reddet</button>
+                </form>
+            }
+            else
+            {
+                var normalizedApproval = (Model.ApprovalStatus ?? string.Empty).Trim();
+                var approvalMessage = "Bu talep için şu anda onay işlemi yapılamıyor.";
+                if (string.Equals(normalizedApproval, ServiceRequestStatusHelper.Approved, StringComparison.OrdinalIgnoreCase))
+                {
+                    approvalMessage = "Bu talep için şu anda Onay verildi.";
+                }
+                else if (string.Equals(normalizedApproval, ServiceRequestStatusHelper.Rejected, StringComparison.OrdinalIgnoreCase))
+                {
+                    approvalMessage = "Bu talep için şu anda Ret verildi.";
+                }
+
+                <div class="alert alert-secondary mb-0">@approvalMessage</div>
+            }
+        </div>
+    </div>
+</section>

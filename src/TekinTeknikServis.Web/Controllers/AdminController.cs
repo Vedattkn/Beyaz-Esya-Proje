@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using TekinTeknikServis.Core.Data;
 using TekinTeknikServis.Core.Filters;
 using TekinTeknikServis.Core.Models;
 using TekinTeknikServis.Core.Services;
@@ -12,10 +14,18 @@ namespace TekinTeknikServis.Core.Controllers
     public class AdminController : Controller
     {
         private readonly SupabaseService _supabase;
+        private readonly AppDbContext _db;
+        private readonly EmailService _emailService;
+        private readonly IWhatsAppService _whatsAppService;
+        private readonly ILogger<AdminController> _logger;
 
-        public AdminController(SupabaseService supabase)
+        public AdminController(SupabaseService supabase, AppDbContext db, EmailService emailService, IWhatsAppService whatsAppService, ILogger<AdminController> logger)
         {
             _supabase = supabase;
+            _db = db;
+            _emailService = emailService;
+            _whatsAppService = whatsAppService;
+            _logger = logger;
         }
 
         public async Task<IActionResult> ServiceRequests(string? q = null, long? selectedId = null)
@@ -26,7 +36,8 @@ namespace TekinTeknikServis.Core.Controllers
                     string.IsNullOrWhiteSpace(q) ||
                     (x.AdSoyad?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false) ||
                     (x.Telefon?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false) ||
-                    x.Id?.ToString().Contains(q, StringComparison.OrdinalIgnoreCase) == true)
+                    x.Id?.ToString().Contains(q, StringComparison.OrdinalIgnoreCase) == true ||
+                    (x.Durum?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false))
                 .OrderBy(x => x.AdSoyad)
                 .ThenByDescending(x => x.KayitTarihi ?? DateTime.MinValue)
                 .ToList();
@@ -58,7 +69,7 @@ namespace TekinTeknikServis.Core.Controllers
                     return RedirectToAction("ServiceRequests", new { q, selectedId = id });
                 }
 
-                await _supabase.UpdateAdminReplyAsync(id, normalizedMessage, "Inceleniyor");
+                await _supabase.UpdateAdminReplyAsync(id, normalizedMessage, null);
                 TempData["AdminSuccess"] = "Admin cevabı kaydedildi.";
             }
             catch (System.Exception ex)
@@ -100,6 +111,120 @@ namespace TekinTeknikServis.Core.Controllers
             }
 
             return RedirectToAction("ServiceRequests", new { q });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateRepairReview(long id, string? faultyPart, string? replacementPart, string? repairDetails, decimal? laborPriceTry, decimal? partPriceTry, string? adminNotes, string? submitAction, string? q)
+        {
+            try
+            {
+                var request = await _db.ServiceRequests.FirstOrDefaultAsync(x => x.Id == id).ConfigureAwait(false);
+                if (request == null)
+                {
+                    TempData["AdminError"] = "Talep bulunamadı.";
+                    return RedirectToAction("ServiceRequests", new { q });
+                }
+
+                if (laborPriceTry.HasValue && laborPriceTry < 0) laborPriceTry = 0;
+                if (partPriceTry.HasValue && partPriceTry < 0) partPriceTry = 0;
+
+                request.FaultyPart = string.IsNullOrWhiteSpace(faultyPart) ? null : faultyPart.Trim();
+                request.ReplacementPart = string.IsNullOrWhiteSpace(replacementPart) ? null : replacementPart.Trim();
+                request.RepairDetails = string.IsNullOrWhiteSpace(repairDetails) ? null : repairDetails.Trim();
+                request.LaborPriceTry = laborPriceTry;
+                request.PartPriceTry = partPriceTry;
+                request.TotalPriceTry = (laborPriceTry ?? 0) + (partPriceTry ?? 0);
+                request.AdminNotes = string.IsNullOrWhiteSpace(adminNotes) ? null : adminNotes.Trim();
+
+                var action = (submitAction ?? string.Empty).Trim().ToLowerInvariant();
+                if (action == "send")
+                {
+                    if (string.IsNullOrWhiteSpace(request.ApprovalToken))
+                    {
+                        request.ApprovalToken = Guid.NewGuid().ToString("N");
+                    }
+
+                    request.Durum = ServiceRequestStatusHelper.WaitingCustomerApproval;
+                    request.ApprovalRequestedAt = DateTime.UtcNow;
+                }
+                else if (string.IsNullOrWhiteSpace(request.Durum) || string.Equals(request.Durum, ServiceRequestStatusHelper.Pending, StringComparison.OrdinalIgnoreCase))
+                {
+                    request.Durum = ServiceRequestStatusHelper.Reviewed;
+                }
+
+                await _db.SaveChangesAsync().ConfigureAwait(false);
+
+                if (action == "send")
+                {
+                    var approvalLink = Url.Action("Approval", "ServiceRequest", new { id = request.Id, token = request.ApprovalToken }, Request.Scheme) ?? string.Empty;
+                    var form = new ServiceRequestForm
+                    {
+                        AdSoyad = request.AdSoyad,
+                        Telefon = request.Telefon,
+                        CihazTuru = request.CihazTuru,
+                        TotalPriceTry = request.TotalPriceTry,
+                        CustomerEmail = request.CustomerEmail
+                    };
+
+                    if (_whatsAppService.IsConfigured)
+                    {
+                        var result = await _whatsAppService.SendServiceRequestApprovalAsync(form, approvalLink).ConfigureAwait(false);
+                        if (!result.IsSuccess)
+                        {
+                            _logger.LogWarning("WhatsApp approval send failed: {Error}", result.ErrorMessage);
+                        }
+                    }
+
+                    if (_emailService.IsConfigured)
+                    {
+                        await _emailService.SendServiceRequestApprovalAsync(form, approvalLink).ConfigureAwait(false);
+                    }
+
+                    TempData["AdminSuccess"] = "Onay linki müşteriye gönderildi.";
+                }
+                else
+                {
+                    TempData["AdminSuccess"] = "Servis inceleme bilgileri güncellendi.";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["AdminError"] = "Talep güncellenirken hata oluştu: " + ex.Message;
+            }
+
+            return RedirectToAction("ServiceRequests", new { q, selectedId = id });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> MarkCompleted(long id, string? q)
+        {
+            try
+            {
+                var request = await _db.ServiceRequests.FirstOrDefaultAsync(x => x.Id == id).ConfigureAwait(false);
+                if (request == null)
+                {
+                    TempData["AdminError"] = "Talep bulunamadı.";
+                    return RedirectToAction("ServiceRequests", new { q });
+                }
+
+                if (!string.Equals(request.Durum ?? string.Empty, ServiceRequestStatusHelper.Approved, StringComparison.OrdinalIgnoreCase))
+                {
+                    TempData["AdminError"] = "Talep tamamlanmadan önce onaylanmış olmalıdır.";
+                    return RedirectToAction("ServiceRequests", new { q, selectedId = id });
+                }
+
+                request.Durum = ServiceRequestStatusHelper.Completed;
+                await _db.SaveChangesAsync().ConfigureAwait(false);
+                TempData["AdminSuccess"] = "Talep tamamlandı olarak işaretlendi.";
+            }
+            catch (Exception ex)
+            {
+                TempData["AdminError"] = "Talep tamamlanırken hata oluştu: " + ex.Message;
+            }
+
+            return RedirectToAction("ServiceRequests", new { q, selectedId = id });
         }
 
         [HttpGet]

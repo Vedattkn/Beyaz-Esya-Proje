@@ -1,4 +1,6 @@
 @model List<TekinTeknikServis.Core.Models.ServiceRequestForm>
+@using System.Linq
+@using TekinTeknikServis.Core.Models
 @{
     ViewBag.Title = "Taleplerim";
     Layout = "_Layout";
@@ -33,17 +35,14 @@
                 @foreach (var r in Model)
                 {
                     var isSelected = selectedId.HasValue && r.Id == selectedId.Value;
-                    var isClosed = string.Equals(r.Durum, "Kapatildi", StringComparison.OrdinalIgnoreCase)
-                        || string.Equals(r.Durum, "Cozuldu", StringComparison.OrdinalIgnoreCase)
-                        || string.Equals(r.Durum, "Kapali", StringComparison.OrdinalIgnoreCase)
-                        || string.Equals(r.Durum, "Kapalı", StringComparison.OrdinalIgnoreCase);
+                    var isClosed = ServiceRequestStatusHelper.IsClosed(r.Durum);
                     <article class="user-chat-card @(isSelected ? "selected" : "")">
                         <header class="user-chat-card-header">
                             <div>
                                 <h3>@r.CihazTuru</h3>
                                 <div>Talep No: #@r.Id</div>
                             </div>
-                            <span class="user-chat-status">@r.Durum</span>
+                            <span class="user-chat-status">@ServiceRequestStatusHelper.ToDisplay(r.Durum)</span>
                         </header>
 
                         <div class="user-chat-thread">
@@ -65,6 +64,43 @@
                                 }
                             }
                         </div>
+
+                        @if (!string.IsNullOrWhiteSpace(r.RepairDetails) || r.TotalPriceTry.HasValue)
+                        {
+                            var latestAdminMessage = r.SohbetMesajlari?
+                                .Where(x => string.Equals(x.Role, "admin", StringComparison.OrdinalIgnoreCase))
+                                .OrderByDescending(x => x.SentAt)
+                                .FirstOrDefault()?.Text;
+                            <div class="user-chat-empty" style="margin-bottom:12px;">
+                                <strong>Servis Özeti</strong><br />
+                                @if (!string.IsNullOrWhiteSpace(r.FaultyPart))
+                                {
+                                    <div>Arızalı Parça: @r.FaultyPart</div>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(r.ReplacementPart))
+                                {
+                                    <div>Değişen Parça: @r.ReplacementPart</div>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(r.RepairDetails))
+                                {
+                                    <div>Onarım Detayı: @r.RepairDetails</div>
+                                }
+                                <div>İşçilik: @(r.LaborPriceTry?.ToString("N2") ?? "-") TL</div>
+                                <div>Parça: @(r.PartPriceTry?.ToString("N2") ?? "-") TL</div>
+                                <div><strong>Toplam: @(r.TotalPriceTry?.ToString("N2") ?? "-") TL</strong></div>
+                                @if (!string.IsNullOrWhiteSpace(latestAdminMessage))
+                                {
+                                    <div><strong>Admin Cevabı:</strong> @latestAdminMessage</div>
+                                }
+                            </div>
+                        }
+
+                        @if (string.Equals(r.Durum, ServiceRequestStatusHelper.WaitingCustomerApproval, StringComparison.OrdinalIgnoreCase) && !string.IsNullOrWhiteSpace(r.ApprovalToken))
+                        {
+                            <div class="user-chat-empty" style="margin-bottom:12px;">
+                                <a class="btn" href="@Url.Action("Approval", "ServiceRequest", new { id = r.Id, token = r.ApprovalToken })">Onay Sayfasını Aç</a>
+                            </div>
+                        }
 
                         @if (isClosed)
                         {
